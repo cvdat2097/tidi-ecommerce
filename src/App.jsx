@@ -7,7 +7,7 @@ import Header from './pages/layout/Header';
 import Footer from './pages/layout/Footer';
 import Cart from './pages/common/Cart';
 
-import Login from './pages/common/Login/Login';
+import Auth from './pages/common/Auth/Auth';
 
 class App extends Component {
   render() {
@@ -25,7 +25,8 @@ class App extends Component {
                 <Footer />
               </div>
             } />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={() => <Auth loginForm={true} />} />
+            <Route path="/register" component={() => <Auth loginForm={false} />} />
           </Switch>
         </div>
       </BrowserRouter>
