@@ -31,6 +31,10 @@
         right: 0;
     }
     .cart-button {
+        :hover {
+            cursor: pointer;
+        }
+        
         #rightSideCart {
             position: absolute;
             top: 0;

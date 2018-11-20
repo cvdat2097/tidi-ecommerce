@@ -6,7 +6,7 @@
 /* :: 4.0 Header Area CSS */
 
 .header_area {
-    position: sticky;
+    position: fixed;
     z-index: 900;
     top: 0;
     left: 0;
@@ -128,6 +128,10 @@
     .favourite-area,
     .user-login-info,
     .cart-area {
+        :hover {
+            cursor: pointer;
+        }
+
         #essenceCartBtn {
             position: relative;
             z-index: 1;
