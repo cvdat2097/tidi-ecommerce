@@ -9,7 +9,20 @@ import Cart from './pages/common/Cart';
 
 import Auth from './pages/common/Auth/Auth';
 
+import API from './helpers/WebService';
+
 class App extends Component {
+
+  componentDidMount() {
+    API.fetch({
+      method: 'POST',
+      uri: 'http://localhost:3001',
+      reqBody: {
+        a: 1,
+        b: 2
+      }
+    }).then()
+  }
   render() {
     return (
       <BrowserRouter>
