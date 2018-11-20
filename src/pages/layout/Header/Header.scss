@@ -128,7 +128,7 @@
     .favourite-area,
     .user-login-info,
     .cart-area {
-        a {
+        #essenceCartBtn {
             position: relative;
             z-index: 1;
             @include flex(0 0 90px);

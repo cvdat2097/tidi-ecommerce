@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.scss';
 
-import Header from './pages/common/layouts/Header';
-import Footer from './pages/common/layouts/Footer';
+import Header from './pages/layout/Header';
+import Footer from './pages/layout/Footer';
 import Cart from './pages/common/Cart';
 
 class App extends Component {

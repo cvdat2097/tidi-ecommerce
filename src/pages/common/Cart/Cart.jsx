@@ -3,28 +3,31 @@ import './Cart.scss';
 
 export default class Cart extends React.Component {
     componentDidMount() {
-        console.log(this.props)
-        setTimeout(() => {
-            this.activeCart();
-        }, 1000)
+
     }
 
     activeCart() {
         this.props.toggleCart();
+        window.toggleCartNow = this.props.toggleCart;
     }
 
     render() {
         return (
             <div>
                 {/* <!-- ##### Right Side Cart Area ##### --> */}
-                <div className={
-                    "cart-bg-overlay " + (this.props.isActive ? 'cart-bg-overlay-on' : '')
-                }></div>
+                <div
+                    className={
+                        "cart-bg-overlay " + (this.props.isActive ? 'cart-bg-overlay-on' : '')
+                    }
+                    onClick={() => { this.props.toggleCart(false) }}
+                ></div>
 
                 <div className={"right-side-cart-area " + (this.props.isActive ? 'cart-on' : '')}>
                     {/* <!-- Cart Button --> */}
-                    <div className="cart-button">
-                        <a href="/" id="rightSideCart"><img src="img/core-img/bag.svg" alt="" /> <span>3</span></a>
+                    <div className="cart-button"
+                        onClick={() => { this.props.toggleCart(false) }}
+                    >
+                        <div id="rightSideCart"><img src="img/core-img/bag.svg" alt="" /> <span>3</span></div>
                     </div>
 
                     <div className="cart-content d-flex">

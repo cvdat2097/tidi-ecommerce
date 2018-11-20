@@ -4,8 +4,8 @@ import Cart from './Cart';
 
 const mapStateToProps = (state) => state.common.Cart;
 const mapDispatchToProps = (dispatch) => ({
-    toggleCart: () => {
-        dispatch(Actions.toggleCart())
+    toggleCart: (open) => {
+        dispatch(Actions.toggleCart(open))
     }
 });
 

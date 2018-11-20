@@ -9,11 +9,10 @@ const INITIAL_STATE = {
 const commonReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case Types.TOGGLE_CART:
-            console.log(state);
             return {
                 ...state,
                 Cart: {
-                    isActive: !state.Cart.isActive
+                    isActive: action.payload ? action.payload : !state.Cart.isActive
                 }
             };
 

@@ -93,7 +93,9 @@ export default class Header extends React.Component {
                         </div>
                         {/* <!-- Cart Area --> */}
                         <div className="cart-area">
-                            <a href="/" id="essenceCartBtn"><img src="img/core-img/bag.svg" alt="" /> <span>3</span></a>
+                            <div id="essenceCartBtn"
+                                onClick={() => { this.props.toggleCart(true) }}
+                            ><img src="img/core-img/bag.svg" alt="" /> <span>3</span></div>
                         </div>
                     </div>
                 </div>
