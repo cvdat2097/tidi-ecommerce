@@ -13,44 +13,48 @@
     width: 100%;
     border-bottom: 1px solid $border-color;
     @include trans-duration(500ms);
-    .classy-nav-container {
-        @media #{$breakpoint-xs} {
-            @include flex-wrap(wrap);
-        }
-        .classy-navbar-toggler {
-            @media #{$breakpoint-xs} {
-                margin-left: auto;
-                margin-right: 15px;
-            }
-        }
+    // .classy-nav-container {
+    //     @media #{$breakpoint-xs} {
+    //         @include flex-wrap(wrap);
+    //     }
+    //     .classy-navbar-toggler {
+    //         @media #{$breakpoint-xs} {
+    //             margin-left: auto;
+    //             margin-right: 15px;
+    //         }
+    //     }
+    // }
+    // .classy-navbar,
+    // .header-meta {
+    //     @include flex(0 0 50%);
+    //     min-width: 50%;
+    //     width: 50%;
+    //     @media #{$breakpoint-xs} {
+    //         @include flex(0 0 100%);
+    //         min-width: 100%;
+    //         width: 100%;
+    //     }
+    // }
+    // .classy-navbar {
+    //     height: 85px;
+    //     padding: 5px 0 5px 5%;
+    //     @media #{$breakpoint-xs} {
+    //         height: 40px;
+    //         border-bottom: 1px solid $border-color;
+    //     }
+    // }
+    // .header-meta {
+    //     height: 85px;
+    //     position: relative;
+    //     z-index: 1;
+    //     @media #{$breakpoint-xs} {
+    //         height: 40px;
+    //     }
+    // }
+    .classynav ul li {
+        position: relative !important;
     }
-    .classy-navbar,
-    .header-meta {
-        @include flex(0 0 50%);
-        min-width: 50%;
-        width: 50%;
-        @media #{$breakpoint-xs} {
-            @include flex(0 0 100%);
-            min-width: 100%;
-            width: 100%;
-        }
-    }
-    .classy-navbar {
-        height: 85px;
-        padding: 5px 0 5px 5%;
-        @media #{$breakpoint-xs} {
-            height: 40px;
-            border-bottom: 1px solid $border-color;
-        }
-    }
-    .header-meta {
-        height: 85px;
-        position: relative;
-        z-index: 1;
-        @media #{$breakpoint-xs} {
-            height: 40px;
-        }
-    }
+
     .classynav ul li a {
         font-size: 16px;
         color: $text-color;

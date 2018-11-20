@@ -12,7 +12,7 @@ const commonReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 Cart: {
-                    isActive: action.payload ? action.payload : !state.Cart.isActive
+                    isActive: action.payload !== undefined ? action.payload : !state.Cart.isActive
                 }
             };
 

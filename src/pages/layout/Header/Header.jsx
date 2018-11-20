@@ -2,6 +2,31 @@ import React from 'react';
 import './Header.scss';
 
 export default class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log(props);
+
+        this.openDropdownMenu = this.openDropdownMenu.bind(this);
+        this.closeDropdownMenu = this.closeDropdownMenu.bind(this);
+
+    }
+
+    openDropdownMenu() {
+        this.props.toggleDropdownMenu(true);
+    }
+
+    closeDropdownMenu() {
+        this.props.toggleDropdownMenu(false);
+    }
+
+    openMegaMenu() {
+        this.props.toggleMegaMenu(true);
+    }
+
+    closeMegaMenu() {
+        this.props.toggleMegaMenu(false);
+    }
+
     render() {
         return (
             <header className="header_area">
@@ -23,47 +48,42 @@ export default class Header extends React.Component {
                             {/* <!-- Nav Start --> */}
                             <div className="classynav">
                                 <ul>
-                                    <li><a href="/">Shop</a>
-                                        <div className="megamenu">
-                                            <ul className="single-mega cn-col-4">
-                                                <li className="title">Women's Collection</li>
-                                                <li><a href="shop.html">Dresses</a></li>
-                                                <li><a href="shop.html">Blouses &amp; Shirts</a></li>
-                                                <li><a href="shop.html">T-shirts</a></li>
-                                                <li><a href="shop.html">Rompers</a></li>
-                                                <li><a href="shop.html">Bras &amp; Panties</a></li>
-                                            </ul>
-                                            <ul className="single-mega cn-col-4">
-                                                <li className="title">Men's Collection</li>
-                                                <li><a href="shop.html">T-Shirts</a></li>
-                                                <li><a href="shop.html">Polo</a></li>
-                                                <li><a href="shop.html">Shirts</a></li>
-                                                <li><a href="shop.html">Jackets</a></li>
-                                                <li><a href="shop.html">Trench</a></li>
-                                            </ul>
-                                            <ul className="single-mega cn-col-4">
-                                                <li className="title">Kid's Collection</li>
-                                                <li><a href="shop.html">Dresses</a></li>
-                                                <li><a href="shop.html">Shirts</a></li>
-                                                <li><a href="shop.html">T-shirts</a></li>
-                                                <li><a href="shop.html">Jackets</a></li>
-                                                <li><a href="shop.html">Trench</a></li>
-                                            </ul>
-                                            <div className="single-mega cn-col-4">
-                                                <img src="img/bg-img/bg-6.jpg" alt="" />
+                                    <li
+                                        onMouseOver={() => { this.props.toggleMegaMenu(true) }}
+                                        onMouseLeave={() => { this.props.toggleMegaMenu(false) }}
+                                    ><a href="/">Shop</a>
+                                        <ul className={"dropdown-menu " + (this.props.openMegaMenu ? "show" : "")}
+                                        >
+                                            <div style={{ transitionDuration: '3s' }}>
+                                                <span className="dropdown-header">Kid's Collection</span>
+                                                <li className="dropdown-item"><a href="shop.html">Dresses</a></li>
+                                                <li className="dropdown-item"><a href="shop.html">Shirts</a></li>
+                                                <li className="dropdown-item"><a href="shop.html">T-shirts</a></li>
+                                                <li className="dropdown-item"><a href="shop.html">Jackets</a></li>
+                                                <li className="dropdown-item"><a href="shop.html">Trench</a></li>
+                                                <li className="dropdown-item">
+                                                    <div className="single-mega cn-col-4">
+                                                        <img src="img/bg-img/bg-6.jpg" alt="" />
+                                                    </div>
+                                                </li>
                                             </div>
-                                        </div>
+                                        </ul>
                                     </li>
-                                    <li><a href="/">Pages</a>
-                                        <ul className="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="shop.html">Shop</a></li>
-                                            <li><a href="single-product-details.html">Product Details</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li><a href="single-blog.html">Single Blog</a></li>
-                                            <li><a href="regular-page.html">Regular Page</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
+                                    <li
+                                        onMouseOver={this.openDropdownMenu}
+                                        onMouseLeave={this.closeDropdownMenu}
+                                    ><a href="/">Pages</a>
+                                        <ul
+                                            className={"dropdown-menu " + (this.props.openDropdownMenu ? "show" : "")}
+                                        >
+                                            <li className="dropdown-item"><a href="index.html">Home</a></li>
+                                            <li className="dropdown-item"><a href="shop.html">Shop</a></li>
+                                            <li className="dropdown-item"><a href="single-product-details.html">Product Details</a></li>
+                                            <li className="dropdown-item"><a href="checkout.html">Checkout</a></li>
+                                            <li className="dropdown-item"><a href="blog.html">Blog</a></li>
+                                            <li className="dropdown-item"><a href="single-blog.html">Single Blog</a></li>
+                                            <li className="dropdown-item"><a href="regular-page.html">Regular Page</a></li>
+                                            <li className="dropdown-item"><a href="contact.html">Contact</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="blog.html">Blog</a></li>

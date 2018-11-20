@@ -1,4 +1,7 @@
+const OPEN_DROPDOWN_MENU = 'OPEN_DROPDOWN_MENU';
+const OPEN_MEGA_MENU = 'OPEN_MEGA_MENU';
 
 export default {
-
+    OPEN_DROPDOWN_MENU,
+    OPEN_MEGA_MENU
 };
