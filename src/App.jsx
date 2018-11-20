@@ -7,6 +7,8 @@ import Header from './pages/layout/Header';
 import Footer from './pages/layout/Footer';
 import Cart from './pages/common/Cart';
 
+import Login from './pages/common/Login/Login';
+
 class App extends Component {
   render() {
     return (
@@ -15,7 +17,7 @@ class App extends Component {
           <Header />
           <Cart />
           <div className="main-content">
-            d
+            <Login />
           </div>
           <Footer />
         </div>

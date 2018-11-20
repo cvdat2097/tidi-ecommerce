@@ -1,4 +1,3 @@
-import Types from './types';
 
 const INITIAL_STATE = {
     Header: {
