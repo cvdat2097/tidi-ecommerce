@@ -10,7 +10,13 @@ const openMegaMenu = (payload) => ({
     payload
 });
 
+const openMenuMobile = (payload) => ({
+    type: Types.OPEN_MENU_MOBILE,
+    payload
+});
+
 export default {
     openDropdownMenu,
-    openMegaMenu
+    openMegaMenu,
+    openMenuMobile
 };

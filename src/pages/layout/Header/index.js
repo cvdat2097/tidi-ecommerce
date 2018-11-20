@@ -16,6 +16,10 @@ const mapDispatchToProps = (dispatch) => ({
 
     toggleMegaMenu: (open) => {
         dispatch(layoutActions.openMegaMenu(open));
+    },
+
+    toggleMenuMobile: () => {
+        dispatch(layoutActions.openMenuMobile());
     }
 });
 

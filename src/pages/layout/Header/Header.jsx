@@ -2,32 +2,10 @@ import React from 'react';
 import './Header.scss';
 
 export default class Header extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log(props);
-
-        this.openDropdownMenu = this.openDropdownMenu.bind(this);
-        this.closeDropdownMenu = this.closeDropdownMenu.bind(this);
-
-    }
-
-    openDropdownMenu() {
-        this.props.toggleDropdownMenu(true);
-    }
-
-    closeDropdownMenu() {
-        this.props.toggleDropdownMenu(false);
-    }
-
-    openMegaMenu() {
-        this.props.toggleMegaMenu(true);
-    }
-
-    closeMegaMenu() {
-        this.props.toggleMegaMenu(false);
-    }
-
     render() {
+        console.log(this.props.openDropdownMenu);
+        console.log(this.props.openMegaMenu);
+        console.log(this.props.openMenuMobile);
         return (
             <header className="header_area">
                 <div className="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
@@ -36,13 +14,17 @@ export default class Header extends React.Component {
                         {/* <!-- Logo --> */}
                         <a className="nav-brand" href="index.html"><img src="img/core-img/logo.png" alt="" /></a>
                         {/* <!-- Navbar Toggler --> */}
-                        <div className="classy-navbar-toggler">
+                        <div className="classy-navbar-toggler"
+                            onClick={() => { this.props.toggleMenuMobile() }}
+                        >
                             <span className="navbarToggler"><span></span><span></span><span></span></span>
                         </div>
                         {/* <!-- Menu --> */}
-                        <div className="classy-menu">
+                        <div className={"classy-menu " + (this.props.openMenuMobile ? "menu-on" : "")}>
                             {/* <!-- close btn --> */}
-                            <div className="classycloseIcon">
+                            <div className="classycloseIcon"
+                                onClick={() => { this.props.toggleMenuMobile() }}
+                            >
                                 <div className="cross-wrap"><span className="top"></span><span className="bottom"></span></div>
                             </div>
                             {/* <!-- Nav Start --> */}
@@ -70,8 +52,8 @@ export default class Header extends React.Component {
                                         </ul>
                                     </li>
                                     <li
-                                        onMouseOver={this.openDropdownMenu}
-                                        onMouseLeave={this.closeDropdownMenu}
+                                        onMouseOver={() => {this.props.toggleDropdownMenu(true)}}
+                                        onMouseLeave={() => {this.props.toggleDropdownMenu(false)}}
                                     ><a href="/">Pages</a>
                                         <ul
                                             className={"dropdown-menu " + (this.props.openDropdownMenu ? "show" : "")}

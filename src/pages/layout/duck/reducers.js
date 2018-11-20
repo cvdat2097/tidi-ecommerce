@@ -2,7 +2,9 @@ import Types from './types';
 
 const INITIAL_STATE = {
     Header: {
-        openDropdownMenu: false
+        openDropdownMenu: false,
+        openMegaMenu: false,
+        openMenuMobile: false
     },
     Footer: {
     }
@@ -14,6 +16,7 @@ const layoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 Header: {
+                    ...state.Header,
                     openDropdownMenu: action.payload !== undefined ? action.payload : !state.Header.openDropdownMenu
                 }
             }
@@ -22,7 +25,17 @@ const layoutReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 Header: {
-                    openMegaMenu: action.payload !== undefined ? action.payload : !state.Header.openDropdownMenu
+                    ...state.Header,
+                    openMegaMenu: action.payload !== undefined ? action.payload : !state.Header.openMegaMenu
+                }
+            }
+
+        case Types.OPEN_MENU_MOBILE:
+            return {
+                ...state,
+                Header: {
+                    ...state.Header,
+                    openMenuMobile: action.payload !== undefined ? action.payload : !state.Header.openMenuMobile
                 }
             }
 
