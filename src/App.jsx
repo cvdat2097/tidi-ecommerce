@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import './assets/scss/style.scss';
 
@@ -13,13 +13,20 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="main-wrapper">
-          <Header />
-          <Cart />
-          <div className="main-content">
-            <Login />
-          </div>
-          <Footer />
+        <div>
+          <Switch>
+            <Route exact path="/" component={() =>
+              <div className="main-wrapper">
+                <Header />
+                <Cart />
+                <div className="main-content">
+                  kdjfd
+                </div>
+                <Footer />
+              </div>
+            } />
+            <Route path="/login" component={Login} />
+          </Switch>
         </div>
       </BrowserRouter>
     );
