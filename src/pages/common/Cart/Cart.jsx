@@ -2,10 +2,6 @@ import React from 'react';
 import './Cart.scss';
 
 export default class Cart extends React.Component {
-    componentDidMount() {
-
-    }
-
     activeCart() {
         this.props.toggleCart();
         window.toggleCartNow = this.props.toggleCart;

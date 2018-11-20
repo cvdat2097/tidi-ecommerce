@@ -70,6 +70,10 @@
             color: $dark-color;
         }
     }
+    .header-meta {
+        z-index: 10;
+    }
+
     .search-area {
         form {
             position: relative;
