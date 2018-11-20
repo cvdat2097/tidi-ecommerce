@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import './App.scss';
 
-import Header from './layouts/Header/Header';
-import Footer from './layouts/Footer/Footer';
-import Cart from './pages/Cart/Cart';
+import Header from './pages/common/layouts/Header';
+import Footer from './pages/common/layouts/Footer';
+import Cart from './pages/common/Cart';
 
 class App extends Component {
   render() {
     return (
-      <div className="main-wrapper">
-        <Header />
-        <Cart />
-        <div className="main-content">
-          d
+      <BrowserRouter>
+        <div className="main-wrapper">
+          <Header />
+          <Cart />
+          <div className="main-content">
+            d
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </BrowserRouter>
     );
   }
 }

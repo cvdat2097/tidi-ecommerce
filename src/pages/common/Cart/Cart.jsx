@@ -1,25 +1,16 @@
 import React from 'react';
 import './Cart.scss';
 
-const initialState = {
-    isActive: false
-}
-
 export default class Cart extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = initialState;
-
+    componentDidMount() {
+        console.log(this.props)
         setTimeout(() => {
             this.activeCart();
         }, 1000)
     }
 
     activeCart() {
-        this.setState({
-            isActive: !this.state.isActive
-        });
+        this.props.toggleCart();
     }
 
     render() {
@@ -27,10 +18,10 @@ export default class Cart extends React.Component {
             <div>
                 {/* <!-- ##### Right Side Cart Area ##### --> */}
                 <div className={
-                    "cart-bg-overlay " + (this.state.isActive ? 'cart-bg-overlay-on' : '')
+                    "cart-bg-overlay " + (this.props.isActive ? 'cart-bg-overlay-on' : '')
                 }></div>
 
-                <div className={"right-side-cart-area " + (this.state.isActive ? 'cart-on' : '')}>
+                <div className={"right-side-cart-area " + (this.props.isActive ? 'cart-on' : '')}>
                     {/* <!-- Cart Button --> */}
                     <div className="cart-button">
                         <a href="/" id="rightSideCart"><img src="img/core-img/bag.svg" alt="" /> <span>3</span></a>
