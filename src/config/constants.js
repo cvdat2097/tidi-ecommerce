@@ -7,6 +7,10 @@ export default {
         RESET_PASSWORD: '/reset-password',
         PRODUCTS: '/products',
         PRODUCT_DETAIL: '/product',
-        CHECKOUT: '/checkout'
+        CHECKOUT: '/checkout',
+        ADMIN: {
+            HOME: '/admin',
+            USER: '/admin/user'
+        }
     }
 }

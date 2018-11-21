@@ -60,6 +60,7 @@ export default class Header extends React.Component {
                             {/* <!-- Nav Start --> */}
                             <div className="classynav">
                                 <ul>
+                                    <li><Link to={CONSTANT.ROUTE.ADMIN.HOME}>Admin</Link></li>
                                     <li
                                         onMouseOver={() => { this.toggleMegaMenu(true) }}
                                         onMouseLeave={() => { this.toggleMegaMenu(false) }}
@@ -98,7 +99,6 @@ export default class Header extends React.Component {
                                             <li className="dropdown-item"><a href="contact.html">Contact</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="blog.html">Blog</a></li>
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </div>
