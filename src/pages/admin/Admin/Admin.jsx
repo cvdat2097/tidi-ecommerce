@@ -4,12 +4,20 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import CONSTANT from '../../../config/constants';
 
 import AdminUser from '../AdminUser';
+import AdminNavBar from './AdminNavBar';
 
 export default class Admin extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path={CONSTANT.ROUTE.ADMIN.USER} component={AdminUser} />
+                <Route exact path={CONSTANT.ROUTE.ADMIN.USER} component={() => (
+                    <div className="wrapper">
+                        <AdminNavBar />
+                        <div className="page-wrapper">
+                            <AdminUser />
+                        </div>
+                    </div>
+                )} />
                 <Route component={() => <Redirect to={CONSTANT.ROUTE.ADMIN.USER} />}></Route>
             </Switch>
         );

@@ -19,9 +19,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
           <Switch>
-
             <Route path={CONSTANT.ROUTE.ADMIN.HOME} component={Admin} />
             <Route exact path={CONSTANT.ROUTE.LOGIN} component={() => <Auth loginForm={true} />} />
             <Route exact path={CONSTANT.ROUTE.REGISTER} component={() => <Auth loginForm={false} />} />
@@ -44,7 +42,6 @@ class App extends Component {
             <Route component={() => <div>ERROR 404</div>} />
 
           </Switch>
-        </div>
       </BrowserRouter>
     );
   }
