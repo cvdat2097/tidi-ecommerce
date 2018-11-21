@@ -17,13 +17,13 @@ export default class ProductDetail extends React.Component {
                 <div id="images-slider" className="single_product_thumb carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img className="d-block w-100" src="img/product-img/product-big-1.jpg" alt="First slide" />
+                            <img className="d-block w-100" src="/img/product-img/product-big-1.jpg" alt="First slide" />
                         </div>
                         <div className="carousel-item">
-                            <img className="d-block w-100" src="img/product-img/product-big-2.jpg" alt="Second slide" />
+                            <img className="d-block w-100" src="/img/product-img/product-big-2.jpg" alt="Second slide" />
                         </div>
                         <div className="carousel-item">
-                            <img className="d-block w-100" src="img/product-img/product-big-3.jpg" alt="Third slide" />
+                            <img className="d-block w-100" src="/img/product-img/product-big-3.jpg" alt="Third slide" />
                         </div>
                     </div>
                     <a className="carousel-control-prev owl-prev" href="#images-slider" role="button" data-slide="prev">

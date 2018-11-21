@@ -6,6 +6,7 @@ export default {
         REGISTER: '/register',
         RESET_PASSWORD: '/reset-password',
         PRODUCTS: '/products',
-        PRODUCT_DETAIL: '/product'
+        PRODUCT_DETAIL: '/product',
+        CHECKOUT: '/checkout'
     }
 }

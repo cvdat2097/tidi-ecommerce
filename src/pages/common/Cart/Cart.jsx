@@ -1,12 +1,10 @@
 import React from 'react';
 import './Cart.scss';
 
-export default class Cart extends React.Component {
-    activeCart() {
-        this.props.toggleCart();
-        window.toggleCartNow = this.props.toggleCart;
-    }
+import { Link } from 'react-router-dom';
+import CONSTANT from '../../../config/constants';
 
+export default class Cart extends React.Component {
     render() {
         return (
             <div>
@@ -89,8 +87,10 @@ export default class Cart extends React.Component {
                                 <li><span>discount:</span> <span>-15%</span></li>
                                 <li><span>total:</span> <span>$232.00</span></li>
                             </ul>
-                            <div className="checkout-btn mt-100">
-                                <a href="checkout.html" className="btn essence-btn">check out</a>
+                            <div className="checkout-btn mt-100"
+                                onClick={() => { this.props.toggleCart(false) }}
+                            >
+                                <Link to={CONSTANT.ROUTE.CHECKOUT} className="btn essence-btn">check out</Link>
                             </div>
                         </div>
                     </div>

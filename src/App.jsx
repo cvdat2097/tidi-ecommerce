@@ -8,6 +8,7 @@ import Footer from './pages/layout/Footer';
 import Cart from './pages/common/Cart';
 import Products from './pages/products/Products';
 import ProductDetail from './pages/products/ProductDetail';
+import CheckoutDetail from './pages/checkout/CheckoutDetail';
 
 import Auth from './pages/common/Auth/Auth';
 
@@ -28,8 +29,9 @@ class App extends Component {
                 <Cart />
                 <div className="main-content">
                   <Switch>
-                    <Route exact path={CONSTANT.ROUTE.PRODUCTS} component={Products} />
-                    <Route exact path={CONSTANT.ROUTE.PRODUCT_DETAIL} component={ProductDetail} />
+                    <Route path={CONSTANT.ROUTE.PRODUCTS} component={Products} />
+                    <Route path={CONSTANT.ROUTE.PRODUCT_DETAIL} component={ProductDetail} />
+                    <Route path={CONSTANT.ROUTE.CHECKOUT} component={CheckoutDetail} />
                   </Switch>
                 </div>
                 <Footer />
