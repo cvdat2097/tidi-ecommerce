@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Header.scss';
+
+import CONSTANT from '../../../config/constants';
 
 const INITIAL_STATE = {
     openDropdownMenu: false,
@@ -11,6 +14,7 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
 
+        console.log(this.props);
         this.state = INITIAL_STATE;
     }
 
@@ -39,7 +43,7 @@ export default class Header extends React.Component {
                     {/* <!-- Classy Menu --> */}
                     <nav className="classy-navbar" id="essenceNav">
                         {/* <!-- Logo --> */}
-                        <a className="nav-brand" href="index.html"><img src="img/core-img/logo.png" alt="" /></a>
+                        <Link className="nav-brand" to={CONSTANT.ROUTE.HOME}><img src="img/core-img/logo.png" alt="" /></Link>
                         {/* <!-- Navbar Toggler --> */}
                         <div className="classy-navbar-toggler"
                             onClick={() => { this.toggleMenuMobile() }}
@@ -112,19 +116,33 @@ export default class Header extends React.Component {
                                 <button type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
                             </form>
                         </div>
-                        {/* <!-- Favourite Area --> */}
-                        <div className="favourite-area">
-                            <a href="/"><img src="img/core-img/heart.svg" alt="" /></a>
-                        </div>
-                        {/* <!-- User Login Info --> */}
-                        <div className="user-login-info">
-                            <a href="/"><img src="img/core-img/user.svg" alt="" /></a>
-                        </div>
                         {/* <!-- Cart Area --> */}
                         <div className="cart-area">
                             <div id="essenceCartBtn"
                                 onClick={() => { this.props.toggleCart(true) }}
                             ><img src="img/core-img/bag.svg" alt="" /> <span>3</span></div>
+                        </div>
+                        {/* <!-- Favourite Area --> */}
+                        {
+                            this.props.isLoggedIn
+                                ?
+                                <div className="favourite-area">
+                                    <a href="/"><img src="img/core-img/heart.svg" alt="" /></a>
+                                </div>
+                                : null
+                        }
+                        {/* <!-- User Login Info --> */}
+                        <div className="user-login-info">
+                            {
+                                this.props.isLoggedIn
+                                    ?
+                                    <a href="/"><img src="img/core-img/user.svg" alt="" /></a>
+                                    :
+                                    <div className="user-login-button">
+                                        <Link to={CONSTANT.ROUTE.LOGIN} className="btn btn-outline-secondary">Login</Link>
+                                        <Link to={CONSTANT.ROUTE.REGISTER} className="btn btn-outline-secondary">Register</Link>
+                                    </div>
+                            }
                         </div>
                     </div>
                 </div>

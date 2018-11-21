@@ -355,7 +355,7 @@ img {
           left: 10px;
           height: 40px; } }
   .header_area .favourite-area a,
-  .header_area .user-login-info a,
+  /* .header_area .user-login-info a, */
   .header_area .cart-area a {
     position: relative;
     z-index: 1;

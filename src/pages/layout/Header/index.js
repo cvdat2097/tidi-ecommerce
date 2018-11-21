@@ -4,7 +4,11 @@ import layoutActions from '../../layout/duck/actions';
 
 import Header from './Header';
 
-const mapStateToProps = (state) => state.layout.Header;
+const mapStateToProps = (state) => ({
+    ...state.layout.Header,
+    ...state.common.Auth
+});
+
 const mapDispatchToProps = (dispatch) => ({
     toggleCart: (open) => {
         dispatch(commonActions.toggleCart(open));

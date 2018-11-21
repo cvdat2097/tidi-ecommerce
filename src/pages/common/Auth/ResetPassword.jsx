@@ -1,10 +1,9 @@
 import React from 'react';
-import CONSTANT from '../../../config/constants';
 import { Link } from 'react-router-dom';
+import CONSTANT from '../../../config/constants';
 
 const INITIAL_STATE = {
-    username: '',
-    password: ''
+    email: ''
 }
 
 export default class Login extends React.Component {
@@ -14,19 +13,13 @@ export default class Login extends React.Component {
         this.state = INITIAL_STATE;
     }
 
-    handlePasswordChange(e) {
+    handleEmailChange(e) {
         this.setState({
-            password: e.target.value
+            email: e.target.value
         });
     }
 
-    handleUsernameChange(e) {
-        this.setState({
-            username: e.target.value
-        });
-    }
-
-    handleLogin() {
+    handleReset() {
         console.log(this.state);
     }
 
@@ -40,12 +33,12 @@ export default class Login extends React.Component {
                         </div>
 
                         <form className="login100-form validate-form">
-                            <span className="login100-form-title">Member Login</span>
+                            <span className="login100-form-title">Reset Password</span>
 
                             <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                                 <input className="input100" type="text" name="email" placeholder="Email"
-                                    onChange={(e) => { this.handleUsernameChange(e) }}
-                                    value={this.state.username}
+                                    onChange={(e) => { this.handleEmailChange(e) }}
+                                    value={this.state.email}
                                 />
                                 <span className="focus-input100"></span>
                                 <span className="symbol-input100">
@@ -53,30 +46,19 @@ export default class Login extends React.Component {
                                 </span>
                             </div>
 
-                            <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="password" name="pass" placeholder="Password"
-                                    onChange={(e) => { this.handlePasswordChange(e) }}
-                                    value={this.state.password}
-                                />
-                                <span className="focus-input100"></span>
-                                <span className="symbol-input100">
-                                    <i className="fa fa-lock" aria-hidden="true"></i>
-                                </span>
-                            </div>
-
                             <div className="container-login100-form-btn">
                                 <button type="button" className="login100-form-btn"
-                                    onClick={() => this.handleLogin()}
-                                >Login</button>
+                                    onClick={() => this.handleReset()}
+                                >Reset</button>
                             </div>
 
                             <div className="text-center p-t-12">
-                                <span className="txt1">Forgot </span>
-                                <Link to={CONSTANT.ROUTE.RESET_PASSWORD} className="txt2">Username / Password?</Link>
+                                <span className="txt1"></span>
+                                <Link to={CONSTANT.ROUTE.LOGIN} className="txt2" href="/">Login Again</Link>
                             </div>
 
                             <div className="text-center p-t-136">
-                                <Link to={CONSTANT.ROUTE.REGISTER} className="txt2">
+                                <Link to={CONSTANT.ROUTE.REGISTER} className="txt2" >
                                     Create your Account
                                 <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                                 </Link>
