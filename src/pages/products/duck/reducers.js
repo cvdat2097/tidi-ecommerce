@@ -7,6 +7,10 @@ const INITIAL_STATE = {
 
     SearchPanel: {
         categories: []
+    },
+
+    ProductDetail: {
+
     }
 }
 

@@ -7,6 +7,7 @@ import Header from './pages/layout/Header';
 import Footer from './pages/layout/Footer';
 import Cart from './pages/common/Cart';
 import Products from './pages/products/Products';
+import ProductDetail from './pages/products/ProductDetail';
 
 import Auth from './pages/common/Auth/Auth';
 
@@ -18,6 +19,9 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <Switch>
+            <Route exact path={CONSTANT.ROUTE.LOGIN} component={() => <Auth loginForm={true} />} />
+            <Route exact path={CONSTANT.ROUTE.REGISTER} component={() => <Auth loginForm={false} />} />
+            <Route exact path={CONSTANT.ROUTE.RESET_PASSWORD} component={() => <Auth resetForm={true} />} />
             <Route path="/" component={() =>
               <div className="main-wrapper">
                 <Header />
@@ -25,14 +29,12 @@ class App extends Component {
                 <div className="main-content">
                   <Switch>
                     <Route exact path={CONSTANT.ROUTE.PRODUCTS} component={Products} />
+                    <Route exact path={CONSTANT.ROUTE.PRODUCT_DETAIL} component={ProductDetail} />
                   </Switch>
                 </div>
                 <Footer />
               </div>
             } />
-            <Route exact path={CONSTANT.ROUTE.LOGIN} component={() => <Auth loginForm={true} />} />
-            <Route exact path={CONSTANT.ROUTE.REGISTER} component={() => <Auth loginForm={false} />} />
-            <Route exact path={CONSTANT.ROUTE.RESET_PASSWORD} component={() => <Auth resetForm={true} />} />
             <Route component={() => <div>ERROR 404</div>} />
           </Switch>
         </div>
