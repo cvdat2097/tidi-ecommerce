@@ -4,6 +4,14 @@ const INITIAL_STATE = {
     AdminUser: {
         isActive: false
     },
+
+    Admin: {
+
+    },
+
+    AdminNavBar: {
+
+    }
 }
 
 const adminReducer = (state = INITIAL_STATE, action) => {
