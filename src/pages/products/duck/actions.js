@@ -5,6 +5,13 @@ const fetchProducts = (products) => ({
     payload: products
 });
 
+const updateCategoryList = (cats) => ({
+    type: Types.FETCH_CATEGORIES,
+    payload: cats
+});
+
+
 export default {
-    fetchProducts
+    fetchProducts,
+    updateCategoryList
 };

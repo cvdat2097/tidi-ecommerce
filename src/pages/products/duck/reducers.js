@@ -2,7 +2,11 @@ import Types from './types';
 
 const INITIAL_STATE = {
     Products: {
-        products: false
+        products: []
+    },
+
+    SearchPanel: {
+        categories: []
     }
 }
 
@@ -12,7 +16,15 @@ const productsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 Products: {
-                    products: action.payload.products
+                    products: action.payload
+                }
+            };
+
+        case Types.FETCH_CATEGORIES:
+            return {
+                ...state,
+                SearchPanel: {
+                    categories: action.payload
                 }
             };
 
