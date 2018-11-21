@@ -1,0 +1,240 @@
+@import 'src/assets/scss/theme_color';
+@import 'src/assets/scss/variables';
+@import 'src/assets/scss/mixin';
+@import 'src/assets/scss/responsive';
+
+
+/* :: 8.0 Popular Products Area CSS */
+
+.widget {
+    .catagories-menu {
+        li > a {
+            text-transform: uppercase;
+            font-size: 12px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .sub-menu {
+            margin-left: 15px;
+            margin-bottom: 15px;
+            li > a {
+                text-transform: capitalize;
+                font-size: 14px;
+                margin-bottom: 5px;
+                display: block;
+                font-weight: 300;
+                color: $text-color;
+                &:hover {
+                    color: $bg-default;
+                }
+            }
+        }
+    }
+}
+
+.single-product-wrapper {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 50px;
+    overflow: hidden;
+    background-color: $white-color;
+    .product-img {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        img {
+            width: 100%;
+            @include trans-duration(500ms);
+        }
+        .hover-img {
+            @include trans-duration(500ms);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .product-badge {
+            height: 25px;
+            background-color: $dark-color;
+            color: $white-color;
+            font-family: $font-ubuntu;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 0 10px;
+            display: inline-block;
+            line-height: 25px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            &.offer-badge {
+                background-color: $hover-color;
+            }
+            &.new-badge {
+                background-color: $bg-default;
+            }
+        }
+        .product-favourite {
+            a {
+                position: absolute;
+                height: 25px;
+                width: 45px;
+                font-size: 14px;
+                color: #ccc;
+                top: 20px;
+                right: 20px;
+                z-index: 10;
+                line-height: 25px;
+                background-color: $white-color;
+                box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+                text-align: center;
+                opacity: 0;
+                visibility: hidden;
+                &.active {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+        }
+    }
+    .product-description {
+        position: relative;
+        z-index: 1;
+        padding-top: 25px;
+        span {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: $text-color;
+            margin-bottom: 15px;
+            letter-spacing: 0.75px;
+            font-weight: 600;
+        }
+        h6 {
+            color: #222222;
+            margin-bottom: 5px;
+        }
+        p {
+            margin-bottom: 0;
+            font-size: 14px;
+            font-family: $font-ubuntu;
+            font-weight: 700;
+            color: $dark-color;
+            span {
+                font-size: 14px;
+                font-family: $font-ubuntu;
+                font-weight: 700;
+                color: #aaaaaa;
+                margin-right: 10px;
+                text-decoration: line-through;
+            }
+        }
+        .hover-content {
+            position: absolute;
+            width: calc(100% - 40px);
+            top: -70px;
+            left: 20px;
+            right: 20px;
+            opacity: 0;
+            visibility: hidden;
+            @include trans-duration(500ms);
+            .essence-btn {
+                width: 100%;
+            }
+        }
+    }
+    .favme {
+        cursor: pointer;
+        color: #ccc;
+        &.active {
+            color: $hover-color !important;
+        }
+        &.is_animating {
+            animation: favme-anime .5s;
+        }
+    }
+    &:hover {
+        .product-img {
+            .hover-img {
+                opacity: 1;
+                visibility: visible;
+            }
+            .product-favourite a {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+@keyframes favme-anime {
+    0% {
+        opacity: 1;
+        font-size: 14px;
+        -webkit-text-stroke-color: transparent;
+    }
+    25% {
+        opacity: .6;
+        color: $white-color;
+        font-size: 15px;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: $hover-color;
+    }
+    75% {
+        opacity: .6;
+        color: $white-color;
+        font-size: 15px;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: $hover-color;
+    }
+    100% {
+        opacity: 1;
+        font-size: 14px;
+        -webkit-text-stroke-color: transparent;
+    }
+}
+
+.pagination {
+    position: relative;
+    z-index: 1;
+    .page-item {
+        .page-link {
+            width: 40px;
+            height: 40px;
+            border: 1px solid $border-color;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 38px;
+            padding: 0;
+            text-align: center;
+            color: $text-color;
+            &:hover,
+            &:focus {
+                color: $bg-default;
+                box-shadow: none;
+            }
+        }
+        &:first-child {
+            margin-right: 15px;
+            .page-link {
+                margin-left: 0;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+        &:last-child {
+            margin-left: 15px;
+            .page-link {
+                margin-left: 0;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+    }
+}

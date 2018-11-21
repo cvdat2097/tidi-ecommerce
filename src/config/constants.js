@@ -4,6 +4,8 @@ export default {
         HOME: '/',
         LOGIN: '/login',
         REGISTER: '/register',
-        RESET_PASSWORD: '/reset-password'
+        RESET_PASSWORD: '/reset-password',
+        PRODUCTS: '/products',
+        PRODUCT_DETAIL: '/product/:id'
     }
 }

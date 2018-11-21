@@ -14,7 +14,6 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log(this.props);
         this.state = INITIAL_STATE;
     }
 
@@ -64,7 +63,7 @@ export default class Header extends React.Component {
                                     <li
                                         onMouseOver={() => { this.toggleMegaMenu(true) }}
                                         onMouseLeave={() => { this.toggleMegaMenu(false) }}
-                                    ><a href="/">Shop</a>
+                                    ><Link to={CONSTANT.ROUTE.PRODUCTS}>Shop</Link>
                                         <ul className={"dropdown-menu " + (this.state.openMegaMenu ? "show" : "")}
                                         >
                                             <div style={{ transitionDuration: '3s' }}>
