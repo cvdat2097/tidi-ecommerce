@@ -10,7 +10,9 @@ export default {
         CHECKOUT: '/checkout',
         ADMIN: {
             HOME: '/admin',
-            USER: '/admin/user'
+            USER: '/admin/user',
+            PRODUCT: '/admin/product',
+            COUPON: '/admin/coupon'
         }
     }
 }

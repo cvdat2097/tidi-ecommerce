@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './AdminNavBar.scss';
+
+import CONSTANT from '../../../../config/constants';
 
 export default class AdminNavBar extends React.Component {
     render() {
@@ -14,16 +17,16 @@ export default class AdminNavBar extends React.Component {
                         <li>
                             <a href="/">
                                 <i className="fa fa-dashboard fa-lg"></i> Dashboard
-                        </a>
+                            </a>
                         </li>
 
                         <li data-toggle="collapse" data-target="#products" className="collapsed active">
                             <a href="/"><i className="fa fa-gift fa-lg"></i> Management <span className="arrow"></span></a>
                         </li>
                         <ul className="sub-menu collapse" id="products">
-                            <li className="active"><a href="/">User</a></li>
-                            <li><a href="/">Product</a></li>
-                            <li><a href="/">Coupon</a></li>
+                            <li className="active"><Link to={CONSTANT.ROUTE.ADMIN.USER}>User</Link></li>
+                            <li><Link to={CONSTANT.ROUTE.ADMIN.PRODUCT}>Product</Link></li>
+                            <li><Link to={CONSTANT.ROUTE.ADMIN.COUPON}>Coupon</Link></li>
                         </ul>
                     </ul>
                 </div>

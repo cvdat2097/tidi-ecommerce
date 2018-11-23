@@ -20,8 +20,8 @@ const fetch = ({ method, reqBody }) => {
 export default {
     fetch,
 
-    // 1.1
-    Login: (username, password) => {
+    // 1.1 Login
+    login: (username, password) => {
         return fetch({
             method: 'GET',
             reqBody: {
@@ -31,8 +31,8 @@ export default {
         });
     },
 
-    // 1.2
-    Register: (username, password, email, fullName, dateOfBirth, phone, gender, address, avatar) => {
+    // 1.2 Registration
+    register: (username, password, email, fullName, dateOfBirth, phone, gender, address, avatar) => {
         return fetch({
             method: 'GET',
             reqBody: {
@@ -49,8 +49,38 @@ export default {
         });
     },
 
-    // 1.6
-    ReadAccountInfo: (token) => {
+    // 1.3 Registration email verification
+    verifyEmail(verificationCode) {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                verificationCode
+            }
+        });
+    },
+
+    // 1.4 Reset password
+    resetPassword(username) {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                username
+            }
+        });
+    },
+
+    // 1.5 Reset password email verification 
+    verifyEmailResetPassword(verificationCode) {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                verificationCode
+            }
+        });
+    },
+
+    // 1.6 READ Account information
+    readAccountInfo: (token) => {
         return fetch({
             method: 'GET',
             reqBody: {
@@ -59,5 +89,49 @@ export default {
         });
     },
 
+    // 1.7 UPDATE Account information 
+    updateAccountInfo: (token, { dateOfBirth, address, avatar }) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                token,
+                newInfo: {
+                    dateOfBirth,
+                    address,
+                    avatar
+                }
+            }
+        });
+    },
 
+    // 1.8 UPDATE Account password 
+    updateAccountPassword: (verificationCode, newPassword, { username, email }) => {
+        let body = {}
+        if (username) {
+            body.username = username;
+        } else {
+            body.email = email;
+        }
+
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                verificationCode,
+                newPassword,
+                ...body,
+            }
+        });
+    },
+
+    // 1.9 UPDATE password
+    updatePassword: (token, password, newPassword) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                token,
+                password,
+                newPassword
+            }
+        });
+    },
 };
