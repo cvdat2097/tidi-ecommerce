@@ -8,8 +8,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setFormData: (newData) => dispatch(Actions.updateAddUserForm(newData))
-
+    setFormData: (newData) => dispatch(Actions.updateAddUserForm(newData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUser);

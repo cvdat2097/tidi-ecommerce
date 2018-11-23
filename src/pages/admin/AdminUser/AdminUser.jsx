@@ -7,6 +7,8 @@ import AdminAddUser from './AdminAddUser';
 import Modal from '../../common/Modal';
 import HelperTool from '../../../helpers/lib';
 
+import Paginator from '../../common/Paginator';
+
 const MockUser = [{
     id: 1,
     username: 'user1',
@@ -198,15 +200,10 @@ export default class AdminUser extends React.Component {
                                     {this.generateTableRows(MockUser)}
                                 </tbody>
                             </table>
-                            <div>
-                                <ul className="pagination justify-content-center">
-                                    <li className="page-item"><a className="page-link" href="/">&#60;&#60;</a></li>
-                                    <li className="page-item active"><a className="page-link" href="/">1</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">&#62;&#62;</a></li>
-                                </ul>
-                            </div>
+
+                            <Paginator
+                                handlePageChange={() => { console.log('change page') }}
+                            />
                         </div>
                     </div>
                 </div>

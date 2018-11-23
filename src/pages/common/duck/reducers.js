@@ -12,6 +12,12 @@ const INITIAL_STATE = {
     Modal: {
         isUpdateMode: false,
         submitClassName: ''
+    },
+
+    Paginator: {
+        currentPage: 3,
+        totalItems: 300,
+        pageSize: 10
     }
 }
 
@@ -25,13 +31,10 @@ const commonReducer = (state = INITIAL_STATE, action) => {
                 }
             };
 
-        case Types.CHANGE_MODAL_MODE:
+        case Types.CHANGE_PAGE:
             return {
                 ...state,
-                Modal: {
-                    isUpdateMode: action.payload.isUpdateMode,
-                    submitClassName: action.payload.submitClassName
-                }
+                Paginator: { ...state.Paginator, ...action.payload }
             };
 
         default:
