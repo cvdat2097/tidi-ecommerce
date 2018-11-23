@@ -42,7 +42,7 @@ export default class AdminAddUser extends React.Component {
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
                                     onClick={() => this.handleClose()}
                                 >Close</button>
-                                <button type="button" className={"btn " + (this.props.modalSubmitClass || "btn-success")} data-dismiss="modal"
+                                <button type="button" className={"btn " + (this.props.modalSubmitClassName || "btn-success")} data-dismiss="modal"
                                     onClick={() => this.handleSubmit()}
                                 >{this.props.modalSubmitTitle}</button>
                             </div>

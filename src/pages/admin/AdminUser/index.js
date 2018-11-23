@@ -8,11 +8,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    clearFormData: () => dispatch(Actions.updateAddUserForm({
-        name: "",
-        age: ""
-    })),
-
     setFormData: (newData) => dispatch(Actions.updateAddUserForm(newData))
 
 });

@@ -15,8 +15,15 @@ const INITIAL_STATE = {
 
     AdminAddUser: {
         formData: {
-            name: "abc",
-            age: "1"
+            username: 'abc',
+            permission: 'admin',
+            email: 'admin@vng.com.vn',
+            full_name: 'Nguyen Van V',
+            date_of_birth: '12/9/1878',
+            phone: '09123889',
+            gender: 'Nam',
+            address: '78 VNG Streeet',
+            is_verified: true
         }
     }
 }
