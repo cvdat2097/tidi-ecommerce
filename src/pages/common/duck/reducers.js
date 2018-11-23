@@ -15,9 +15,7 @@ const INITIAL_STATE = {
     },
 
     Paginator: {
-        currentPage: 3,
-        totalItems: 300,
-        pageSize: 10
+
     }
 }
 
@@ -29,12 +27,6 @@ const commonReducer = (state = INITIAL_STATE, action) => {
                 Cart: {
                     isActive: action.payload !== undefined ? action.payload : !state.Cart.isActive
                 }
-            };
-
-        case Types.CHANGE_PAGE:
-            return {
-                ...state,
-                Paginator: { ...state.Paginator, ...action.payload }
             };
 
         default:

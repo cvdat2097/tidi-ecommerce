@@ -16,10 +16,7 @@ export default class Paginator extends React.Component {
                 totalItemsCount={this.props.totalItems}
                 pageRangeDisplayed={5}
                 onChange={(newPageIndex) => {
-                    this.props.updatePaginatorInfo({
-                        currentPage: newPageIndex
-                    });
-                    this.props.handlePageChange();
+                    this.props.handlePageChange(newPageIndex);
                 }}
             />
         );

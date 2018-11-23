@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setFormData: (newData) => dispatch(Actions.updateAddUserForm(newData)),
+    changePageInfo: (pageInfo) => dispatch(Actions.changePageInfo(pageInfo))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUser);

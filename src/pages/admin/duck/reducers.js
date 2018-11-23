@@ -2,7 +2,10 @@ import Types from './types';
 
 const INITIAL_STATE = {
     AdminUser: {
-        isActive: false
+        isActive: false,
+        currentPage: 1,
+        totalItems: 300,
+        pageSize: 10
     },
 
     Admin: {
@@ -34,11 +37,19 @@ const adminReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 AdminAddUser: {
-                    // formData: action.payload,
                     formData: {
                         ...state.AdminAddUser.formData,
                         ...action.payload
                     }
+                }
+            };
+
+        case Types.CHANGE_PAGE_INFO:
+            return {
+                ...state,
+                AdminUser: {
+                    ...state.AdminUser,
+                    ...action.payload
                 }
             };
 

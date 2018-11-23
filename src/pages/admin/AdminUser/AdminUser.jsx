@@ -41,11 +41,27 @@ export default class AdminUser extends React.Component {
 
         this.userIdToRemove = null;
 
+        this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleAddUser = this.handleAddUser.bind(this);
         this.handleUpdateUser = this.handleUpdateUser.bind(this);
         this.handleDeleteUser = this.handleDeleteUser.bind(this);
         this.prepareFormData = this.prepareFormData.bind(this);
         this.generateTableRows = this.generateTableRows.bind(this);
+    }
+
+    handleFilterChange({ currentPage, pageSize }) {
+        let payloadObj = {}
+
+        if (currentPage) {
+            payloadObj.currentPage = currentPage;
+        }
+
+        if (pageSize) {
+            payloadObj.currentPage = 1;
+            payloadObj.pageSize = pageSize;
+        }
+
+        this.props.changePageInfo(payloadObj);
     }
 
     handleUpdateUser() {
@@ -170,7 +186,14 @@ export default class AdminUser extends React.Component {
                     <div className="card-body">
                         <div className="controllers d-flex">
                             <div>
-                                <select className="form-control input-sm">
+                                <select className="form-control input-sm"
+                                    value={this.props.pageSize}
+                                    onChange={(e) => {
+                                        this.handleFilterChange({
+                                            pageSize: e.target.value
+                                        });
+                                    }}
+                                >
                                     <option value="10">10</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -188,6 +211,9 @@ export default class AdminUser extends React.Component {
                                 </button>
                             </div>
                         </div>
+                        <div className="d-flex">
+                            <span>Displaying {this.props.pageSize * this.props.currentPage} / {this.props.totalItems}</span>
+                        </div>
                         <div className="progress" style={{ height: 5 }}>
                             <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ "width": "75%" }}></div>
                         </div>
@@ -202,7 +228,10 @@ export default class AdminUser extends React.Component {
                             </table>
 
                             <Paginator
-                                handlePageChange={() => { console.log('change page') }}
+                                handlePageChange={(currentPage) => { this.handleFilterChange({ currentPage }) }}
+                                currentPage={this.props.currentPage}
+                                pageSize={this.props.pageSize}
+                                totalItems={this.props.totalItems}
                             />
                         </div>
                     </div>

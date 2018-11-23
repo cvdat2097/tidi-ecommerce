@@ -5,12 +5,6 @@ const toggleCart = (payload) => ({
     payload
 });
 
-const changePage = (payload) => ({
-    type: Types.CHANGE_PAGE,
-    payload
-});
-
 export default {
     toggleCart,
-    changePage
 };
