@@ -1,3 +1,6 @@
 
+const ADMIN_UPDATE_ADD_USER_FORM = "ADMIN_UPDATE_ADD_USER_FORM";
+
 export default {
+    ADMIN_UPDATE_ADD_USER_FORM,
 };

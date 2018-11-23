@@ -3,12 +3,41 @@ import './AdminUser.scss';
 
 // import { Link } from 'react-router-dom';
 // import CONSTANT from '../../../config/constants';
-
+import AdminAddUser from './AdminAddUser';
+import Modal from '../../common/Modal';
 
 export default class AdminUser extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.modalUpdateMode = false;
+
+        this.handleAddUser = this.handleAddUser.bind(this);
+        this.prepareFormData = this.prepareFormData.bind(this);
+    }
+
+    handleAddUser() {
+        console.log("Added a new user");
+        console.log(this.props.formData);
+        this.props.clearFormData();
+    }
+
+    prepareFormData(data) {
+        this.props.setFormData(data);
+    }
+
     render() {
         return (
             <div className="container-fluid">
+                <Modal
+                    modalId="add-user-modal"
+                    modalTitle={this.modalUpdateMode ? "Update user" : "Create new user"}
+                    modalBody={<AdminAddUser />}
+                    modalHandleSubmit={this.handleAddUser}
+                    modalSubmitTitle={this.modalUpdateMode ? "Update" : "Add"}
+                    modalSubmitClass={this.modalUpdateMode ? "btn-warning" : "btn-success"}
+                />
                 <h2>User</h2>
                 <hr />
                 <div className="card">
@@ -24,8 +53,23 @@ export default class AdminUser extends React.Component {
                                 </select>
                             </div>
                             <div className="control-buttons btn-group justify-content-space-between">
-                                <button className="btn btn-success">Add</button>
-                                <button className="btn btn-warning">Update</button>
+                                {/* <!-- Button trigger modal --> */}
+                                <button className="btn btn-success" data-toggle="modal" data-target="#add-user-modal"
+                                    onClick={() => {
+                                        this.modalUpdateMode = false;
+                                        this.props.clearFormData();
+                                    }}
+                                >
+                                    Add user
+                                </button>
+                                <button className="btn btn-warning" data-toggle="modal" data-target="#add-user-modal"
+                                    onClick={() => {
+                                        this.modalUpdateMode = true;
+                                        this.prepareFormData({ name: 'current', age: '999' })
+                                    }}
+                                >
+                                    Update
+                                </button>
                             </div>
                         </div>
                         <div className="progress" style={{ height: 5 }}>

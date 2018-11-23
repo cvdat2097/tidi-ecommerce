@@ -5,6 +5,12 @@ const toggleCart = (payload) => ({
     payload
 });
 
+const changeModalMode = (payload) => ({
+    type: Types.CHANGE_MODAL_MODE,
+    payload
+});
+
 export default {
-    toggleCart
+    toggleCart,
+    changeModalMode
 };
