@@ -2,3 +2,20 @@
 @import 'src/assets/scss/variables';
 @import 'src/assets/scss/mixin';
 @import 'src/assets/scss/responsive';
+
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.control-buttons {
+    margin-bottom: 10px;
+}
+
+.controllers {
+    justify-content: space-between;
+}

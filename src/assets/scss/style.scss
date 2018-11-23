@@ -90,6 +90,14 @@ img {
     max-width: 100%;
 }
 
+.page-item.active .page-link {
+    background-color: $text-color !important;
+    color: white !important;
+}
+
+.container-fluid {
+    padding: 5px 0;
+}
 
 /* Spacing */
 

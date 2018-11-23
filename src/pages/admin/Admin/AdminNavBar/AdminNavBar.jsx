@@ -18,19 +18,12 @@ export default class AdminNavBar extends React.Component {
                         </li>
 
                         <li data-toggle="collapse" data-target="#products" className="collapsed active">
-                            <a href="/"><i className="fa fa-gift fa-lg"></i> UI Elements <span className="arrow"></span></a>
+                            <a href="/"><i className="fa fa-gift fa-lg"></i> Management <span className="arrow"></span></a>
                         </li>
                         <ul className="sub-menu collapse" id="products">
-                            <li className="active"><a href="/">CSS3 Animation</a></li>
-                            <li><a href="/">General</a></li>
-                            <li><a href="/">Buttons</a></li>
-                            <li><a href="/">Tabs & Accordions</a></li>
-                            <li><a href="/">Typography</a></li>
-                            <li><a href="/">FontAwesome</a></li>
-                            <li><a href="/">Slider</a></li>
-                            <li><a href="/">Panels</a></li>
-                            <li><a href="/">Widgets</a></li>
-                            <li><a href="/">Bootstrap Model</a></li>
+                            <li className="active"><a href="/">User</a></li>
+                            <li><a href="/">Product</a></li>
+                            <li><a href="/">Coupon</a></li>
                         </ul>
                     </ul>
                 </div>
