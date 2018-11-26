@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import './Products.scss';
 
 import MockAPI from '../../../helpers/MockAPI';
@@ -7,21 +8,52 @@ import CONSTANT from '../../../config/constants'
 import SearchPanel from '../SearchPanel';
 import Paginator from '../../common/Paginator';
 
-export default class Products extends React.Component {
+class Products extends React.Component {
     constructor(props) {
         super(props);
 
         this.generateProducts = this.generateProducts.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
+        this.fetchProducts = this.fetchProducts.bind(this);
     }
 
     componentWillMount() {
-        MockAPI.Product.getAll().then((products) => {
-            this.props.updateProductList(JSON.parse(products));
+        const params = new URLSearchParams(this.props.history.location.search);
+        const pageIndex = Number(params.get('page'));
+        const pageSize = Number(params.get('size'));
+        if (
+            pageIndex
+            && pageSize
+            && [12, 24, 36].indexOf(pageSize) !== -1
+        ) {
+            this.handleFilterChange({
+                currentPage: pageIndex,
+                pageSize: pageSize
+            });
+        } else {
+            this.fetchProducts(this.props.currentPage, this.props.pageSize);
+            this.updateURLParams(this.props.currentPage,this.props.pageSize);
+        }
+
+    }
+
+    updateURLParams(currentPage, pageSize) {
+        this.props.history.push({
+            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
         });
     }
 
-    handleFilterChange({ currentPage, pageSize }) {
+    fetchProducts(currentPage, pageSize) {
+        MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
+            const result = JSON.parse(res);
+
+            console.log('GOT: ' + result.products.length);
+            this.props.updateProductList(result.products);
+            this.props.changePageInfo({ totalItems: result.totalItems });
+        });
+    }
+
+    handleFilterChange({ currentPage, pageSize, totalItems }) {
         let payloadObj = {}
 
         if (currentPage) {
@@ -29,11 +61,21 @@ export default class Products extends React.Component {
         }
 
         if (pageSize) {
-            payloadObj.currentPage = 1;
             payloadObj.pageSize = pageSize;
         }
 
+        if (totalItems) {
+            payloadObj.totalItems = totalItems;
+        }
+
         this.props.changePageInfo(payloadObj);
+        if (pageSize || currentPage) {
+            this.updateURLParams(payloadObj.currentPage, payloadObj.pageSize);
+            this.fetchProducts(
+                payloadObj.currentPage || this.props.currentPage,
+                payloadObj.pageSize || this.props.pageSize
+            );
+        }
     }
 
 
@@ -41,10 +83,11 @@ export default class Products extends React.Component {
         const products = this.props.products;
         const productsElements = [];
 
-        products.forEach((product) => {
+        products.forEach((product, index) => {
             productsElements.push(
                 <Product
-                    key={product.id}
+                    // key={product.id}
+                    key={index}
                     product={product}
                     buttonTitle="Add to cart"
                 />
@@ -87,20 +130,37 @@ export default class Products extends React.Component {
                                             <div className="product-topbar d-flex align-items-center justify-content-between">
                                                 {/* <!-- Total Products --> */}
                                                 <div className="total-products">
-                                                    <p><span>{this.props.products.length}</span> products found</p>
+                                                    <p><span>{this.props.totalItems}</span> products found</p>
                                                 </div>
-                                                {/* <!-- Sorting --> */}
-                                                <div className="product-sorting d-flex">
-                                                    <p>Sort by:</p>
-                                                    <form action="#" method="get">
-                                                        <select name="select" id="sortByselect">
-                                                            <option value="value">Highest Rated</option>
-                                                            <option value="value">Newest</option>
-                                                            <option value="value">Price: $$ - $</option>
-                                                            <option value="value">Price: $ - $$</option>
-                                                        </select>
-                                                        <input type="submit" className="d-none" value="" />
-                                                    </form>
+                                                <div className="d-flex">
+                                                    {/* <!-- Number of Items --> */}
+                                                    <div className="product-sorting d-flex mr-3">
+                                                        <p>Display:</p>
+                                                        <form action="#" method="get">
+                                                            <select name="select"
+                                                                value={this.props.pageSize}
+                                                                onChange={(e) => { this.handleFilterChange({ pageSize: e.target.value, currentPage: 1 }) }}
+                                                            >
+                                                                <option value={12}>12</option>
+                                                                <option value={24}>24</option>
+                                                                <option value={36}>36</option>
+                                                            </select>
+                                                            <input type="submit" className="d-none" value="" />
+                                                        </form>
+                                                    </div>
+                                                    {/* <!-- Sorting --> */}
+                                                    <div className="product-sorting d-flex">
+                                                        <p>Sort by:</p>
+                                                        <form action="#" method="get">
+                                                            <select name="select" id="sortByselect">
+                                                                <option value="value">Highest Rated</option>
+                                                                <option value="value">Newest</option>
+                                                                <option value="value">Price: $$ - $</option>
+                                                                <option value="value">Price: $ - $$</option>
+                                                            </select>
+                                                            <input type="submit" className="d-none" value="" />
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,3 +231,6 @@ class Product extends React.Component {
         );
     }
 }
+
+
+export default withRouter(Products);

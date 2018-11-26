@@ -27,7 +27,7 @@ export const verification_email = [
     }
 ];
 
-export const product = [
+let prds = [
     {
         id: 0,
         product_name: 'T-Shirt X3432',
@@ -148,6 +148,9 @@ export const product = [
         active: 1,
     },
 ];
+prds = [...prds, ...prds, ...prds, ...prds];
+prds = [...prds, ...prds, ...prds, ...prds];
+export const product = prds;
 
 export const cart = [
     {

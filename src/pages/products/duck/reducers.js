@@ -1,8 +1,12 @@
 import Types from './types';
+import commonTypes from '../../common/duck/types';
 
 const INITIAL_STATE = {
     Products: {
-        products: []
+        products: [],
+        currentPage: 1,
+        pageSize: 12,
+        totalItems: 0,
     },
 
     SearchPanel: {
@@ -20,6 +24,7 @@ const productsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 Products: {
+                    ...state.Products,
                     products: action.payload
                 }
             };
@@ -28,7 +33,17 @@ const productsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 SearchPanel: {
+                    ...state.SearchPanel,
                     categories: action.payload
+                }
+            };
+
+        case commonTypes.CHANGE_PAGE_INFO:
+            return {
+                ...state,
+                Products: {
+                    ...state.Products,
+                    ...action.payload
                 }
             };
 
