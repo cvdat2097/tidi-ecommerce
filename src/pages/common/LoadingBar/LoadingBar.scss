@@ -1,0 +1,15 @@
+@import 'src/assets/scss/theme_color';
+@import 'src/assets/scss/variables';
+@import 'src/assets/scss/mixin';
+@import 'src/assets/scss/responsive';
+
+#tidi-loading-bar {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.tidi-loading-bar-hidden {
+    display: none;
+}

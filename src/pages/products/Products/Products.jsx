@@ -7,17 +7,24 @@ import CONSTANT from '../../../config/constants'
 
 import SearchPanel from '../SearchPanel';
 import Paginator from '../../common/Paginator';
+import LoadingBar from '../../common/LoadingBar';
+
+const INTIAL_STATE = {
+    loadingBar: <LoadingBar />
+}
 
 class Products extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = INTIAL_STATE;
 
         this.generateProducts = this.generateProducts.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.fetchProducts = this.fetchProducts.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const params = new URLSearchParams(this.props.history.location.search);
         const pageIndex = Number(params.get('page'));
         const pageSize = Number(params.get('size'));
@@ -32,7 +39,7 @@ class Products extends React.Component {
             });
         } else {
             this.fetchProducts(this.props.currentPage, this.props.pageSize);
-            this.updateURLParams(this.props.currentPage,this.props.pageSize);
+            this.updateURLParams(this.props.currentPage, this.props.pageSize);
         }
 
     }
@@ -100,6 +107,7 @@ class Products extends React.Component {
     render() {
         return (
             <div>
+                {this.state.loadingBar}
                 {/* <!-- ##### Breadcumb Area Start ##### --> */}
                 <div className="breadcumb_area bg-img" style={{ backgroundImage: "url(img/bg-img/breadcumb.jpg)" }}>
                     <div className="container h-100">

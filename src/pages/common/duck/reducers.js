@@ -16,6 +16,10 @@ const INITIAL_STATE = {
 
     Paginator: {
 
+    },
+
+    LoadingBar: {
+
     }
 }
 
