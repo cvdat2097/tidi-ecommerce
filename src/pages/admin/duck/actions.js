@@ -10,12 +10,7 @@ const updateAddUserForm = (payload) => ({
     payload
 });
 
-const changePageInfo = (payload) => ({
-    type: Types.CHANGE_PAGE_INFO,
-    payload
-});
 
 export default {
     updateAddUserForm,
-    changePageInfo
 };

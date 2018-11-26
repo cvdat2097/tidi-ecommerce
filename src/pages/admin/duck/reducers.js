@@ -1,4 +1,5 @@
 import Types from './types';
+import commonTypes from '../../common/duck/types';
 
 const INITIAL_STATE = {
     AdminUser: {
@@ -44,7 +45,7 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                 }
             };
 
-        case Types.CHANGE_PAGE_INFO:
+        case commonTypes.CHANGE_PAGE_INFO:
             return {
                 ...state,
                 AdminUser: {
