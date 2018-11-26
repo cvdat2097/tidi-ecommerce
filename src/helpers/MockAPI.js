@@ -20,7 +20,7 @@ export default {
 
         getSome: (offset, limit) => {
             return new Promise((resolve, reject) => {
-                
+
                 const products = [...product].slice(Number(offset), Number(offset) + Number(limit));
 
 
@@ -32,6 +32,19 @@ export default {
                 });
 
                 resolve(JSON.stringify({ products, totalItems: product.length }));
+            });
+        },
+
+        getOne: (id) => {
+            return new Promise((resolve, reject) => {
+                const prd = product[Number(id)];
+
+                prd.category = category[prd.category_id];
+                prd.brand = brand[prd.brand_id];
+                prd.branch = branch[prd.branch_id];
+                prd.industry = industry[prd.industry_id];
+
+                resolve(JSON.stringify(prd));
             });
         },
 

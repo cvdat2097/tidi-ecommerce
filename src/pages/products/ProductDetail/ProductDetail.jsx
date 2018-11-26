@@ -1,22 +1,61 @@
 import React from 'react';
 import './ProductDetail.scss';
 
+import MockAPI from '../../../helpers/MockAPI';
+
+const INTITIAL_STATE = {
+    product: {}
+}
+
 export default class ProductDetail extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = INTITIAL_STATE;
+    }
+
+    componentDidMount() {
+        const productId = Number(this.props.match.params.id);
+        if (!isNaN(productId)) {
+            this.fetchProduct(productId);
+        }
+    }
+
+    fetchProduct(productId) {
+        MockAPI.Product.getOne(productId).then((res) => {
+            const product = JSON.parse(res);
+
+            console.log(product);
+            this.setState({
+                product
+            });
+        });
+    }
+
+    generatePictures() {
+        let r = [];
+
+        if (this.state.product.images) {
+            this.state.product.images.forEach((imageURL, index) => {
+                r.push(
+                    <div key={index} className={"carousel-item" + (index === 0 ? " active" : "")}>
+                        <img className="d-block w-100" src={imageURL} alt="" />
+                    </div>
+                );
+            });
+        }
+
+        return r;
+    }
+
     render() {
+        const product = this.state.product;
         return (
             <div className="single_product_details_area d-flex align-items-center">
-                {/* <!-- Single Product Thumb --> */}
-                {/* <div className="single_product_thumb">
-                    <div className="product_thumbnail_slides">
-                        <img src="img/product-img/product-big-1.jpg" alt="" />
-                        <img src="img/product-img/product-big-2.jpg" alt="" />
-                        <img src="img/product-img/product-big-3.jpg" alt="" />
-                    </div>
-                </div> */}
                 <div id="images-slider" className="single_product_thumb carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
-                        <div className="carousel-item active">
+                        {/* <div className="carousel-item active">
                             <img className="d-block w-100" src="/img/product-img/product-big-1.jpg" alt="First slide" />
                         </div>
                         <div className="carousel-item">
@@ -24,7 +63,8 @@ export default class ProductDetail extends React.Component {
                         </div>
                         <div className="carousel-item">
                             <img className="d-block w-100" src="/img/product-img/product-big-3.jpg" alt="Third slide" />
-                        </div>
+                        </div> */}
+                        {this.generatePictures()}
                     </div>
                     <a className="carousel-control-prev owl-prev" href="#images-slider" role="button" data-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -38,12 +78,12 @@ export default class ProductDetail extends React.Component {
 
                 {/* <!-- Single Product Description --> */}
                 <div className="single_product_desc clearfix">
-                    <span>mango</span>
+                    <span>{product.brand && product.brand.name}</span>
                     <a href="cart.html">
-                        <h2>One Shoulder Glitter Midi Dress</h2>
+                        <h2>{product.product_name}</h2>
                     </a>
-                    <p className="product-price"><span className="old-price">$65.00</span> $49.00</p>
-                    <p className="product-desc">Mauris viverra cursus ante laoreet eleifend. Donec vel fringilla ante. Aenean finibus velit id urna vehicula, nec maximus est sollicitudin.</p>
+                    <p className="product-price"><span className="old-price">{product.price + ' VND'}</span>{product.price - product.price * product.disc_percent + ' VND'}</p>
+                    <p className="product-desc">{product.description}</p>
 
                     {/* <!-- Form --> */}
                     <form className="cart-form clearfix" method="post">
@@ -77,8 +117,7 @@ export default class ProductDetail extends React.Component {
                 {/* PRODUCT FULL DESCRIPTION */}
                 <div className="full-description-container">
                     <div className="container">
-                    Thiết kế được nâng cấp nhiều về phần cứng bên trong
-Điện Thoại iPhone XS cuối cùng cũng chính thức giới thiệu những chiếc iPhone X thế hệ mới với tên gọi XS. XS được đọc là "ten ess", từ s được đặt trong một ô vuông. iPhone XS cũng giống như truyền thống của Apple khi hầu như không thay đổi thiết kế bên ngoài và chỉ nâng cấp nhiều về phần cứng bên trong. iPhone XS được trang bị kính bảo vệ mới cho màn hình được Apple nói rằng đó là loại kính bền nhất trên smartphone hiện nay. Máy đạt chuẩn chống nước bụi IP68.
+                        {product.description}
                     </div>
                 </div>
 

@@ -32,7 +32,7 @@ class App extends Component {
               <div className="main-content">
                 <Switch>
                   <Route path={CONSTANT.ROUTE.PRODUCTS} component={Products} />
-                  <Route path={CONSTANT.ROUTE.PRODUCT_DETAIL} component={ProductDetail} />
+                  <Route path={CONSTANT.ROUTE.PRODUCT_DETAIL + '/:id'} component={ProductDetail} />
                   <Route path={CONSTANT.ROUTE.CHECKOUT} component={CheckoutDetail} />
                 </Switch>
               </div>
