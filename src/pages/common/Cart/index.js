@@ -5,7 +5,11 @@ import Cart from './Cart';
 const mapStateToProps = (state) => state.common.Cart;
 const mapDispatchToProps = (dispatch) => ({
     toggleCart: (open) => {
-        dispatch(Actions.toggleCart(open))
+        dispatch(Actions.toggleCart(open));
+    },
+
+    updateCartProducts: (products) => {
+        dispatch(Actions.updateCartProduct(products));
     }
 });
 

@@ -6,7 +6,8 @@ import Header from './Header';
 
 const mapStateToProps = (state) => ({
     ...state.layout.Header,
-    ...state.common.Auth
+    ...state.common.Auth,
+    nCartItems: state.common.Cart.products.length
 });
 
 const mapDispatchToProps = (dispatch) => ({

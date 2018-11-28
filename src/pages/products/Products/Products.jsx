@@ -220,11 +220,11 @@ class Product extends React.Component {
 
                     {/* <!-- Product Description --> */}
                     <div className="product-description">
-                        <span>{product.category.name}</span>
+                        <span>{product.category.categoryName}</span>
                         <a href={CONSTANT.ROUTE.PRODUCT_DETAIL + '/' + product.id}>
-                            <h6>{product.product_name}</h6>
+                            <h6>{product.productName}</h6>
                         </a>
-                        <p className="product-price"><span className="old-price">{product.price + 'VND'}</span> {product.price * product.disc_percent + 'VND'}</p>
+                        <p className="product-price"><span className="old-price">{product.price + 'VND'}</span> {product.price * product.discPercent + 'VND'}</p>
 
                         {/* <!-- Hover Content --> */}
                         <div className="hover-content">

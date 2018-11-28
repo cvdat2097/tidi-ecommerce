@@ -1,5 +1,39 @@
 const loremipsum = `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure ther`;
 
+export const brand = [
+    {
+        id: 0,
+        brandName: 'Suzuki'
+    }
+];
+
+export const industry = [
+    {
+        id: 0,
+        industryName: 'Electronics'
+    }
+];
+
+export const branch = [
+    {
+        id: 0,
+        branchName: 'Car',
+        industryId: 0
+    }
+];
+
+export const category = [
+    {
+        id: 0,
+        categoryName: 'Sport car',
+        branchId: 1
+    },
+    {
+        id: 1,
+        categoryName: 'topshop',
+        branchId: 0
+    }
+];
 
 export const accounts = [
     {
@@ -8,21 +42,21 @@ export const accounts = [
         passwords: '123456789',
         permission: 'admin',
         email: 'admin@vng.com.vn',
-        full_name: 'Nguyen Van V',
-        date_of_birth: '12/9/1878',
+        fullName: 'Nguyen Van V',
+        dateOfBirth: '12/9/1878',
         phone: '09123889',
         gender: 'Nam',
         address: '78 VNG Streeet',
-        is_verified: true
+        isVerified: true
     }
 ];
 
 export const verification_email = [
     {
         id: 0,
-        user_id: 0,
+        userId: 0,
         code: 'IEUFDJEO',
-        expire_date: new Date(2018, 10, 27),
+        expiredDate: new Date(2018, 10, 27),
         type: 1 || 2 || 3
     }
 ];
@@ -30,28 +64,36 @@ export const verification_email = [
 let prds = [
     {
         id: 0,
-        product_name: 'T-Shirt X3432',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 0,
-        brand_id: 0,
+        productName: 'T-Shirt X3432',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 0,
+        brandId: 0,
+        category: category[0],
+        brand: brand[0],
+        branch: branch[0],
+        industry: industry[0],
         price: 1200,
         images: [
             'https://images.bewakoof.com/original/up-in-smoke-typography-half-sleeve-t-shirt-men-s-printed-t-shirts-1513764488.jpg',
             'https://images-na.ssl-images-amazon.com/images/I/81vL0zMgUzL._UL1500_.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.1,
+        discPercent: 0.1,
         amount: 102,
         active: 1,
     },
     {
         id: 1,
-        product_name: 'Knot Front Mini Dress',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 1,
-        brand_id: 0,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
         price: 1299000,
         images: [
             '/img/product-img/product-5.jpg',
@@ -60,51 +102,63 @@ let prds = [
             '/img/product-img/product-4.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.3,
+        discPercent: 0.3,
         amount: 102,
         active: 1,
     },
     {
         id: 2,
-        product_name: 'Knot Front Mini Dress',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 1,
-        brand_id: 0,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
         price: 999000,
         images: [
             '/img/product-img/product-7.jpg',
             '/img/product-img/product-6.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.1,
+        discPercent: 0.1,
         amount: 102,
         active: 1,
     },
     {
         id: 3,
-        product_name: 'Knot Front Mini Dress',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 1,
-        brand_id: 0,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
         price: 1299000,
         images: [
             '/img/product-img/product-1.jpg',
             '/img/product-img/product-6.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.3,
+        discPercent: 0.3,
         amount: 102,
         active: 1,
     },
     {
         id: 4,
-        product_name: 'Knot Front Mini Dress',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 1,
-        brand_id: 0,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
         price: 1299000,
         images: [
             '/img/product-img/product-2.jpg',
@@ -113,41 +167,49 @@ let prds = [
             '/img/product-img/product-1.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.3,
+        discPercent: 0.3,
         amount: 102,
         active: 1,
     },
     {
         id: 5,
-        product_name: 'Knot Front Mini Dress',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 1,
-        brand_id: 0,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
         price: 1299000,
         images: [
             '/img/product-img/product-5.jpg',
             '/img/product-img/product-3.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.3,
+        discPercent: 0.3,
         amount: 102,
         active: 1,
     },
     {
         id: 6,
-        product_name: 'Knot Front Mini Dress',
-        industry_id: 0,
-        branch_id: 0,
-        category_id: 1,
-        brand_id: 0,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
         price: 1299000,
         images: [
             '/img/product-img/product-4.jpg',
             '/img/product-img/product-6.jpg'
         ],
         description: loremipsum,
-        disc_percent: 0.3,
+        discPercent: 0.3,
         amount: 102,
         active: 1,
     },
@@ -159,8 +221,8 @@ export const product = prds;
 export const cart = [
     {
         id: 0,
-        user_id: 0,
-        product_id: 0,
+        userId: 0,
+        productId: 0,
         amount: 2,
         active: 1
     }
@@ -170,7 +232,7 @@ export const orders = [
     {
         id: 0,
         total: 100000,
-        coupon_id: 0,
+        couponId: 0,
         note: 'Ship asap for me please!',
         status: 'CHECKED' || 'PENDING' || 'SHIPPING' || 'COMPLETED',
         active: 1
@@ -180,9 +242,9 @@ export const orders = [
 export const history = [
     {
         id: 0,
-        order_id: 0,
+        orderId: 0,
         total: 1000,
-        coupon_id: 0,
+        couponId: 0,
         status: 'CHECKED',
         date_time: new Date()
     }
@@ -191,8 +253,8 @@ export const history = [
 export const ordersdetail = [
     {
         id: 0,
-        order_id: 0,
-        product_id: 0,
+        orderId: 0,
+        productId: 0,
         amount: 2,
         final_price: 200000,
         original_price: 10000
@@ -202,7 +264,7 @@ export const ordersdetail = [
 export const coupon = [
     {
         id: 0,
-        coupon_code: 'NEWYEAR2019',
+        couponCode: 'NEWYEAR2019',
         percent: 0.49,
         money: null,
         threshold: null,
@@ -213,42 +275,9 @@ export const coupon = [
 export const cou_pro = [
     {
         id: 0,
-        coupon_id: 0,
-        product_id: 0
+        couponId: 0,
+        productId: 0
     }
 ];
 
-export const brand = [
-    {
-        id: 0,
-        name: 'Suzuki'
-    }
-];
 
-export const industry = [
-    {
-        id: 0,
-        name: 'Electronics'
-    }
-];
-
-export const branch = [
-    {
-        id: 0,
-        name: 'Car',
-        industry_id: 0
-    }
-];
-
-export const category = [
-    {
-        id: 0,
-        name: 'Sport car',
-        branch_id: 1
-    },
-    {
-        id: 1,
-        name: 'topshop',
-        branch_id: 0
-    }
-];

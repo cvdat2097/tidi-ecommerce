@@ -5,6 +5,26 @@
 
 /* Cart Area CSS */
 
+.right-side-cart-area .cart-content .cart-list {
+    overflow-y: scroll !important;
+}
+
+.right-side-cart-area .cart-content .cart-list .single-cart-item .product-image .cart-item-desc h6 {
+    margin-bottom: 10px !important;
+}
+
+
+.cart-item-name {
+    font-weight: 400 !important;
+    text-transform: none !important;
+    margin-bottom: 8px !important;
+}
+
+.summary-header {
+    margin-top: 20px;
+}
+
+
 .right-side-cart-area {
     position: fixed;
     width: 670px;

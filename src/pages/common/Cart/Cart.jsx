@@ -3,8 +3,80 @@ import './Cart.scss';
 
 import { Link } from 'react-router-dom';
 import CONSTANT from '../../../config/constants';
+import MockAPI from '../../../helpers/MockAPI';
+
 
 export default class Cart extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.total = 0;
+
+        this.generateProductBoxes = this.generateProductBoxes.bind(this);
+        this.generateCartItemNames = this.generateCartItemNames.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchCartProducts();
+    }
+
+    fetchCartProducts() {
+        MockAPI.CART.getCart().then(res => {
+            const cart = JSON.parse(res);
+
+            this.props.updateCartProducts(cart);
+        });
+    }
+
+    generateProductBoxes() {
+        let R = [];
+
+        if (this.props.products) {
+            this.props.products.forEach((cartItem, index) => {
+                R.push(
+                    <div key={index} className="single-cart-item" >
+                        <Link to={CONSTANT.ROUTE.PRODUCT_DETAIL + '/' + cartItem.product.id} className="product-image"
+                            onClick={() => { this.props.toggleCart(false) }}
+                        >
+                            <img src={cartItem.product.images[0]} className="cart-thumb" alt="" />
+                            {/* <!-- Cart Item Desc --> */}
+                            <div className="cart-item-desc">
+                                <span className="product-remove"><i className="fa fa-close" aria-hidden="true"></i></span>
+                                <span className="badge">{cartItem.product.category.categoryName}</span>
+                                <h6>{cartItem.product.productName}</h6>
+                                <span className="badge">{'X' + cartItem.amount}</span>
+                                <p className="price">{cartItem.product.price + ' VND'}</p>
+                            </div>
+                        </Link>
+                    </div >
+                );
+            });
+        }
+
+        return R;
+    }
+
+    generateCartItemNames() {
+        let R = [];
+        let total = 0;
+
+        if (this.props.products) {
+            this.props.products.forEach((cartItem, index) => {
+                let itemPrice = cartItem.product.price - cartItem.product.price * cartItem.product.discPercent;
+
+                R.push(
+                    <li key={index} className="cart-item-name">{cartItem.product.productName} x {cartItem.amount}<span></span><span>{itemPrice}</span></li>
+                );
+
+                total += itemPrice;
+            });
+        }
+
+        this.total = total;
+
+        return R;
+    }
+
     render() {
         return (
             <div>
@@ -21,60 +93,14 @@ export default class Cart extends React.Component {
                     <div className="cart-button"
                         onClick={() => { this.props.toggleCart(false) }}
                     >
-                        <div id="rightSideCart"><img src="img/core-img/bag.svg" alt="" /> <span>3</span></div>
+                        <div id="rightSideCart"><img src="img/core-img/bag.svg" alt="" /> <span>{this.props.products.length}</span></div>
                     </div>
 
                     <div className="cart-content d-flex">
 
                         {/* <!-- Cart List Area --> */}
                         <div className="cart-list">
-                            {/* <!-- Single Cart Item --> */}
-                            <div className="single-cart-item">
-                                <a href="/" className="product-image">
-                                    <img src="img/product-img/product-1.jpg" className="cart-thumb" alt="" />
-                                    {/* <!-- Cart Item Desc --> */}
-                                    <div className="cart-item-desc">
-                                        <span className="product-remove"><i className="fa fa-close" aria-hidden="true"></i></span>
-                                        <span className="badge">Mango</span>
-                                        <h6>Button Through Strap Mini Dress</h6>
-                                        <p className="size">Size: S</p>
-                                        <p className="color">Color: Red</p>
-                                        <p className="price">$45.00</p>
-                                    </div>
-                                </a>
-                            </div>
-
-                            {/* <!-- Single Cart Item --> */}
-                            <div className="single-cart-item">
-                                <a href="/" className="product-image">
-                                    <img src="img/product-img/product-2.jpg" className="cart-thumb" alt="" />
-                                    {/* <!-- Cart Item Desc --> */}
-                                    <div className="cart-item-desc">
-                                        <span className="product-remove"><i className="fa fa-close" aria-hidden="true"></i></span>
-                                        <span className="badge">Mango</span>
-                                        <h6>Button Through Strap Mini Dress</h6>
-                                        <p className="size">Size: S</p>
-                                        <p className="color">Color: Red</p>
-                                        <p className="price">$45.00</p>
-                                    </div>
-                                </a>
-                            </div>
-
-                            {/* <!-- Single Cart Item --> */}
-                            <div className="single-cart-item">
-                                <a href="/" className="product-image">
-                                    <img src="img/product-img/product-3.jpg" className="cart-thumb" alt="" />
-                                    {/* <!-- Cart Item Desc --> */}
-                                    <div className="cart-item-desc">
-                                        <span className="product-remove"><i className="fa fa-close" aria-hidden="true"></i></span>
-                                        <span className="badge">Mango</span>
-                                        <h6>Button Through Strap Mini Dress</h6>
-                                        <p className="size">Size: S</p>
-                                        <p className="color">Color: Red</p>
-                                        <p className="price">$45.00</p>
-                                    </div>
-                                </a>
-                            </div>
+                            {this.generateProductBoxes()}
                         </div>
 
                         {/* <!-- Cart Summary --> */}
@@ -82,10 +108,8 @@ export default class Cart extends React.Component {
 
                             <h2>Summary</h2>
                             <ul className="summary-table">
-                                <li><span>subtotal:</span> <span>$274.00</span></li>
-                                <li><span>delivery:</span> <span>Free</span></li>
-                                <li><span>discount:</span> <span>-15%</span></li>
-                                <li><span>total:</span> <span>$232.00</span></li>
+                                {this.generateCartItemNames()}
+                                <li className="summary-header"><span>total:</span> <span>{this.total}</span></li>
                             </ul>
                             <div className="checkout-btn mt-100"
                                 onClick={() => { this.props.toggleCart(false) }}

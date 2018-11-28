@@ -49,21 +49,13 @@ export default class ProductDetail extends React.Component {
         return r;
     }
 
+
     render() {
         const product = this.state.product;
         return (
             <div className="single_product_details_area d-flex align-items-center">
                 <div id="images-slider" className="single_product_thumb carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
-                        {/* <div className="carousel-item active">
-                            <img className="d-block w-100" src="/img/product-img/product-big-1.jpg" alt="First slide" />
-                        </div>
-                        <div className="carousel-item">
-                            <img className="d-block w-100" src="/img/product-img/product-big-2.jpg" alt="Second slide" />
-                        </div>
-                        <div className="carousel-item">
-                            <img className="d-block w-100" src="/img/product-img/product-big-3.jpg" alt="Third slide" />
-                        </div> */}
                         {this.generatePictures()}
                     </div>
                     <a className="carousel-control-prev owl-prev" href="#images-slider" role="button" data-slide="prev">
@@ -78,11 +70,11 @@ export default class ProductDetail extends React.Component {
 
                 {/* <!-- Single Product Description --> */}
                 <div className="single_product_desc clearfix">
-                    <span>{product.brand && product.brand.name}</span>
+                    <span>{product.brand && product.brand.brandName}</span>
                     <a href="cart.html">
-                        <h2>{product.product_name}</h2>
+                        <h2>{product.productName}</h2>
                     </a>
-                    <p className="product-price"><span className="old-price">{product.price + ' VND'}</span>{product.price - product.price * product.disc_percent + ' VND'}</p>
+                    <p className="product-price"><span className="old-price">{product.price + ' VND'}</span>{product.price - product.price * product.discPercent + ' VND'}</p>
                     <p className="product-desc">{product.description}</p>
 
                     {/* <!-- Form --> */}
@@ -110,6 +102,10 @@ export default class ProductDetail extends React.Component {
                             <div className="product-favourite ml-4">
                                 <a href="/" className="favme fa fa-heart">f</a>
                             </div>
+                        </div>
+
+                        <div className="cart-fav-box d-flex align-items-center justify-content-end">
+                            <a href="/">{product.category && product.category.categoryName}</a>
                         </div>
                     </form>
                 </div>

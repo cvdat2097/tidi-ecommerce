@@ -2,7 +2,8 @@ import Types from './types';
 
 const INITIAL_STATE = {
     Cart: {
-        isActive: false
+        isActive: false,
+        products: []
     },
 
     Auth: {
@@ -29,7 +30,17 @@ const commonReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 Cart: {
+                    ...state.Cart,
                     isActive: action.payload !== undefined ? action.payload : !state.Cart.isActive
+                }
+            };
+
+        case Types.UPDATE_CART_PRODUCTS:
+            return {
+                ...state,
+                Cart: {
+                    ...state.Cart,
+                    products: action.payload
                 }
             };
 

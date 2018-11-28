@@ -10,7 +10,13 @@ const changePageInfo = (payload) => ({
     payload
 });
 
+const updateCartProduct = (payload) => ({
+    type: Types.UPDATE_CART_PRODUCTS,
+    payload
+});
+
 export default {
     toggleCart,
-    changePageInfo
+    changePageInfo,
+    updateCartProduct
 };

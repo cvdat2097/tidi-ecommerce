@@ -1,4 +1,4 @@
-import { product, category, branch, brand, industry } from './Datasource';
+import { product } from './Datasource';
 
 
 export default {
@@ -7,12 +7,6 @@ export default {
             return new Promise((resolve, reject) => {
                 const products = [...product];
 
-                products.forEach((prd) => {
-                    prd.category = category[prd.category_id];
-                    prd.brand = brand[prd.brand_id];
-                    prd.branch = branch[prd.branch_id];
-                    prd.industry = industry[prd.industry_id];
-                });
 
                 resolve(JSON.stringify({ products, totalItems: products.length }));
             });
@@ -24,13 +18,6 @@ export default {
                 const products = [...product].slice(Number(offset), Number(offset) + Number(limit));
 
 
-                products.forEach((prd) => {
-                    prd.category = category[prd.category_id];
-                    prd.brand = brand[prd.brand_id];
-                    prd.branch = branch[prd.branch_id];
-                    prd.industry = industry[prd.industry_id];
-                });
-
                 resolve(JSON.stringify({ products, totalItems: product.length }));
             });
         },
@@ -39,10 +26,10 @@ export default {
             return new Promise((resolve, reject) => {
                 const prd = product[Number(id)];
 
-                prd.category = category[prd.category_id];
-                prd.brand = brand[prd.brand_id];
-                prd.branch = branch[prd.branch_id];
-                prd.industry = industry[prd.industry_id];
+                // prd.category = category[prd.category_id];
+                // prd.brand = brand[prd.brand_id];
+                // prd.branch = branch[prd.branch_id];
+                // prd.industry = industry[prd.industry_id];
 
                 resolve(JSON.stringify(prd));
             });
@@ -53,6 +40,29 @@ export default {
                 product.push(prd);
 
                 resolve(true);
+            });
+        },
+    },
+
+    CART: {
+        getCart: () => {
+            return new Promise((resolve, reject) => {
+                const cart = [
+                    {
+                        product: product[0],
+                        amount: 2
+                    },
+                    {
+                        product: product[1],
+                        amount: 5
+                    },
+                    {
+                        product: product[0],
+                        amount: 1
+                    }
+                ];
+
+                resolve(JSON.stringify([...cart, ...cart]));
             });
         }
     }
