@@ -183,7 +183,7 @@ export default {
         });
     },
 
-    // 3.4 Get one products
+    // 3.4 Get one product
     getProduct: (id) => {
         return fetch({
             method: 'GET',
@@ -191,6 +191,99 @@ export default {
                 id
             },
             route: apiPrefix.product + '/one'
+        });
+    },
+
+
+    /*
+    *       SECTION 4: CART
+    */
+
+    // 4.1 Get all items in cart 
+    getCart: (token) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                token
+            },
+            route: apiPrefix.cart + '/all'
+        });
+    },
+
+    // 4.2 Insert item
+    addItemToCart: (token, productId, amount) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                token,
+                productId,
+                amount
+            },
+            route: apiPrefix.cart + '/item'
+        });
+    },
+
+    // 4.3 Update item
+    updateItemToCart: (token, productId, amount) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                token,
+                productId,
+                amount
+            },
+            route: apiPrefix.cart + '/update'
+        });
+    },
+
+    // 4.4 Delete item
+    deleteItemToCart: (token, productId) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                token,
+                productId,
+            },
+            route: apiPrefix.cart + '/delete'
+        });
+    },
+
+
+    /*
+    *       SECTION 5: CHECKOUT
+    */
+
+    // 5.1 Checkout (Cart to Order) 
+    toCheckout: (token) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                token,
+            },
+            route: apiPrefix.checkout + '/order'
+        });
+    },
+
+    // 5.2 Get all orders
+    getAllOrders: (token) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                token,
+            },
+            route: apiPrefix.checkout + '/order/all'
+        });
+    },
+
+    // 5.3 Get one order
+    getOneOrder: (token, orderId) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                token,
+                orderId
+            },
+            route: apiPrefix.checkout + '/order/one'
         });
     },
 
