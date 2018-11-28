@@ -1,12 +1,17 @@
 import Request from 'request';
 import COSNTANT from '../config/constants';
 
-const fetch = ({ method, reqBody }) => {
+const apiPrefix = {
+    authentication: '/auth',
+    account: '/account'
+}
+
+const fetch = ({ method, reqBody, route }) => {
     return new Promise((resolve, reject) => {
         Request({
             method,
-            uri: COSNTANT.REST_SERVER,
-            qs: (method === 'GET' ? reqBody : undefined),
+            uri: COSNTANT.REST_SERVER + route,
+            qs: (method === 'POST' ? reqBody : undefined),
             body: (method === 'POST' ? JSON.stringify(reqBody) : undefined)
         }, (err, res, body) => {
             if (err) {
@@ -23,18 +28,19 @@ export default {
     // 1.1 Login
     login: (username, password) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 username,
                 password
-            }
+            },
+            route: apiPrefix.authentication + '/login'
         });
     },
 
     // 1.2 Registration
     register: (username, password, email, fullName, dateOfBirth, phone, gender, address, avatar) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 username,
                 password,
@@ -45,93 +51,81 @@ export default {
                 gender,
                 address,
                 avatar
-            }
+            },
+            route: apiPrefix.authentication + '/register'
         });
     },
 
     // 1.3 Registration email verification
     verifyEmail(verificationCode) {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 verificationCode
-            }
+            },
+            route: apiPrefix.authentication + '/verifyEmail'
         });
     },
 
     // 1.4 Reset password
     resetPassword(username) {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 username
-            }
+            },
+            route: apiPrefix.authentication + '/resetPassword'
         });
     },
 
     // 1.5 Reset password email verification 
     verifyEmailResetPassword(verificationCode) {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 verificationCode
-            }
+            },
+            route: apiPrefix.authentication + '/resetPasswordVerification'
         });
     },
 
-    // 1.6 READ Account information
+    // 2.1 READ Account information
     readAccountInfo: (token) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 token
-            }
+            },
+            route: apiPrefix.account + '/info'
         });
     },
 
-    // 1.7 UPDATE Account information 
+    // 2.2 UPDATE Account information 
     updateAccountInfo: (token, { dateOfBirth, address, avatar }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 token,
                 newInfo: {
                     dateOfBirth,
                     address,
                     avatar
-                }
+                },
+                route: apiPrefix.account + '/updateInfo'
             }
         });
     },
 
-    // 1.8 UPDATE Account password 
-    updateAccountPassword: (verificationCode, newPassword, { username, email }) => {
-        let body = {}
-        if (username) {
-            body.username = username;
-        } else {
-            body.email = email;
-        }
-
+    // 2.3 UPDATE Account password 
+    updateAccountPassword: (token, password, newPassword) => {
         return fetch({
-            method: 'GET',
-            reqBody: {
-                verificationCode,
-                newPassword,
-                ...body,
-            }
-        });
-    },
-
-    // 1.9 UPDATE password
-    updatePassword: (token, password, newPassword) => {
-        return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 token,
                 password,
-                newPassword
-            }
+                newPassword,
+            },
+            route: apiPrefix.account + '/updatePassword'
         });
     },
-};
+}

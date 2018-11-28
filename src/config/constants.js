@@ -1,5 +1,5 @@
 export default {
-    REST_SERVER: 'http://localhost:3006/',
+    REST_SERVER: 'http://localhost:8080/api/v1/auth',
     ROUTE: {
         HOME: '/',
         LOGIN: '/login',
