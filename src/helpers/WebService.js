@@ -3,7 +3,11 @@ import COSNTANT from '../config/constants';
 
 const apiPrefix = {
     authentication: '/auth',
-    account: '/account'
+    account: '/account',
+    product: '/product',
+    cart: '/cart',
+    checkout: '/checkout',
+    admin: '/admin'
 }
 
 const fetch = ({ method, reqBody, route }) => {
@@ -11,8 +15,8 @@ const fetch = ({ method, reqBody, route }) => {
         Request({
             method,
             uri: COSNTANT.REST_SERVER + route,
-            qs: (method === 'POST' ? reqBody : undefined),
-            body: (method === 'POST' ? JSON.stringify(reqBody) : undefined)
+            qs: reqBody && (method === 'POST' ? reqBody : undefined),
+            body: reqBody && (method === 'POST' ? JSON.stringify(reqBody) : undefined)
         }, (err, res, body) => {
             if (err) {
                 reject(err);
@@ -24,6 +28,10 @@ const fetch = ({ method, reqBody, route }) => {
 
 export default {
     fetch,
+
+    /*
+    *       SECTION 1: AUTHENTICATION
+    */
 
     // 1.1 Login
     login: (username, password) => {
@@ -89,6 +97,11 @@ export default {
         });
     },
 
+
+    /*
+    *       SECTION 2: ACCOUNT
+    */
+
     // 2.1 READ Account information
     readAccountInfo: (token) => {
         return fetch({
@@ -128,4 +141,58 @@ export default {
             route: apiPrefix.account + '/updatePassword'
         });
     },
+
+
+    /*
+    *       SECTION 3: PRODUCT
+    */
+
+    // 3.1 Get all industries
+    getAllIndustries: () => {
+        return fetch({
+            method: 'GET',
+            route: apiPrefix.product + '/industry'
+        });
+    },
+
+    // 3.2 Get all brands
+    getAllBrands: () => {
+        return fetch({
+            method: 'GET',
+            route: apiPrefix.product + '/branch'
+        });
+    },
+
+    // 3.3 Get all products
+    getAllProducts: (limit, offset, { industryId, branchId, categoryId, brandId, keyword, minPrice, maxPrice }) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                limit,
+                offset,
+                query: {
+                    industryId, branchId,
+                    categoryId,
+                    brandId,
+                    keyword,
+                    minPrice,
+                    maxPrice
+                },
+            },
+            route: apiPrefix.product + '/all'
+        });
+    },
+
+    // 3.4 Get one products
+    getProduct: (id) => {
+        return fetch({
+            method: 'GET',
+            reqBody: {
+                id
+            },
+            route: apiPrefix.product + '/one'
+        });
+    },
+
+    
 }
