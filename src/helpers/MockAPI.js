@@ -1,4 +1,4 @@
-import { product } from './Datasource';
+import { product, industry } from './Datasource';
 
 
 export default {
@@ -42,6 +42,14 @@ export default {
                 resolve(true);
             });
         },
+
+        getAllIndustries() {
+            return new Promise((resolve, reject) => {
+
+                resolve(industry);
+
+            });
+        }
     },
 
     CART: {
@@ -65,5 +73,7 @@ export default {
                 resolve(JSON.stringify([...cart, ...cart]));
             });
         }
-    }
+    },
+
+
 };

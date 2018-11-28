@@ -209,7 +209,7 @@ class Product extends React.Component {
 
                         {/* <!-- Product Badge --> */}
                         <div className="product-badge offer-badge">
-                            <span>{'-' + product.disc_percent * 100 + '%'}</span>
+                            <span>{'-' + product.discPercent * 100 + '%'}</span>
                         </div>
 
                         {/* <!-- Favourite --> */}

@@ -25,6 +25,14 @@ const mapDispatchToProps = (dispatch) => ({
 
     toggleMenuMobile: () => {
         dispatch(layoutActions.openMenuMobile());
+    },
+
+    fetchIndustries: (industries) => {
+        dispatch(layoutActions.fetchIndustries(industries));
+    },
+
+    changeIndustryHover: (industry) => {
+        dispatch(layoutActions.switchIndustryHover(industry));
     }
 });
 

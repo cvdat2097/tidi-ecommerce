@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import './Header.scss';
 
 import CONSTANT from '../../../config/constants';
+import MockAPI from '../../../helpers/MockAPI';
 
 const INITIAL_STATE = {
     openDropdownMenu: false,
     openMegaMenu: false,
     openMenuMobile: false,
-    openCatalogDetail: false
+    openCatalogDetail: false,
+    activeMenuitemIndex: 0
 }
 
 export default class Header extends React.Component {
@@ -16,6 +18,21 @@ export default class Header extends React.Component {
         super(props);
 
         this.state = INITIAL_STATE;
+
+        this.generateMenuItems = this.generateMenuItems.bind(this);
+        this.generateCatalog = this.generateCatalog.bind(this);
+        this.handleHoverMenuItem = this.handleHoverMenuItem.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchIndustries();
+    }
+
+    fetchIndustries() {
+        MockAPI.Product.getAllIndustries().then(industries => {
+            this.props.fetchIndustries(industries);
+            this.props.changeIndustryHover(industries[0]);
+        });
     }
 
     toggleMegaMenu(open) {
@@ -40,6 +57,70 @@ export default class Header extends React.Component {
         this.setState({
             openCatalogDetail: open !== undefined ? open : !this.state.openCatalogDetail
         });
+    }
+
+    generateCatalog() {
+        const generateCategories = (categories) => {
+            let R = [];
+
+            if (categories) {
+                categories.forEach((cat, index) => {
+                    R.push(
+                        <Link key={index} to="/">{cat.categoryName}</Link>
+                    );
+                });
+            }
+
+            return R;
+        }
+
+        const generateBranches = (branches) => {
+            let R = [];
+
+            if (branches) {
+                branches.forEach((branch, index) => {
+                    R.push(
+                        <div key={index} className="branch-container">
+                            <h6>{branch.branchName}</h6>
+                            <div>
+                                {generateCategories(branch.categories)}
+                            </div>
+                        </div>
+                    );
+                });
+            }
+
+            return R;
+        }
+
+        return generateBranches(this.props.currentIndustry.branches);
+    }
+
+    generateMenuItems() {
+        let R = [];
+
+        if (this.props.industries) {
+            this.props.industries.forEach((industry, index) => {
+                R.push(
+                    <a key={index}
+                        href="/"
+                        className={"dropdown-item" + (this.state.activeMenuitemIndex === index ? " menuitem-active" : "")}
+                        onMouseEnter={() => {
+                            this.setState({
+                                activeMenuitemIndex: index
+                            });
+                            this.handleHoverMenuItem(industry);
+                        }}
+                    >{industry.industryName}</a>
+                );
+            });
+        }
+
+        return R;
+    }
+
+    handleHoverMenuItem(industry) {
+        this.props.changeIndustryHover(industry);
     }
 
     render() {
@@ -71,17 +152,12 @@ export default class Header extends React.Component {
                                         <Link to={CONSTANT.ROUTE.PRODUCTS}>Catalog</Link >
                                         <div className="catalog-container dropdown d-flex">
                                             <div className="menuitem-container">
-                                                <a className="dropdown-item" href="/">Product list</a>
-                                                <a className="dropdown-item" href="/">Product list</a>
-                                                <a className="dropdown-item" href="/">Product list</a>
-                                                <a className="dropdown-item" href="/">Product list</a>
-                                                <a className="dropdown-item" href="/">Product list</a>
-                                                <a className="dropdown-item" href="/">Product list</a>
+                                                {this.generateMenuItems()}
                                             </div>
 
                                             {/* CATALOG DETAIL */}
                                             <div className="catalog-detail">
-                                                Branches and categories go here
+                                                {this.generateCatalog()}
                                             </div>
                                         </div>
                                     </li>
@@ -97,7 +173,7 @@ export default class Header extends React.Component {
                         {/* <!-- Search Area --> */}
                         <div className="search-area">
                             <form action="#" method="post">
-                                <input type="search" name="search" id="headerSearch" placeholder="Type for search" />
+                                <input type="search" name="search" id="headerSearch" placeholder="Type for search" autoComplete="off" />
                                 <button type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
                             </form>
                         </div>

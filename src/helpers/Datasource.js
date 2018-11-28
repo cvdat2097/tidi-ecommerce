@@ -7,13 +7,6 @@ export const brand = [
     }
 ];
 
-export const industry = [
-    {
-        id: 0,
-        industryName: 'Electronics'
-    }
-];
-
 export const branch = [
     {
         id: 0,
@@ -34,6 +27,45 @@ export const category = [
         branchId: 0
     }
 ];
+
+export const industry = [
+    {
+        id: 0,
+        industryName: 'Electronics',
+        branches: [
+            {
+                ...branch[0],
+                categories: [
+                    category[0],
+                    category[1],
+                ]
+            },
+            {
+                ...branch[0],
+                categories: [
+                    category[0],
+                    category[1],
+                    category[1],
+                    category[1],
+                ]
+            }
+        ]
+    },
+    {
+        id: 1,
+        industryName: 'Foods & Drinks',
+        branches: [
+            {
+                ...branch[0],
+                categories: [
+                    category[0],
+                    category[1],
+                ]
+            },
+        ]
+    }
+];
+
 
 export const accounts = [
     {
