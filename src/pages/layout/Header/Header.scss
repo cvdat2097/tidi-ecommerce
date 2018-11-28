@@ -5,6 +5,50 @@
 
 /* :: 4.0 Header Area CSS */
 
+
+.breakpoint-off .classynav ul li .dropdown {
+    width: auto;
+    position: fixed;
+    background-color: #fff;
+    top: 10%;
+    left: 0;
+    z-index: 100;
+    height: auto;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .1);
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    opacity: 0;
+    visibility: hidden;
+    padding: 10px 0 15px 0;
+
+    .dropdown-item {
+        padding: 0 20px !important;
+    }
+}
+
+.menuitem-container {
+    width: 20%;
+}
+
+.catalog-container {
+    width: 100vw !important;
+    padding-right: 25px !important;
+}
+.catalog-detail {
+    transition-duration: .5s;
+    width: 100%;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.breakpoint-off .classynav ul li:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+    top: 85px;
+}
+
 .header_area {
     position: fixed;
     z-index: 900;
@@ -51,6 +95,13 @@
     //         height: 40px;
     //     }
     // }
+
+    #menuitem-catalog {
+        ul {
+            position: relative;
+        }
+    }
+
     .classynav ul li {
         position: relative !important;
     }

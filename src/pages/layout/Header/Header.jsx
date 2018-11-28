@@ -7,7 +7,8 @@ import CONSTANT from '../../../config/constants';
 const INITIAL_STATE = {
     openDropdownMenu: false,
     openMegaMenu: false,
-    openMenuMobile: false
+    openMenuMobile: false,
+    openCatalogDetail: false
 }
 
 export default class Header extends React.Component {
@@ -32,6 +33,12 @@ export default class Header extends React.Component {
     toggleMenuMobile(open) {
         this.setState({
             openMenuMobile: open !== undefined ? open : !this.state.openMenuMobile
+        });
+    }
+
+    toggleCatalogDetail(open) {
+        this.setState({
+            openCatalogDetail: open !== undefined ? open : !this.state.openCatalogDetail
         });
     }
 
@@ -60,46 +67,25 @@ export default class Header extends React.Component {
                             {/* <!-- Nav Start --> */}
                             <div className="classynav">
                                 <ul>
-                                    <li><Link to={CONSTANT.ROUTE.ADMIN.HOME}>Admin</Link></li>
-                                    <li
-                                        onMouseOver={() => { this.toggleMegaMenu(true) }}
-                                        onMouseLeave={() => { this.toggleMegaMenu(false) }}
-                                    ><Link to={CONSTANT.ROUTE.PRODUCTS}>Shop</Link>
-                                        <ul className={"dropdown-menu " + (this.state.openMegaMenu ? "show" : "")}
-                                        >
-                                            <div style={{ transitionDuration: '3s' }}>
-                                                <span className="dropdown-header">Kid's Collection</span>
-                                                <li className="dropdown-item"><a href="shop.html">Dresses</a></li>
-                                                <li className="dropdown-item"><a href="shop.html">Shirts</a></li>
-                                                <li className="dropdown-item"><a href="shop.html">T-shirts</a></li>
-                                                <li className="dropdown-item"><a href="shop.html">Jackets</a></li>
-                                                <li className="dropdown-item"><a href="shop.html">Trench</a></li>
-                                                <li className="dropdown-item">
-                                                    <div className="single-mega cn-col-4">
-                                                        <img src="img/bg-img/bg-6.jpg" alt="" />
-                                                    </div>
-                                                </li>
+                                    <li id="menuitem-catalog">
+                                        <Link to={CONSTANT.ROUTE.PRODUCTS}>Catalog</Link >
+                                        <div className="catalog-container dropdown d-flex">
+                                            <div className="menuitem-container">
+                                                <a className="dropdown-item" href="/">Product list</a>
+                                                <a className="dropdown-item" href="/">Product list</a>
+                                                <a className="dropdown-item" href="/">Product list</a>
+                                                <a className="dropdown-item" href="/">Product list</a>
+                                                <a className="dropdown-item" href="/">Product list</a>
+                                                <a className="dropdown-item" href="/">Product list</a>
                                             </div>
-                                        </ul>
+
+                                            {/* CATALOG DETAIL */}
+                                            <div className="catalog-detail">
+                                                Branches and categories go here
+                                            </div>
+                                        </div>
                                     </li>
-                                    <li
-                                        onMouseOver={() => { this.toggleDropdownMenu(true) }}
-                                        onMouseLeave={() => { this.toggleDropdownMenu(false) }}
-                                    ><a href="/">Pages</a>
-                                        <ul
-                                            className={"dropdown-menu " + (this.state.openDropdownMenu ? "show" : "")}
-                                        >
-                                            <li className="dropdown-item"><a href="index.html">Home</a></li>
-                                            <li className="dropdown-item"><a href="shop.html">Shop</a></li>
-                                            <li className="dropdown-item"><a href="single-product-details.html">Product Details</a></li>
-                                            <li className="dropdown-item"><a href="checkout.html">Checkout</a></li>
-                                            <li className="dropdown-item"><a href="blog.html">Blog</a></li>
-                                            <li className="dropdown-item"><a href="single-blog.html">Single Blog</a></li>
-                                            <li className="dropdown-item"><a href="regular-page.html">Regular Page</a></li>
-                                            <li className="dropdown-item"><a href="contact.html">Contact</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><Link to={CONSTANT.ROUTE.ADMIN.HOME}>Admin</Link></li>
                                 </ul>
                             </div>
                             {/* <!-- Nav End --> */}
