@@ -5,6 +5,13 @@
 
 /* :: 4.0 Header Area CSS */
 
+.nav-brand {
+    width: 70px;
+    margin-right: 10px !important;
+    img {
+        width: 200%;
+    }
+}
 
 .breakpoint-off .classynav ul li .dropdown {
     width: auto;
