@@ -14,5 +14,23 @@ export default {
             PRODUCT: '/admin/product',
             COUPON: '/admin/coupon'
         }
+    },
+
+    USER_TYPE: {
+        ADMIN: 'ADMIN',
+        CUSTOMER: 'CUSTOMER'
+    },
+
+    VERIFICATION_TYPE: {
+        EMAIL: 'EMAIL',
+        PASSWORD: 'PASSWORD'
+    },
+
+    ORDER_STATUS: {
+        CHECKED: 'CHECKED',
+        PACKING: 'PACKING',
+        SHIPPING: 'SHIPPING',
+        CANCELED: 'CANCELED',
+        SUCCESSFUL: 'SUCCESSFUL'
     }
 }
