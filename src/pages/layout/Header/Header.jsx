@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.scss';
 
-import CONSTANT from '../../../config/constants';
+import { ROUTE_NAME } from '../../../routes/main.routing';
 import MockAPI from '../../../helpers/MockAPI';
 
 const INITIAL_STATE = {
@@ -130,7 +130,7 @@ export default class Header extends React.Component {
                     {/* <!-- Classy Menu --> */}
                     <nav className="classy-navbar" id="essenceNav">
                         {/* <!-- Logo --> */}
-                        <Link className="nav-brand" to={CONSTANT.ROUTE.HOME}><img src="img/core-img/logo.png" alt="" /></Link>
+                        <Link className="nav-brand" to={ROUTE_NAME.HOME}><img src="/img/core-img/logo.png" alt="" /></Link>
                         {/* <!-- Navbar Toggler --> */}
                         <div className="classy-navbar-toggler"
                             onClick={() => { this.toggleMenuMobile() }}
@@ -149,7 +149,7 @@ export default class Header extends React.Component {
                             <div className="classynav">
                                 <ul>
                                     <li id="menuitem-catalog">
-                                        <Link to={CONSTANT.ROUTE.PRODUCTS}>Catalog</Link >
+                                        <Link to={ROUTE_NAME.PRODUCTS}>Catalog</Link >
                                         <div className="catalog-container dropdown d-flex">
                                             <div className="menuitem-container">
                                                 {this.generateMenuItems()}
@@ -161,7 +161,7 @@ export default class Header extends React.Component {
                                             </div>
                                         </div>
                                     </li>
-                                    <li><Link to={CONSTANT.ROUTE.ADMIN.HOME}>Admin</Link></li>
+                                    <li><Link to={ROUTE_NAME.ADMIN.HOME}>Admin</Link></li>
                                 </ul>
                             </div>
                             {/* <!-- Nav End --> */}
@@ -181,14 +181,14 @@ export default class Header extends React.Component {
                         <div className="cart-area">
                             <div id="essenceCartBtn"
                                 onClick={() => { this.props.toggleCart(true) }}
-                            ><img src="img/core-img/bag.svg" alt="" /> <span>{this.props.nCartItems}</span></div>
+                            ><img src="/img/core-img/bag.svg" alt="" /> <span>{this.props.nCartItems}</span></div>
                         </div>
                         {/* <!-- Favourite Area --> */}
                         {
                             this.props.isLoggedIn
                                 ?
                                 <div className="favourite-area">
-                                    <a href="/"><img src="img/core-img/heart.svg" alt="" /></a>
+                                    <a href="/"><img src="/img/core-img/heart.svg" alt="" /></a>
                                 </div>
                                 : null
                         }
@@ -197,11 +197,11 @@ export default class Header extends React.Component {
                             {
                                 this.props.isLoggedIn
                                     ?
-                                    <a href="/"><img src="img/core-img/user.svg" alt="" /></a>
+                                    <a href="/"><img src="/img/core-img/user.svg" alt="" /></a>
                                     :
                                     <div className="user-login-button">
-                                        <Link to={CONSTANT.ROUTE.LOGIN} className="btn btn-outline-secondary">Login</Link>
-                                        <Link to={CONSTANT.ROUTE.REGISTER} className="btn btn-outline-secondary">Register</Link>
+                                        <Link to={ROUTE_NAME.LOGIN} className="btn btn-outline-secondary">Login</Link>
+                                        <Link to={ROUTE_NAME.REGISTER} className="btn btn-outline-secondary">Register</Link>
                                     </div>
                             }
                         </div>

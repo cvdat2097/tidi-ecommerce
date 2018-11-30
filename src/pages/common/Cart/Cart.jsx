@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Cart.scss';
 
-import { Link } from 'react-router-dom';
-import CONSTANT from '../../../config/constants';
+
+import {ROUTE_NAME} from '../../../routes/main.routing';
 import MockAPI from '../../../helpers/MockAPI';
 
 
@@ -35,7 +36,7 @@ export default class Cart extends React.Component {
             this.props.products.forEach((cartItem, index) => {
                 R.push(
                     <div key={index} className="single-cart-item" >
-                        <Link to={CONSTANT.ROUTE.PRODUCT_DETAIL + '/' + cartItem.product.id} className="product-image"
+                        <Link to={ROUTE_NAME.PRODUCT_DETAIL + '/' + cartItem.product.id} className="product-image"
                             onClick={() => { this.props.toggleCart(false) }}
                         >
                             <img src={cartItem.product.images[0]} className="cart-thumb" alt="" />
@@ -114,7 +115,7 @@ export default class Cart extends React.Component {
                             <div className="checkout-btn mt-100"
                                 onClick={() => { this.props.toggleCart(false) }}
                             >
-                                <Link to={CONSTANT.ROUTE.CHECKOUT} className="btn essence-btn">check out</Link>
+                                <Link to={ROUTE_NAME.CHECKOUT} className="btn essence-btn">check out</Link>
                             </div>
                         </div>
                     </div>

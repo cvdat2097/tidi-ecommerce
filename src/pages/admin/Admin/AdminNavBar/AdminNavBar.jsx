@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './AdminNavBar.scss';
 
-import CONSTANT from '../../../../config/constants';
+import { ROUTE_NAME } from '../../../../routes/main.routing';
 
 export default class AdminNavBar extends React.Component {
     render() {
@@ -24,9 +24,9 @@ export default class AdminNavBar extends React.Component {
                             <a href="/"><i className="fa fa-gift fa-lg"></i> Management <span className="arrow"></span></a>
                         </li>
                         <ul className="sub-menu collapse" id="products">
-                            <li className="active"><Link to={CONSTANT.ROUTE.ADMIN.USER}>User</Link></li>
-                            <li><Link to={CONSTANT.ROUTE.ADMIN.PRODUCT}>Product</Link></li>
-                            <li><Link to={CONSTANT.ROUTE.ADMIN.COUPON}>Coupon</Link></li>
+                            <li className="active"><Link to={ROUTE_NAME.ADMIN.USER}>User</Link></li>
+                            <li><Link to={ROUTE_NAME.ADMIN.PRODUCT}>Product</Link></li>
+                            <li><Link to={ROUTE_NAME.ADMIN.COUPON}>Coupon</Link></li>
                         </ul>
                     </ul>
                 </div>

@@ -1,9 +1,6 @@
 import React from 'react';
 import './AdminAddUser.scss';
 
-// import { Link } from 'react-router-dom';
-// import CONSTANT from '../../../config/constants';
-
 
 export default class AdminAddUser extends React.Component {
     render() {

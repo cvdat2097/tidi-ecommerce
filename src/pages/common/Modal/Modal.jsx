@@ -1,13 +1,6 @@
 import React from 'react';
 import './Modal.scss';
 
-// import { Link } from 'react-router-dom';
-// import CONSTANT from '../../../config/constants';
-
-// const props = {
-//     modalId, modalTitle,
-// }
-
 export default class AdminAddUser extends React.Component {
 
     handleSubmit() {

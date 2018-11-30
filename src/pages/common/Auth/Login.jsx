@@ -1,6 +1,7 @@
 import React from 'react';
-import CONSTANT from '../../../config/constants';
 import { Link } from 'react-router-dom';
+
+import {ROUTE_NAME} from '../../../routes/main.routing';
 
 const INITIAL_STATE = {
     username: '',
@@ -72,11 +73,11 @@ export default class Login extends React.Component {
 
                             <div className="text-center p-t-12">
                                 <span className="txt1">Forgot </span>
-                                <Link to={CONSTANT.ROUTE.RESET_PASSWORD} className="txt2">Username / Password?</Link>
+                                <Link to={ROUTE_NAME.RESET_PASSWORD} className="txt2">Username / Password?</Link>
                             </div>
 
                             <div className="text-center p-t-136">
-                                <Link to={CONSTANT.ROUTE.REGISTER} className="txt2">
+                                <Link to={ROUTE_NAME.REGISTER} className="txt2">
                                     Create your Account
                                 <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                                 </Link>

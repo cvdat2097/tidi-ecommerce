@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import './Products.scss';
 
 import MockAPI from '../../../helpers/MockAPI';
-import CONSTANT from '../../../config/constants'
+import { ROUTE_NAME } from '../../../routes/main.routing';
 
 import SearchPanel from '../SearchPanel';
 import Paginator from '../../common/Paginator';
@@ -221,7 +221,7 @@ class Product extends React.Component {
                     {/* <!-- Product Description --> */}
                     <div className="product-description">
                         <span>{product.category.categoryName}</span>
-                        <a href={CONSTANT.ROUTE.PRODUCT_DETAIL + '/' + product.id}>
+                        <a href={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id}>
                             <h6>{product.productName}</h6>
                         </a>
                         <p className="product-price"><span className="old-price">{product.price + 'VND'}</span> {product.price * product.discPercent + 'VND'}</p>
@@ -230,7 +230,7 @@ class Product extends React.Component {
                         <div className="hover-content">
                             {/* <!-- Add to Cart --> */}
                             <div className="add-to-cart-btn">
-                                <a href={CONSTANT.ROUTE.PRODUCT_DETAIL + '/' + product.id} className="btn essence-btn">{this.props.buttonTitle}</a>
+                                <a href={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id} className="btn essence-btn">{this.props.buttonTitle}</a>
                             </div>
                         </div>
                     </div>

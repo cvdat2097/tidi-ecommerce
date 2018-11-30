@@ -1,25 +1,17 @@
 import React from 'react';
 import './Admin.scss';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import CONSTANT from '../../../config/constants';
 
-import AdminUser from '../AdminUser';
 import AdminNavBar from './AdminNavBar';
 
-export default class Admin extends React.Component {
-    render() {
-        return (
-            <Switch>
-                <Route exact path={CONSTANT.ROUTE.ADMIN.USER} component={() => (
-                    <div className="wrapper">
-                        <AdminNavBar />
-                        <div className="page-wrapper">
-                            <AdminUser />
-                        </div>
-                    </div>
-                )} />
-                <Route component={() => <Redirect to={CONSTANT.ROUTE.ADMIN.USER} />}></Route>
-            </Switch>
-        );
-    }
-}
+import RouteWithSubRoutes from '../../../routes/RouteWithSubRoutes';
+
+export default (props) => (
+    <div className="wrapper">
+        <AdminNavBar />
+        <div className="page-wrapper">
+            {props.routes.map((route, index) => {
+                return <RouteWithSubRoutes key={index} {...route} exact={true} />;
+            })}
+        </div>
+    </div>
+);
