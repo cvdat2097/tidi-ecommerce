@@ -7,7 +7,6 @@ const INITIAL_STATE = {
     },
 
     Auth: {
-        isLoggedIn: false
     },
 
     Modal: {
@@ -21,6 +20,10 @@ const INITIAL_STATE = {
 
     LoadingBar: {
 
+    },
+
+    AuthenticationStatus: {
+        isLoggedIn: false,
     }
 }
 
@@ -43,6 +46,16 @@ const commonReducer = (state = INITIAL_STATE, action) => {
                     products: action.payload
                 }
             };
+
+        case Types.UPDATE_AUTH_STATUS:
+            return {
+                ...state,
+                AuthenticationStatus: {
+                    ...state.AuthenticationStatus,
+                    ...action.payload
+                }
+            };
+
 
         default:
             return state;

@@ -216,6 +216,33 @@
             margin: 0 5px;
             display: inline-block;
         }
+
+        .dropdown-item {
+            margin: 0 !important;
+            line-height: initial;
+            width: 100%;
+        }
+
+        .dropdown-menu.show {
+            position: absolute !important;
+            transform: none !important;
+            right: 0;
+            left: auto !important;
+            top: 85px !important;
+        }
+    }
+
+    .user-login-button {
+        @media only screen and (max-width: 767px) {
+
+            a {
+                line-height: initial;
+            }
+        }
+    }
+
+    .loggedin-btn {
+        border: none !important;
     }
 
     .favourite-area,

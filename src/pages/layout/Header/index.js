@@ -6,7 +6,7 @@ import Header from './Header';
 
 const mapStateToProps = (state) => ({
     ...state.layout.Header,
-    ...state.common.Auth,
+    ...state.common.AuthenticationStatus,
     nCartItems: state.common.Cart.products.length
 });
 
@@ -33,6 +33,12 @@ const mapDispatchToProps = (dispatch) => ({
 
     changeIndustryHover: (industry) => {
         dispatch(layoutActions.switchIndustryHover(industry));
+    },
+
+    changeLoginStatus: (status) => {
+        dispatch(commonActions.updateAuthStatus({
+            isLoggedIn: status
+        }));
     }
 });
 

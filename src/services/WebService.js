@@ -10,13 +10,23 @@ const apiPrefix = {
     admin: '/admin'
 }
 
-const fetch = ({ method, reqBody, route }) => {
+const fetch = ({ method, reqBody, route, jwtToken }) => {
     return new Promise((resolve, reject) => {
+        const HttpHeader = {
+            'Content-Type': 'application/json',
+        }
+
+        if (jwtToken) {
+            HttpHeader.token = jwtToken;
+        }
+
         Request({
+
             method,
             uri: COSNTANT.REST_SERVER + route,
             qs: reqBody && (method === 'POST' ? reqBody : undefined),
-            body: reqBody && (method === 'POST' ? JSON.stringify(reqBody) : undefined)
+            body: reqBody && (method === 'POST' ? JSON.stringify(reqBody) : undefined),
+            headers: HttpHeader
         }, (err, res, body) => {
             if (err) {
                 reject(err);
@@ -65,7 +75,7 @@ export default {
     },
 
     // 1.3 Registration email verification
-    verifyEmail(verificationCode) {
+    verifyEmail: (verificationCode) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -76,7 +86,7 @@ export default {
     },
 
     // 1.4 Reset password
-    resetPassword(username) {
+    resetPassword: (username) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -87,13 +97,24 @@ export default {
     },
 
     // 1.5 Reset password email verification 
-    verifyEmailResetPassword(verificationCode) {
+    verifyEmailResetPassword: (verificationCode) => {
         return fetch({
             method: 'POST',
             reqBody: {
                 verificationCode
             },
             route: apiPrefix.authentication + '/resetPasswordVerification'
+        });
+    },
+
+    // 1.6 Verify Token 
+    verifyToken: (token) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                token
+            },
+            route: apiPrefix.authentication + '/verifyToken'
         });
     },
 

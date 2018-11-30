@@ -4,6 +4,7 @@ import './Header.scss';
 
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import MockAPI from '../../../helpers/MockAPI';
+import AuthService from '../../../services/AuthService';
 
 const INITIAL_STATE = {
     openDropdownMenu: false,
@@ -26,6 +27,11 @@ export default class Header extends React.Component {
 
     componentDidMount() {
         this.fetchIndustries();
+        AuthService.isLoggedIn().then(status => {
+            if (status) {
+                this.props.changeLoginStatus(status);
+            }
+        });
     }
 
     fetchIndustries() {
@@ -57,6 +63,11 @@ export default class Header extends React.Component {
         this.setState({
             openCatalogDetail: open !== undefined ? open : !this.state.openCatalogDetail
         });
+    }
+
+    handleLogout() {
+        AuthService.logout();
+        this.props.changeLoginStatus(false);
     }
 
     generateCatalog() {
@@ -193,14 +204,25 @@ export default class Header extends React.Component {
                                 : null
                         }
                         {/* <!-- User Login Info --> */}
-                        <div className="user-login-info">
+                        <div className="user-login-info d-flex justify-content-center align-items-center">
                             {
                                 this.props.isLoggedIn
                                     ?
-                                    <a href="/"><img src="/img/core-img/user.svg" alt="" /></a>
+                                    <div className="favourite-area">
+                                        <a href="/" className="dropdown dropdown-toggle loggedin-btn" data-toggle="dropdown">
+                                            <img src="/img/core-img/user.svg" alt="" />
+                                        </a>
+                                        <div className="dropdown-menu">
+                                            <button className="dropdown-item text-center" >Settings</button>
+                                            <div className="dropdown-divider"></div>
+                                            <button className="dropdown-item text-center"
+                                                onClick={() => this.handleLogout()}
+                                            >Log out</button>
+                                        </div>
+                                    </div>
                                     :
-                                    <div className="user-login-button">
-                                        <Link to={ROUTE_NAME.LOGIN} className="btn btn-outline-secondary">Login</Link>
+                                    <div className="user-login-button d-flex">
+                                        <Link to={ROUTE_NAME.LOGIN} className="btn btn-outline-secondary text-center">Login</Link>
                                         <Link to={ROUTE_NAME.REGISTER} className="btn btn-outline-secondary">Register</Link>
                                     </div>
                             }

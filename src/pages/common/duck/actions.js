@@ -15,8 +15,14 @@ const updateCartProduct = (payload) => ({
     payload
 });
 
+const updateAuthStatus = (payload) => ({
+    type: Types.UPDATE_AUTH_STATUS,
+    payload
+});
+
 export default {
     toggleCart,
     changePageInfo,
-    updateCartProduct
+    updateCartProduct,
+    updateAuthStatus
 };

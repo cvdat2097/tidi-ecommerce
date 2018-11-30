@@ -1,11 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
-import {ROUTE_NAME} from '../../../routes/main.routing';
+import { ROUTE_NAME } from '../../../routes/main.routing';
+import AuthService from '../../../services/AuthService';
 
 const INITIAL_STATE = {
     username: '',
-    password: ''
+    password: '',
+    redirectTo: null,
+    message: ''
 }
 
 export default class Login extends React.Component {
@@ -28,12 +31,25 @@ export default class Login extends React.Component {
     }
 
     handleLogin() {
-        console.log(this.state);
+        // console.log(this.state);
+        AuthService.login(this.state.username, this.state.password).then(loggedInSuccess => {
+            if (loggedInSuccess === true) {
+                this.props.changeLoginStatus(true);
+                this.setState({
+                    redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+                })
+            } else {
+                this.setState({
+                    message: 'Username or password is incorrect'
+                });
+            }
+        });
     }
 
     render() {
         return (
             <div className="limiter">
+                {this.state.redirectTo}
                 <div className="container-login100">
                     <div className="wrap-login100">
                         <div className="login100-pic js-tilt" data-tilt>
@@ -44,7 +60,7 @@ export default class Login extends React.Component {
                             <span className="login100-form-title">Member Login</span>
 
                             <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                <input className="input100" type="text" name="email" placeholder="Email"
+                                <input className="input100" type="text" name="email" placeholder="Email" autoComplete="off"
                                     onChange={(e) => { this.handleUsernameChange(e) }}
                                     value={this.state.username}
                                 />
@@ -55,7 +71,7 @@ export default class Login extends React.Component {
                             </div>
 
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="password" name="pass" placeholder="Password"
+                                <input className="input100" type="password" name="pass" placeholder="Password" autoComplete="off"
                                     onChange={(e) => { this.handlePasswordChange(e) }}
                                     value={this.state.password}
                                 />
@@ -63,6 +79,10 @@ export default class Login extends React.Component {
                                 <span className="symbol-input100">
                                     <i className="fa fa-lock" aria-hidden="true"></i>
                                 </span>
+                            </div>
+
+                            <div className="d-flex justify-content-center" style={{ color: 'red', height: 20, margin: 0 }}>
+                                {' ' + this.state.message}
                             </div>
 
                             <div className="container-login100-form-btn">

@@ -5,7 +5,7 @@ import RouteWithSubRoutes from './RouteWithSubRoutes';
 
 import Header from '../pages/layout/Header';
 import Footer from '../pages/layout/Footer';
-import Auth from '../pages/common/Auth/Auth';
+import Auth from '../pages/common/Auth';
 import Cart from '../pages/common/Cart';
 import Products from '../pages/products/Products';
 import ProductDetail from '../pages/products/ProductDetail';

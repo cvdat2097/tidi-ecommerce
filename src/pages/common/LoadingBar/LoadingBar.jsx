@@ -37,6 +37,10 @@ export default class LoadingBar extends React.Component {
         this.startLoadingBar();
     }
 
+    componentWillUnmount() {
+        this.stopLoadingBar();
+    }
+
     render() {
         return (
             <div id="tidi-loading-bar" className="progress" style={{ height: this.props.loadingBarHeight || 3 }}>
