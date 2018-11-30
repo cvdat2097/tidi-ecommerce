@@ -33,7 +33,7 @@ export default {
             if (!authToken) {
                 resolve(false);
             } else {
-                ws.verifyToken(authToken).then(res => {
+                ws.readAccountInfo(authToken).then(res => {
                     if (JSON.parse(res).status.status === 'TRUE') {
                         resolve(true);
                     } else {
@@ -43,4 +43,8 @@ export default {
             }
         });
     },
+
+    saveToken: (token) => {
+        localStorage.setItem('authToken', token);
+    }
 }

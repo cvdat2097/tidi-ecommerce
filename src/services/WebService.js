@@ -17,7 +17,7 @@ const fetch = ({ method, reqBody, route, jwtToken }) => {
         }
 
         if (jwtToken) {
-            HttpHeader.token = jwtToken;
+            HttpHeader.Authorization = jwtToken;
         }
 
         Request({
@@ -127,9 +127,7 @@ export default {
     readAccountInfo: (token) => {
         return fetch({
             method: 'POST',
-            reqBody: {
-                token
-            },
+            jwtToken: token,
             route: apiPrefix.account + '/info'
         });
     },

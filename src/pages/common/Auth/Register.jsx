@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
-import {ROUTE_NAME} from '../../../routes/main.routing';
+import { ROUTE_NAME } from '../../../routes/main.routing';
+import AuthService from '../../../services/AuthService';
+import WebService from '../../../services/WebService';
+
 
 const INITIAL_STATE = {
     username: '',
@@ -9,7 +12,14 @@ const INITIAL_STATE = {
     passwordConf: '',
     name: '',
     email: '',
-    dob: null
+    phone: '',
+    dob: null,
+    gender: '',
+    address: '',
+    avatar: '',
+
+    redirectTo: null,
+    message: ''
 }
 
 export default class Login extends React.Component {
@@ -17,6 +27,8 @@ export default class Login extends React.Component {
         super(props);
 
         this.state = INITIAL_STATE;
+
+        this.handleRegister = this.handleRegister.bind(this);
     }
 
     handlePasswordChange(e) {
@@ -48,13 +60,36 @@ export default class Login extends React.Component {
         });
     }
 
-    handleLogin() {
+    handleRegister() {
         console.log(this.state);
+        if (this.state.password === this.state.passwordConf) {
+            this.setState({
+                message: ''
+            });
+
+            WebService.register(this.state.username, this.state.password, this.state.email,
+                this.state.name, this.state.dob, this.state.phone, this.state.gender, this.state.address, this.state.avatar)
+                .then(res => {
+                    let resObj = JSON.parse(res);
+
+                    if (resObj.status.status === 'TRUE') {
+                        AuthService.saveToken(resObj.token);
+                        this.setState({
+                            redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+                        });
+                    }
+                });
+        } else {
+            this.setState({
+                message: 'Passwords mismatch'
+            })
+        }
     }
 
     render() {
         return (
             <div className="limiter">
+                {this.state.redirectTo}
                 <div className="container-login100">
                     <div className="wrap-login100">
                         <div className="login100-pic js-tilt" data-tilt>
@@ -78,7 +113,7 @@ export default class Login extends React.Component {
 
                             {/* Password */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="password" name="pass" placeholder="Password"
+                                <input className={"input100 form-control" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Password"
                                     onChange={(e) => { this.handlePasswordChange(e) }}
                                     value={this.state.password}
                                 />
@@ -90,7 +125,7 @@ export default class Login extends React.Component {
 
                             {/* Confirm password */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="password" name="pass" placeholder="Confirm Password"
+                                <input className={"input100 form-control" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Confirm Password"
                                     onChange={(e) => { this.handlePasswordConfChange(e) }}
                                     value={this.state.passwordConf}
                                 />
@@ -124,9 +159,13 @@ export default class Login extends React.Component {
                                 </span>
                             </div>
 
+                            <div className="d-flex justify-content-center" style={{ color: 'red', height: 20, margin: 0 }}>
+                                {' ' + this.state.message}
+                            </div>
+
                             <div className="container-login100-form-btn">
                                 <button type="button" className="login100-form-btn"
-                                    onClick={() => this.handleLogin()}
+                                    onClick={() => this.handleRegister()}
                                 >Register</button>
                             </div>
 
