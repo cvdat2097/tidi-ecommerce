@@ -5,6 +5,7 @@ export default {
 export const USER_TYPE = {
     ADMIN: 'ADMIN',
     CUSTOMER: 'CUSTOMER',
+    PUBLIC: 'PUBLIC'
 }
 
 export const ORDER_STATUS = {

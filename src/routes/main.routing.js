@@ -13,6 +13,8 @@ import CheckoutDetail from '../pages/checkout/CheckoutDetail';
 import Admin from '../pages/admin/Admin';
 import AdminUser from '../pages/admin/AdminUser';
 
+import { USER_TYPE } from '../config/constants';
+
 export const ROUTE_NAME = {
     HOME: '/',
     LOGIN: '/login',
@@ -33,36 +35,44 @@ const ROUTES = [
     {
         path: ROUTE_NAME.ADMIN.HOME,
         component: Admin,
+        permission: USER_TYPE.ADMIN,
         routes: [
             {
                 path: ROUTE_NAME.ADMIN.USER,
-                component: AdminUser
+                component: AdminUser,
+                permission: USER_TYPE.ADMIN,
             },
             {
                 path: ROUTE_NAME.ADMIN.PRODUCT,
-                component: () => <div>Admin Product</div>
+                component: () => <div>Admin Product</div>,
+                permission: USER_TYPE.ADMIN,
             },
             {
                 path: ROUTE_NAME.ADMIN.COUPON,
-                component: () => <div>Admin Coupon</div>
+                component: () => <div>Admin Coupon</div>,
+                permission: USER_TYPE.ADMIN,
             },
             {
                 path: ROUTE_NAME.ADMIN.HOME,
-                component: () => <Redirect to={ROUTE_NAME.ADMIN.USER} />
+                component: () => <Redirect to={ROUTE_NAME.ADMIN.USER} />,
+                permission: USER_TYPE.ADMIN,
             }
         ]
     },
     {
         path: ROUTE_NAME.LOGIN,
-        component: () => <Auth loginForm={true} />,
+        component: (props) => <Auth {...props} loginForm={true} />,
+        permission: USER_TYPE.PUBLIC,
     },
     {
         path: ROUTE_NAME.REGISTER,
-        component: () => <Auth loginForm={false} />,
+        component: (props) => <Auth {...props} loginForm={false} />,
+        permission: USER_TYPE.PUBLIC,
     },
     {
         path: ROUTE_NAME.RESET_PASSWORD,
-        component: () => <Auth resetForm={true} />,
+        component: (props) => <Auth {...props} resetForm={true} />,
+        permission: USER_TYPE.PUBLIC,
     },
 
     {
@@ -77,18 +87,25 @@ const ROUTES = [
                 <Footer />
             </div>
         ),
+        permission: USER_TYPE.PUBLIC,
         routes: [
             {
                 path: ROUTE_NAME.PRODUCTS,
                 component: Products,
+                permission: USER_TYPE.PUBLIC,
+
             },
             {
                 path: ROUTE_NAME.PRODUCT_DETAIL + '/:id',
-                component: ProductDetail
+                component: ProductDetail,
+                permission: USER_TYPE.PUBLIC,
+
             },
             {
                 path: ROUTE_NAME.CHECKOUT,
-                component: CheckoutDetail
+                component: CheckoutDetail,
+                permission: USER_TYPE.CUSTOMER,
+
             }
         ]
     },

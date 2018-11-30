@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './Header.scss';
 
 import { ROUTE_NAME } from '../../../routes/main.routing';
@@ -11,7 +11,8 @@ const INITIAL_STATE = {
     openMegaMenu: false,
     openMenuMobile: false,
     openCatalogDetail: false,
-    activeMenuitemIndex: 0
+    activeMenuitemIndex: 0,
+    redirectTo: null
 }
 
 export default class Header extends React.Component {
@@ -27,11 +28,14 @@ export default class Header extends React.Component {
 
     componentDidMount() {
         this.fetchIndustries();
+        // FIXME: retrieve isLoggedIn from RouteWithSubRoutes and delte this block
+        // ============ START
         AuthService.isLoggedIn().then(status => {
-            if (status) {
-                this.props.changeLoginStatus(status);
+            if (status.tokenIsValid) {
+                this.props.changeLoginStatus(status.tokenIsValid);
             }
         });
+        // ============ END
     }
 
     fetchIndustries() {
@@ -68,6 +72,9 @@ export default class Header extends React.Component {
     handleLogout() {
         AuthService.logout();
         this.props.changeLoginStatus(false);
+        this.setState({
+            redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+        });
     }
 
     generateCatalog() {
@@ -137,6 +144,7 @@ export default class Header extends React.Component {
     render() {
         return (
             <header className="header_area">
+                {this.state.redirectTo}
                 <div className="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
                     {/* <!-- Classy Menu --> */}
                     <nav className="classy-navbar" id="essenceNav">

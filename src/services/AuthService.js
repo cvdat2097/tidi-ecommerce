@@ -28,16 +28,24 @@ export default {
 
     isLoggedIn: () => {
         const authToken = localStorage.getItem('authToken');
-
         return new Promise((resolve, reject) => {
             if (!authToken) {
-                resolve(false);
+                resolve({
+                    tokenIsValid: false
+                });
             } else {
                 ws.readAccountInfo(authToken).then(res => {
-                    if (JSON.parse(res).status.status === 'TRUE') {
-                        resolve(true);
+                    let resObj = JSON.parse(res);
+                    if (resObj.status.status !== 'TRUE') {
+                        resolve({
+                            tokenIsValid: false
+                        });
                     } else {
-                        resolve(false);
+                        resolve({
+                            tokenIsValid: true,
+                            username: resObj.username,
+                            permission: resObj.permission,
+                        });
                     }
                 });
             }
