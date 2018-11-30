@@ -4,6 +4,31 @@
 @import 'src/assets/scss/responsive';
 
 /* :: 14.0 Checkout Area CSS */
+.shippingmethod-selected {
+    font-weight: 900 !important;
+    background-color: #00000015;
+}
+
+.shipping-method-name {
+    color: black;
+    i.fa-check-square {
+        color: #0076fd !important;
+    }
+}
+
+.shipping-method-container {
+    margin-bottom: 10px !important;
+}
+
+.shipping-method-container:not(.is-invalid) {
+    border: none;
+}
+
+.error-message {
+    color: red !important;
+    margin-bottom: 15px;
+    height: 15px;
+}
 
 .checkout_details_area form {
     label {

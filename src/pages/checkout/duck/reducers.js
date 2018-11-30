@@ -2,7 +2,7 @@
 
 const INITIAL_STATE = {
     CheckoutDetail: {
-
+        cartItems: []
     },
 }
 

@@ -73,7 +73,7 @@ export default class Header extends React.Component {
         AuthService.logout();
         this.props.changeLoginStatus(false);
         this.setState({
-            redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+            redirectTo: <Redirect to={ROUTE_NAME.LOGIN} />
         });
     }
 
@@ -207,7 +207,7 @@ export default class Header extends React.Component {
                             this.props.isLoggedIn
                                 ?
                                 <div className="favourite-area">
-                                    <a href="/"><img src="/img/core-img/heart.svg" alt="" /></a>
+                                    <a href="/"><img src="/img/core-img/message.svg" alt="" /></a>
                                 </div>
                                 : null
                         }
@@ -221,7 +221,10 @@ export default class Header extends React.Component {
                                             <img src="/img/core-img/user.svg" alt="" />
                                         </a>
                                         <div className="dropdown-menu">
+                                            <span className="d-flex justify-content-center">Hello, {this.props.username}</span>
+                                            <div className="dropdown-divider"></div>
                                             <button className="dropdown-item text-center" >Settings</button>
+                                            <button className="dropdown-item text-center" >Help</button>
                                             <div className="dropdown-divider"></div>
                                             <button className="dropdown-item text-center"
                                                 onClick={() => this.handleLogout()}

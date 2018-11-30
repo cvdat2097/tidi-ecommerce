@@ -1,4 +1,6 @@
 import React from 'react';
+import './RouteWithSubRoutes.scss';
+
 import { Route } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
@@ -30,7 +32,6 @@ class HOC extends React.Component {
                 newState.permission = res.permission;
             }
 
-
             this.setState(newState);
         });
     }
@@ -43,10 +44,18 @@ class HOC extends React.Component {
 
                 return <this.props.component {...this.props} {...this.state} />;
             } else {
-                return <div>You don't have permission to access this page</div>
+                return (
+                    <div className="d-flex justify-content-center align-items-center p5">
+                        You don't have permission to access this page
+                    </div>
+                );
             }
         }
-        return <div>Token is not verified</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center p-5" >
+                <div className="loader"></div>
+            </div>
+        );
     }
 }
 

@@ -54,5 +54,23 @@ export default {
 
     saveToken: (token) => {
         localStorage.setItem('authToken', token);
+    },
+
+    getToken: () => {
+        let authToken = localStorage.getItem('authToken');
+        return new Promise((resolve, reject) => {
+            ws.readAccountInfo(authToken).then(res => {
+                let resObj = JSON.parse(res);
+                if (resObj.status.status === 'TRUE') {
+                    resolve(authToken);
+                } else {
+                    resolve(null);
+                }
+            });
+        })
+    },
+
+    getTokenUnsafe: () => {
+        return localStorage.getItem('authToken');
     }
 }

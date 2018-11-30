@@ -58,6 +58,26 @@ p {
     font-weight: 400;
 }
 
+// SCROLLBAR
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.582); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.582); 
+}
 
 a {
     @include transition(all 500ms ease 0s);

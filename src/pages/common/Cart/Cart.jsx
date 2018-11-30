@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Cart.scss';
 
 
-import {ROUTE_NAME} from '../../../routes/main.routing';
+import { ROUTE_NAME } from '../../../routes/main.routing';
 import MockAPI from '../../../helpers/MockAPI';
 
 
@@ -94,7 +94,9 @@ export default class Cart extends React.Component {
                     <div className="cart-button"
                         onClick={() => { this.props.toggleCart(false) }}
                     >
-                        <div id="rightSideCart"><img src="img/core-img/bag.svg" alt="" /> <span>{this.props.products.length}</span></div>
+                        <div id="rightSideCart">
+                            <img src="img/core-img/cancel.svg" alt="Close" />
+                        </div>
                     </div>
 
                     <div className="cart-content d-flex">

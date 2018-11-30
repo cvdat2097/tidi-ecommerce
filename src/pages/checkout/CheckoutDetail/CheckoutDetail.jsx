@@ -1,16 +1,24 @@
 import React from 'react';
 import './CheckoutDetail.scss';
 
+import WebService from '../../../services/WebService';
+import AuthService from '../../../services/AuthService';
+import MockAPI from '../../../helpers/MockAPI';
+import LIB from '../../../helpers/lib';
+import { PAYMENT_METHOD } from '../../../config/constants';
+
 const INITIAL_STATE = {
-    firstName: '',
-    lastName: '',
-    companyName: '',
+    fullname: '',
     address: '',
-    city: '',
-    province: '',
     phoneNumber: '',
     email: '',
-    shippingNote: ''
+    shippingNote: '',
+    shippingFee: null,
+    shippingMethod: {},
+
+    fullnameIsInvalid: false,
+    shippingMethodIsInvalid: false,
+    errorMessage: ''
 }
 
 
@@ -19,13 +27,98 @@ export default class CheckoutDetail extends React.Component {
         super(props);
 
         this.state = INITIAL_STATE;
+        this.total = 0;
 
+        this.generateCartItemList = this.generateCartItemList.bind(this);
+        this.generatePaymentMethods = this.generatePaymentMethods.bind(this);
+        this.handleShippingMethodSelect = this.handleShippingMethodSelect.bind(this);
+        this.fetchUserInfo = this.fetchUserInfo.bind(this);
+    }
+
+    componentWillMount() {
+        this.fetchCartProducts();
+        this.fetchUserInfo();
     }
 
 
+    fetchCartProducts() {
+        MockAPI.CART.getCart().then(res => {
+            const cart = JSON.parse(res);
+
+            this.props.updateCartProducts(cart);
+        });
+    }
+
+    async fetchUserInfo() {
+        WebService.readAccountInfo(AuthService.getTokenUnsafe()).then(response => {
+            let res = JSON.parse(response);
+
+            if (res.status.status === 'TRUE') {
+                this.setState({
+                    fullname: res.fullName,
+                    address: res.address,
+                    phoneNumber: res.phone,
+                    email: res.email,
+                });
+            } else {
+                console.err('Retrieve User info failed');
+            }
+        })
+    }
+
     placeOrder() {
-        console.log(this.state);
-        this.setState(INITIAL_STATE)
+        if (!this.state.shippingMethod.NAME) {
+            this.setState({
+                shippingMethodIsInvalid: true,
+                errorMessage: 'Please choose a shipping method'
+            });
+        } else {
+
+            console.log(this.state);
+            this.setState(INITIAL_STATE)
+        }
+    }
+
+    generateCartItemList() {
+        let totalPrice = 0;
+        let itemElements = this.props.cartItems.map((cartItem, index) => {
+            let product = cartItem.product;
+            let price = (product.price - product.price * product.discPercent) * cartItem.amount;
+
+            totalPrice += price;
+
+            return (
+                <li key={index} className="item-product-name">
+                    <span>{`[${cartItem.amount}] ${product.productName}`}</span>
+                    <span>{`${price} ₫`}</span>
+                </li>
+            );
+        });
+
+        this.total = totalPrice;
+        return itemElements;
+    }
+
+    handleShippingMethodSelect(method) {
+        this.setState({
+            shippingMethod: method,
+            shippingFee: method.SHIPPING_FEE,
+            shippingMethodIsInvalid: false,
+            errorMessage: ''
+        });
+    }
+
+    generatePaymentMethods() {
+        return PAYMENT_METHOD.map((method, index) => (
+            <PaymentMethod
+                key={index}
+                methodName={method.NAME}
+                description={method.DESCRIPTION}
+                fee={method.SHIPPING_FEE}
+                handleOnSelect={() => this.handleShippingMethodSelect(method)}
+                isSelected={method.NAME === this.state.shippingMethod.NAME}
+            />
+        ));
     }
 
     render() {
@@ -59,25 +152,18 @@ export default class CheckoutDetail extends React.Component {
 
                                     <form action="#" method="post">
                                         <div className="row">
-                                            <div className="col-md-6 mb-3">
-                                                <label htmlFor="first_name">First Name <span>*</span></label>
-                                                <input type="text" className="form-control" id="first_name" required
-                                                    value={this.state.firstName}
-                                                    onChange={(e) => this.setState({ firstName: e.target.value })}
+                                            <div className="col-md-12 mb-3">
+                                                <label htmlFor="full_name">Fullname <span>*</span></label>
+                                                <input type="text" className="form-control" id="full_name" required
+                                                    value={this.state.fullname}
+                                                    onChange={(e) => this.setState({ fullname: e.target.value })}
                                                 />
                                             </div>
-                                            <div className="col-md-6 mb-3">
-                                                <label htmlFor="last_name">Last Name <span>*</span></label>
-                                                <input type="text" className="form-control" id="last_name" required
-                                                    value={this.state.lastName}
-                                                    onChange={(e) => this.setState({ lastName: e.target.value })}
-                                                />
-                                            </div>
-                                            <div className="col-12 mb-3">
-                                                <label htmlFor="company">Company Name</label>
-                                                <input type="text" className="form-control" id="company"
-                                                    value={this.state.companyName}
-                                                    onChange={(e) => this.setState({ companyName: e.target.value })}
+                                            <div className="col-12 mb-4">
+                                                <label htmlFor="email_address">Email Address <span>*</span></label>
+                                                <input type="email" className="form-control" id="email_address"
+                                                    value={this.state.email}
+                                                    onChange={(e) => this.setState({ email: e.target.value })}
                                                 />
                                             </div>
                                             {/* <div className="col-12 mb-3">
@@ -101,31 +187,10 @@ export default class CheckoutDetail extends React.Component {
                                                 />
                                             </div>
                                             <div className="col-12 mb-3">
-                                                <label htmlFor="city">Town/City <span>*</span></label>
-                                                <input type="text" className="form-control" id="city"
-                                                    value={this.state.city}
-                                                    onChange={(e) => this.setState({ city: e.target.value })}
-                                                />
-                                            </div>
-                                            <div className="col-12 mb-3">
-                                                <label htmlFor="province">Province <span>*</span></label>
-                                                <input type="text" className="form-control" id="province"
-                                                    value={this.state.province}
-                                                    onChange={(e) => this.setState({ province: e.target.value })}
-                                                />
-                                            </div>
-                                            <div className="col-12 mb-3">
                                                 <label htmlFor="phone_number">Phone No <span>*</span></label>
                                                 <input type="number" className="form-control" id="phone_number" min="0"
                                                     value={this.state.phoneNumber}
                                                     onChange={(e) => this.setState({ phoneNumber: e.target.value })}
-                                                />
-                                            </div>
-                                            <div className="col-12 mb-4">
-                                                <label htmlFor="email_address">Email Address <span>*</span></label>
-                                                <input type="email" className="form-control" id="email_address"
-                                                    value={this.state.email}
-                                                    onChange={(e) => this.setState({ email: e.target.value })}
                                                 />
                                             </div>
                                             <div className="col-12 mb-4">
@@ -156,67 +221,18 @@ export default class CheckoutDetail extends React.Component {
                                     </div>
 
                                     <ul className="order-details-form mb-4">
-                                        <li className="item-header"><span>Product</span> <span>Total</span></li>
-                                        <li className="item-product-name"><span>Cocktail Yellow dress    X 1</span> <span>$59.90</span></li>
-                                        <li className="item-product-name"><span>Cocktail Orange dress    X 3</span> <span>$197.90</span></li>
-                                        <li className="item-product-name"><span>Cocktail Purple dress    X 1</span> <span>$342.90</span></li>
-                                        <li className="item-header"><span>Subtotal</span> <span>FREE</span></li>
-                                        <li className="item-header"><span>Shipping</span> <span>Free</span></li>
-                                        <li className="total-header"><span>Total</span> <span>$600.7</span></li>
+                                        <li className="item-header"><span>Product</span> <span>Price</span></li>
+                                        {this.generateCartItemList()}
+                                        <li className="item-header"><span>Shipping</span> <span>{`${!this.state.shippingFee ? 'FREE' : this.state.shippingFee}`}</span></li>
+                                        <li className="total-header"><span>Total</span> <span>{`${this.total + this.state.shippingFee} ₫`}</span></li>
                                     </ul>
 
-                                    <div id="accordion" role="tablist" className="mb-4">
-                                        <div className="card">
-                                            <div className="card-header" role="tab" id="headingOne">
-                                                <h6 className="mb-0">
-                                                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i className="fa fa-circle-o mr-3"></i>Paypal</a>
-                                                </h6>
-                                            </div>
-
-                                            <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                                                <div className="card-body">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="card">
-                                            <div className="card-header" role="tab" id="headingTwo">
-                                                <h6 className="mb-0">
-                                                    <a className="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i className="fa fa-circle-o mr-3"></i>cash on delievery</a>
-                                                </h6>
-                                            </div>
-                                            <div id="collapseTwo" className="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                                <div className="card-body">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="card">
-                                            <div className="card-header" role="tab" id="headingThree">
-                                                <h6 className="mb-0">
-                                                    <a className="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i className="fa fa-circle-o mr-3"></i>credit card</a>
-                                                </h6>
-                                            </div>
-                                            <div id="collapseThree" className="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                                                <div className="card-body">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="card">
-                                            <div className="card-header" role="tab" id="headingFour">
-                                                <h6 className="mb-0">
-                                                    <a className="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i className="fa fa-circle-o mr-3"></i>direct bank transfer</a>
-                                                </h6>
-                                            </div>
-                                            <div id="collapseFour" className="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                                                <div className="card-body">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div id="accordion" role="tablist" className={"mb-4 form-control shipping-method-container" + (this.state.shippingMethodIsInvalid ? ' is-invalid' : '')}>
+                                        {this.generatePaymentMethods()}
                                     </div>
-
+                                    <div className="error-message d-flex justicy-content-center">
+                                        {this.state.errorMessage}
+                                    </div>
                                     <button className="btn essence-btn"
                                         onClick={() => this.placeOrder()}
                                     >Place Order</button>
@@ -226,6 +242,32 @@ export default class CheckoutDetail extends React.Component {
                     </div>
                 </div>
                 {/* <!-- ##### Checkout Area End ##### --> */}
+            </div>
+        );
+    }
+}
+
+class PaymentMethod extends React.Component {
+    render() {
+        let collapseId = LIB.generateRandomString();
+        return (
+            <div className="card">
+                <div className="card-header" role="tab" id="headingOne">
+                    <h6 className="mb-0">
+                        <a
+                            className={'shipping-method-name ' + (this.props.isSelected ? 'shippingmethod-selected' : '')}
+                            data-toggle="collapse" href={"#" + collapseId} aria-expanded="false" aria-controls={collapseId}
+                            onClick={this.props.handleOnSelect}
+                        ><i className={"fa mr-3" + (this.props.isSelected ? ' fa-check-square' : ' fa-square-o')}></i>{this.props.methodName}</a>
+                    </h6>
+                </div>
+
+                <div id={collapseId} className="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div className="card-body">
+                        <p>{this.props.description}</p>
+                        <p><b>FEE: </b>{this.props.fee}</p>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -20,3 +20,18 @@ export const VERIFICATION_TYPE = {
     EMAIL: 'EMAIL',
     PASSWORD: 'PASSWORD'
 }
+
+export const PAYMENT_METHOD = [
+    {
+        ID: 0,
+        NAME: 'Zalo Pay',
+        DESCRIPTION: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.',
+        SHIPPING_FEE: 0
+    },
+    {
+        ID: 1,
+        NAME: 'Ship COD',
+        DESCRIPTION: 'Pay when deliver',
+        SHIPPING_FEE: 19000
+    },
+];

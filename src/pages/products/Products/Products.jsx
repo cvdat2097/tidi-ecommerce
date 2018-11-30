@@ -54,7 +54,7 @@ class Products extends React.Component {
         MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
             const result = JSON.parse(res);
 
-            console.log('GOT: ' + result.products.length);
+            // console.log('GOT: ' + result.products.length);
             this.props.updateProductList(result.products);
             this.props.changePageInfo({ totalItems: result.totalItems });
         });

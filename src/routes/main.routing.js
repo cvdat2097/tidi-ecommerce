@@ -79,7 +79,7 @@ const ROUTES = [
         path: ROUTE_NAME.HOME,
         component: (props) => (
             <div className="main-wrapper">
-                <Header />
+                <Header {...props} />
                 <Cart />
                 <div className="main-content">
                     {props.routes.map((route, index) => <RouteWithSubRoutes key={index} {...route} />)}

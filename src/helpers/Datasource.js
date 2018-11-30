@@ -32,6 +32,11 @@ export const branch = [
         id: 0,
         branchName: 'Car',
         industryId: 0
+    },
+    {
+        id: 1,
+        branchName: 'Sport Shoes',
+        industryId: 0
     }
 ];
 
@@ -61,7 +66,7 @@ export const industry = [
                 ]
             },
             {
-                ...branch[0],
+                ...branch[1],
                 categories: [
                     category[0],
                     category[1],
@@ -127,8 +132,8 @@ let prds = [
         industry: industry[0],
         price: 1200,
         images: [
-            'https://images.bewakoof.com/original/up-in-smoke-typography-half-sleeve-t-shirt-men-s-printed-t-shirts-1513764488.jpg',
-            'https://images-na.ssl-images-amazon.com/images/I/81vL0zMgUzL._UL1500_.jpg'
+            'https://sits-pod14-adidas.demandware.net/dw/image/v2/aagl_prd/on/demandware.static/-/Sites-adidas-products/default/dwe3d252e1/zoom/CG6884_01_standard.jpg?sw=500',
+            'https://sits-pod14-adidas.demandware.net/dw/image/v2/aagl_prd/on/demandware.static/-/Sites-adidas-products/default/dw50043689/zoom/CG6884_04_standard.jpg?sw=2000'
         ],
         description: loremipsum,
         discPercent: 0.1,
@@ -148,10 +153,10 @@ let prds = [
         brand: brand[0],
         price: 1299000,
         images: [
-            '/img/product-img/product-5.jpg',
-            '/img/product-img/product-3.jpg',
-            '/img/product-img/product-2.jpg',
-            '/img/product-img/product-4.jpg'
+            '/img/product-img/AQ0902_01_standard.jpg',
+            '/img/product-img/AQ0902_05_standard.jpg',
+            '/img/product-img/BB7443_01_standard.jpg',
+            '/img/product-img/BB7443_05_standard.jpg',
         ],
         description: loremipsum,
         discPercent: 0.3,
@@ -171,8 +176,10 @@ let prds = [
         brand: brand[0],
         price: 999000,
         images: [
-            '/img/product-img/product-7.jpg',
-            '/img/product-img/product-6.jpg'
+            '/img/product-img/B37413_01_standard.jpg',
+            '/img/product-img/B37413_02_standard.jpg',
+            '/img/product-img/B37413_05_standard.jpg',
+            '/img/product-img/D96760_07_standard.jpg',
         ],
         description: loremipsum,
         discPercent: 0.1,
@@ -192,37 +199,39 @@ let prds = [
         brand: brand[0],
         price: 1299000,
         images: [
-            '/img/product-img/product-1.jpg',
-            '/img/product-img/product-6.jpg'
+            '/img/product-img/B28080_01_standard.jpg',
+            '/img/product-img/B28080_05_standard.jpg',
+            '/img/product-img/D96760_01_standard.jpg',
+            '/img/product-img/D96760_05_standard.jpg',
         ],
         description: loremipsum,
         discPercent: 0.3,
         amount: 102,
         active: 1,
     },
-    {
-        id: 4,
-        productName: 'Knot Front Mini Dress',
-        industryId: 0,
-        branchId: 0,
-        categoryId: 1,
-        brandId: 0,
-        industry: industry[0],
-        branch: branch[0],
-        category: category[1],
-        brand: brand[0],
-        price: 1299000,
-        images: [
-            '/img/product-img/product-2.jpg',
-            '/img/product-img/product-4.jpg',
-            '/img/product-img/product-3.jpg',
-            '/img/product-img/product-1.jpg'
-        ],
-        description: loremipsum,
-        discPercent: 0.3,
-        amount: 102,
-        active: 1,
-    },
+    // {
+    //     id: 4,
+    //     productName: 'Knot Front Mini Dress',
+    //     industryId: 0,
+    //     branchId: 0,
+    //     categoryId: 1,
+    //     brandId: 0,
+    //     industry: industry[0],
+    //     branch: branch[0],
+    //     category: category[1],
+    //     brand: brand[0],
+    //     price: 1299000,
+    //     images: [
+    //         '/img/product-img/B22717_01_standard.jpg',
+    //         '/img/product-img/B22717_05_standard.jpg',
+    //         '/img/product-img/CQ2749_01_standard.jpg',
+    //         '/img/product-img/CQ2749_04_standard.jpg',
+    //     ],
+    //     description: loremipsum,
+    //     discPercent: 0.3,
+    //     amount: 102,
+    //     active: 1,
+    // },
     {
         id: 5,
         productName: 'Knot Front Mini Dress',
@@ -236,8 +245,10 @@ let prds = [
         brand: brand[0],
         price: 1299000,
         images: [
-            '/img/product-img/product-5.jpg',
-            '/img/product-img/product-3.jpg'
+            '/img/product-img/B37513_01_standard.jpg',
+            '/img/product-img/B37513_05_standard.jpg',
+            '/img/product-img/B37513_05_standard.jpg',
+            '/img/product-img/DA9606_01_standard.jpg',
         ],
         description: loremipsum,
         discPercent: 0.3,
@@ -257,8 +268,71 @@ let prds = [
         brand: brand[0],
         price: 1299000,
         images: [
-            '/img/product-img/product-4.jpg',
-            '/img/product-img/product-6.jpg'
+            '/img/product-img/B41920_01_standard.jpg',
+            '/img/product-img/B41920_05_standard.jpg'
+        ],
+        description: loremipsum,
+        discPercent: 0.3,
+        amount: 102,
+        active: 1,
+    },
+    {
+        id: 7,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
+        price: 1299000,
+        images: [
+            '/img/product-img/B42233_01_standard.jpg',
+            '/img/product-img/B42233_05_standard.jpg'
+        ],
+        description: loremipsum,
+        discPercent: 0.3,
+        amount: 102,
+        active: 1,
+    },
+    {
+        id: 8,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
+        price: 1299000,
+        images: [
+            '/img/product-img/B42234_01_standard.jpg',
+            '/img/product-img/B42234_05_standard.jpg'
+        ],
+        description: loremipsum,
+        discPercent: 0.3,
+        amount: 102,
+        active: 1,
+    },
+    {
+        id: 9,
+        productName: 'Knot Front Mini Dress',
+        industryId: 0,
+        branchId: 0,
+        categoryId: 1,
+        brandId: 0,
+        industry: industry[0],
+        branch: branch[0],
+        category: category[1],
+        brand: brand[0],
+        price: 1299000,
+        images: [
+            '/img/product-img/BB6994_01_standard.jpg',
+            '/img/product-img/BB6994_05_standard.jpg'
         ],
         description: loremipsum,
         discPercent: 0.3,

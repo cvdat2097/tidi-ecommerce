@@ -5,6 +5,7 @@ import './SearchPanel.scss';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
 import MockAPI from '../../../helpers/MockAPI';
+import LIB from '../../../helpers/lib';
 
 // INPUT: branchId
 
@@ -54,11 +55,12 @@ export default class SearchPanel extends React.Component {
     generateBranches() {
         if (this.props.currentIndustryId !== undefined) {
             return this.props.industries[this.props.currentIndustryId].branches.map((branch, index) => {
+                let idName = LIB.generateRandomString();
                 return (
-                    <li key={index} data-toggle="collapse" data-target={"#" + branch.branchName + index}>
+                    <li key={index} data-toggle="collapse" data-target={"#" + idName}>
                         <a href="#/">{branch.branchName}</a>
                         <ul className={"sub-menu collapse" + (index === 0 ? " show" : "")}
-                            id={branch.branchName + index}>
+                            id={idName}>
                             {branch.categories.map((category, index) => <li key={index}><Link to={{
                                 pathname: ROUTE_NAME.PRODUCTS,
                                 search: `?category=${category.id}`
