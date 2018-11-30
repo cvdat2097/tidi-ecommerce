@@ -10,7 +10,9 @@ const INITIAL_STATE = {
     },
 
     SearchPanel: {
-        categories: []
+        categories: [],
+        branches: [],
+        currentIndustryId: 0
     },
 
     ProductDetail: {
@@ -38,6 +40,17 @@ const productsReducer = (state = INITIAL_STATE, action) => {
                 }
             };
 
+
+        case Types.FETCH_BRANCHES:
+            return {
+                ...state,
+                SearchPanel: {
+                    ...state.SearchPanel,
+                    currentIndustryId: action.payload
+                }
+            };
+
+
         case commonTypes.CHANGE_PAGE_INFO:
             return {
                 ...state,
@@ -46,6 +59,7 @@ const productsReducer = (state = INITIAL_STATE, action) => {
                     ...action.payload
                 }
             };
+
 
         default:
             return state;

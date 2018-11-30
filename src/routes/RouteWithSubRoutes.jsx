@@ -15,7 +15,7 @@ class HOC extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log(`Required permission: ${props.requiredPermission}`, props.location.pathname);
+        // console.log(`Required permission: ${props.requiredPermission}`, props.location.pathname);
         this.state = INTIIAL_STATE;
     }
 
@@ -30,7 +30,7 @@ class HOC extends React.Component {
                 newState.permission = res.permission;
             }
 
-            
+
             this.setState(newState);
         });
     }
@@ -38,7 +38,8 @@ class HOC extends React.Component {
     render() {
         if (this.state.tokenVerificationCompleted) {
             if (this.props.requiredPermission === USER_TYPE.PUBLIC
-                || (this.props.requiredPermission === this.state.permission)) {
+                || this.state.permission === USER_TYPE.ADMIN
+                || this.props.requiredPermission === this.state.permission) {
 
                 return <this.props.component {...this.props} {...this.state} />;
             } else {

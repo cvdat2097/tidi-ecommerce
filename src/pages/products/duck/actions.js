@@ -10,8 +10,13 @@ const updateCategoryList = (cats) => ({
     payload: cats
 });
 
+const fetchBranches = (branches) => ({
+    type: Types.FETCH_BRANCHES,
+    payload: branches
+})
 
 export default {
     fetchProducts,
-    updateCategoryList
+    updateCategoryList,
+    fetchBranches
 };

@@ -1,130 +1,167 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './SearchPanel.scss';
 
+import { ROUTE_NAME } from '../../../routes/main.routing';
 
+import MockAPI from '../../../helpers/MockAPI';
+
+// INPUT: branchId
+
+const INITIAL_STATE = {
+    brands: [],
+    filter: {
+        brand: {},
+        priceFrom: '',
+        priceTo: '',
+        priceIsInvalid: false
+    }
+}
 
 export default class SearchPanel extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = INITIAL_STATE;
+
+        this.generateBrands = this.generateBrands.bind(this);
+        this.generateBranches = this.generateBranches.bind(this);
+        this.handleFilterItemSelected = this.handleFilterItemSelected.bind(this);
+        this.handleApplyFilter = this.handleApplyFilter.bind(this);
+    }
+
+    componentDidMount() {
+        MockAPI.BRAND.getAll().then(brands => {
+            this.setState({
+                brands: brands
+            });
+        });
+
+        this.props.updateBranches(0);
+    }
+
+
+    generateBrands() {
+        return this.state.brands.map((brand, index) => {
+            return <li key={index}
+            ><a href="#/"
+                onClick={() => this.handleFilterItemSelected({ brand })}
+                className={(brand.brandName === this.state.filter.brand.brandName ? "filter-item-selected" : undefined)}
+            >{brand.brandName}</a></li>
+        });
+    }
+
+    generateBranches() {
+        if (this.props.currentIndustryId !== undefined) {
+            return this.props.industries[this.props.currentIndustryId].branches.map((branch, index) => {
+                return (
+                    <li key={index} data-toggle="collapse" data-target={"#" + branch.branchName + index}>
+                        <a href="#/">{branch.branchName}</a>
+                        <ul className={"sub-menu collapse" + (index === 0 ? " show" : "")}
+                            id={branch.branchName + index}>
+                            {branch.categories.map((category, index) => <li key={index}><Link to={{
+                                pathname: ROUTE_NAME.PRODUCTS,
+                                search: `?category=${category.id}`
+                            }} >{category.categoryName}</Link></li>)}
+                        </ul>
+                    </li>
+                );
+            });
+        }
+
+        return '';
+    }
+
+    handleFilterItemSelected(filter) {
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                ...filter
+            }
+        });
+    }
+
+    handleChangePrice(propName, value) {
+        const newState = {};
+
+        let x = Number(value);
+        if (value === '' || x) {
+            newState[propName] = value;
+            newState['priceIsInvalid'] = false;
+        } else {
+            newState['priceIsInvalid'] = true;
+
+        }
+
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                ...newState
+            }
+        });
+
+    }
+
+
+    handleApplyFilter() {
+        console.log(this.state.filter);
+    }
+
     render() {
         return (
             <div className="shop_sidebar_area">
+                {/* <!-- ##### Single Widget ##### --> */}
+                <div className="widget catagory mb-50">
+                    {/* <!-- Widget Title --> */}
+                    <h6 className="widget-title mb-30">Catagories</h6>
 
-            {/* <!-- ##### Single Widget ##### --> */}
-            <div className="widget catagory mb-50">
-                {/* <!-- Widget Title --> */}
-                <h6 className="widget-title mb-30">Catagories</h6>
-
-                {/* <!--  Catagories  --> */}
-                <div className="catagories-menu">
-                    <ul id="menu-content2" className="menu-content collapse show">
-                        {/* <!-- Single Item --> */}
-                        <li data-toggle="collapse" data-target="#clothing">
-                            <a href="/">clothing</a>
-                            <ul className="sub-menu collapse show" id="clothing">
-                                <li><a href="/">All</a></li>
-                                <li><a href="/">Bodysuits</a></li>
-                                <li><a href="/">Dresses</a></li>
-                                <li><a href="/">Hoodies &amp; Sweats</a></li>
-                                <li><a href="/">Jackets &amp; Coats</a></li>
-                                <li><a href="/">Jeans</a></li>
-                                <li><a href="/">Pants &amp; Leggings</a></li>
-                                <li><a href="/">Rompers &amp; Jumpsuits</a></li>
-                                <li><a href="/">Shirts &amp; Blouses</a></li>
-                                <li><a href="/">Shirts</a></li>
-                                <li><a href="/">Sweaters &amp; Knits</a></li>
-                            </ul>
-                        </li>
-                        {/* <!-- Single Item --> */}
-                        <li data-toggle="collapse" data-target="#shoes" className="collapsed">
-                            <a href="/">shoes</a>
-                            <ul className="sub-menu collapse" id="shoes">
-                                <li><a href="/">All</a></li>
-                                <li><a href="/">Bodysuits</a></li>
-                                <li><a href="/">Dresses</a></li>
-                                <li><a href="/">Hoodies &amp; Sweats</a></li>
-                                <li><a href="/">Jackets &amp; Coats</a></li>
-                                <li><a href="/">Jeans</a></li>
-                                <li><a href="/">Pants &amp; Leggings</a></li>
-                                <li><a href="/">Rompers &amp; Jumpsuits</a></li>
-                                <li><a href="/">Shirts &amp; Blouses</a></li>
-                                <li><a href="/">Shirts</a></li>
-                                <li><a href="/">Sweaters &amp; Knits</a></li>
-                            </ul>
-                        </li>
-                        {/* <!-- Single Item --> */}
-                        <li data-toggle="collapse" data-target="#accessories" className="collapsed">
-                            <a href="/">accessories</a>
-                            <ul className="sub-menu collapse" id="accessories">
-                                <li><a href="/">All</a></li>
-                                <li><a href="/">Bodysuits</a></li>
-                                <li><a href="/">Dresses</a></li>
-                                <li><a href="/">Hoodies &amp; Sweats</a></li>
-                                <li><a href="/">Jackets &amp; Coats</a></li>
-                                <li><a href="/">Jeans</a></li>
-                                <li><a href="/">Pants &amp; Leggings</a></li>
-                                <li><a href="/">Rompers &amp; Jumpsuits</a></li>
-                                <li><a href="/">Shirts &amp; Blouses</a></li>
-                                <li><a href="/">Shirts</a></li>
-                                <li><a href="/">Sweaters &amp; Knits</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            {/* <!-- ##### Single Widget ##### --> */}
-            <div className="widget price mb-50">
-                {/* <!-- Widget Title --> */}
-                <h6 className="widget-title mb-30">Filter by</h6>
-                {/* <!-- Widget Title 2 --> */}
-                <p className="widget-title2 mb-30">Price</p>
-
-                <div className="widget-desc">
-                    <div className="slider-range">
-                        <div data-min="49" data-max="360" data-unit="$" className="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="49" data-value-max="360" data-label-result="Range:">
-                            <div className="ui-slider-range ui-widget-header ui-corner-all"></div>
-                            <span className="ui-slider-handle ui-state-default ui-corner-all" tabIndex="0"></span>
-                            <span className="ui-slider-handle ui-state-default ui-corner-all" tabIndex="0"></span>
-                        </div>
-                        <div className="range-price">Range: $49.00 - $360.00</div>
+                    {/* <!--  Catagories  --> */}
+                    <div className="catagories-menu">
+                        <ul id="menu-content2" className="menu-content collapse show">
+                            {/* <!-- Single Item --> */}
+                            {this.generateBranches()}
+                        </ul>
                     </div>
                 </div>
-            </div>
 
-            {/* <!-- ##### Single Widget ##### --> */}
-            <div className="widget color mb-50">
-                {/* <!-- Widget Title 2 --> */}
-                <p className="widget-title2 mb-30">Color</p>
-                <div className="widget-desc">
-                    <ul className="d-flex">
-                        <li><a href="/" className="color1">f</a></li>
-                        <li><a href="/" className="color2">f</a></li>
-                        <li><a href="/" className="color3">f</a></li>
-                        <li><a href="/" className="color4">f</a></li>
-                        <li><a href="/" className="color5">f</a></li>
-                        <li><a href="/" className="color6">f</a></li>
-                        <li><a href="/" className="color7">f</a></li>
-                        <li><a href="/" className="color8">f</a></li>
-                        <li><a href="/" className="color9">f</a></li>
-                        <li><a href="/" className="color10">f</a></li>
-                    </ul>
+                {/* <!-- ##### Single Widget ##### --> */}
+                <div className="widget price mb-50">
+                    {/* <!-- Widget Title --> */}
+                    <h6 className="widget-title mb-30">Filter by</h6>
+                    {/* <!-- Widget Title 2 --> */}
+                    <p className="widget-title2 mb-30">Price</p>
+
+                    <div className="widget-desc">
+                        <div className="d-flex">
+                            <input className={"form-control mr-2" + (this.state.filter.priceIsInvalid ? " is-invalid" : "")} placeholder="From"
+                                value={this.state.filter.priceFrom}
+                                onChange={(e) => this.handleChangePrice('priceFrom', e.target.value)}
+                            />
+                            <input className={"form-control" + (this.state.filter.priceIsInvalid ? " is-invalid" : "")} placeholder="To"
+                                value={this.state.filter.priceTo}
+                                onChange={(e) => this.handleChangePrice('priceTo', e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* <!-- ##### Single Widget ##### --> */}
+                <div className="widget brands mb-50">
+                    {/* <!-- Widget Title 2 --> */}
+                    <p className="widget-title2 mb-30">Brands</p>
+                    <div className="widget-desc">
+                        <ul>
+                            {this.generateBrands()}
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="widget mb-50 d-flex justify-content-center">
+                    <button className="btn btn-primary"
+                        onClick={this.handleApplyFilter}
+                    >Apply Filter</button>
                 </div>
             </div>
-
-            {/* <!-- ##### Single Widget ##### --> */}
-            <div className="widget brands mb-50">
-                {/* <!-- Widget Title 2 --> */}
-                <p className="widget-title2 mb-30">Brands</p>
-                <div className="widget-desc">
-                    <ul>
-                        <li><a href="/">Asos</a></li>
-                        <li><a href="/">Mango</a></li>
-                        <li><a href="/">River Island</a></li>
-                        <li><a href="/">Topshop</a></li>
-                        <li><a href="/">Zara</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         );
     }
 }

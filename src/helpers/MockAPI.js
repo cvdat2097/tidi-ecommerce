@@ -1,4 +1,4 @@
-import { product, industry } from './Datasource';
+import { product, industry, brand } from './Datasource';
 
 
 export default {
@@ -75,5 +75,12 @@ export default {
         }
     },
 
+    BRAND: {
+        getAll: () => {
+            return new Promise((resolve, reject) => {
+                resolve(brand);
+            })
+        }
+    }
 
 };

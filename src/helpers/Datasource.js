@@ -4,7 +4,27 @@ export const brand = [
     {
         id: 0,
         brandName: 'Suzuki'
-    }
+    },
+    {
+        id: 1,
+        brandName: 'Asos'
+    },
+    {
+        id: 2,
+        brandName: 'Mango'
+    },
+    {
+        id: 3,
+        brandName: 'River Island'
+    },
+    {
+        id: 4,
+        brandName: 'Topshop'
+    },
+    {
+        id: 5,
+        brandName: 'Yamaha'
+    },
 ];
 
 export const branch = [

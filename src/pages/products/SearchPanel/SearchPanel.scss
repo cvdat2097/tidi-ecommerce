@@ -6,6 +6,11 @@
 
 /* :: 13.0 Product Sidebar Area CSS */
 
+.filter-item-selected {
+    font-weight: 900 !important;
+    background-color: #00000015;
+}
+
 .widget {
     .catagories-menu {
         li > a {
