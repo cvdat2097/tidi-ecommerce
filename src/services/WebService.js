@@ -178,7 +178,7 @@ export default {
     getAllBrands: () => {
         return fetch({
             method: 'GET',
-            route: apiPrefix.product + '/branch'
+            route: apiPrefix.product + '/brand'
         });
     },
 

@@ -63,6 +63,7 @@ export default class Login extends React.Component {
                                 <input className="input100" type="text" name="email" placeholder="Email" autoComplete="off"
                                     onChange={(e) => { this.handleUsernameChange(e) }}
                                     value={this.state.username}
+                                    onKeyDown={(e) => e.keyCode === 13 && this.handleLogin()}
                                 />
                                 <span className="focus-input100"></span>
                                 <span className="symbol-input100">
@@ -74,6 +75,7 @@ export default class Login extends React.Component {
                                 <input className="input100" type="password" name="pass" placeholder="Password" autoComplete="off"
                                     onChange={(e) => { this.handlePasswordChange(e) }}
                                     value={this.state.password}
+                                    onKeyDown={(e) => e.keyCode === 13 && this.handleLogin()}
                                 />
                                 <span className="focus-input100"></span>
                                 <span className="symbol-input100">

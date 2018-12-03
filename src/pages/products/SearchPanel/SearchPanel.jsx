@@ -4,8 +4,8 @@ import './SearchPanel.scss';
 
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
-import MockAPI from '../../../helpers/MockAPI';
 import LIB from '../../../helpers/lib';
+import WebService from '../../../services/WebService';
 
 // INPUT: branchId
 
@@ -29,16 +29,23 @@ export default class SearchPanel extends React.Component {
         this.generateBranches = this.generateBranches.bind(this);
         this.handleFilterItemSelected = this.handleFilterItemSelected.bind(this);
         this.handleApplyFilter = this.handleApplyFilter.bind(this);
+        this.fetchAllBrands = this.fetchAllBrands.bind(this);
     }
 
     componentDidMount() {
-        MockAPI.BRAND.getAll().then(brands => {
-            this.setState({
-                brands: brands
-            });
-        });
+        this.fetchAllBrands();
 
         this.props.updateBranches(0);
+    }
+
+    fetchAllBrands() {
+
+        WebService.getAllBrands().then(brds => {
+            const brands = JSON.parse(brds);
+            this.setState({
+                brands
+            });
+        });
     }
 
 
@@ -53,15 +60,17 @@ export default class SearchPanel extends React.Component {
     }
 
     generateBranches() {
-        if (this.props.currentIndustryId !== undefined) {
-            return this.props.industries[this.props.currentIndustryId].branches.map((branch, index) => {
+        if (this.props.currentIndustryId !== undefined && this.props.industries[this.props.currentIndustryId]) {
+            // FIXME: to 'branches'
+            return this.props.industries[this.props.currentIndustryId].branch.map((branch, index) => {
                 let idName = LIB.generateRandomString();
                 return (
                     <li key={index} data-toggle="collapse" data-target={"#" + idName}>
                         <a href="#/">{branch.branchName}</a>
                         <ul className={"sub-menu collapse" + (index === 0 ? " show" : "")}
                             id={idName}>
-                            {branch.categories.map((category, index) => <li key={index}><Link to={{
+                            {/* FIXME: back to 'category' */}
+                            {branch.category.map((category, index) => <li key={index}><Link to={{
                                 pathname: ROUTE_NAME.PRODUCTS,
                                 search: `?category=${category.id}`
                             }} >{category.categoryName}</Link></li>)}

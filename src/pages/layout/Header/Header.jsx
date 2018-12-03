@@ -3,8 +3,8 @@ import { Link, Redirect } from 'react-router-dom';
 import './Header.scss';
 
 import { ROUTE_NAME } from '../../../routes/main.routing';
-import MockAPI from '../../../helpers/MockAPI';
 import AuthService from '../../../services/AuthService';
+import WebService from '../../../services/WebService';
 
 const INITIAL_STATE = {
     openDropdownMenu: false,
@@ -39,7 +39,8 @@ export default class Header extends React.Component {
     }
 
     fetchIndustries() {
-        MockAPI.Product.getAllIndustries().then(industries => {
+        WebService.getAllIndustries().then(idtrs => {
+            let industries = JSON.parse(idtrs);
             this.props.fetchIndustries(industries);
             this.props.changeIndustryHover(industries[0]);
         });
@@ -101,7 +102,7 @@ export default class Header extends React.Component {
                         <div key={index} className="branch-container">
                             <h6>{branch.branchName}</h6>
                             <div>
-                                {generateCategories(branch.categories)}
+                                {generateCategories(branch.category)  /* FIXME: Back to cateogires */}
                             </div>
                         </div>
                     );
@@ -111,7 +112,7 @@ export default class Header extends React.Component {
             return R;
         }
 
-        return generateBranches(this.props.currentIndustry.branches);
+        return generateBranches(this.props.currentIndustry.branch); //FIXME: change back to branches
     }
 
     generateMenuItems() {
