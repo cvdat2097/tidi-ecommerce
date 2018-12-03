@@ -1,12 +1,14 @@
 import Types from './types';
 import commonTypes from '../../common/duck/types';
+import { USER_TYPE } from '../../../config/constants';
 
 const INITIAL_STATE = {
     AdminUser: {
         isActive: false,
         currentPage: 1,
-        totalItems: 300,
-        pageSize: 10
+        totalItems: 0,
+        pageSize: 3,
+        users: []
     },
 
     Admin: {
@@ -19,15 +21,15 @@ const INITIAL_STATE = {
 
     AdminAddUser: {
         formData: {
-            username: 'abc',
-            permission: 'admin',
-            email: 'admin@vng.com.vn',
-            full_name: 'Nguyen Van V',
-            date_of_birth: '12/9/1878',
-            phone: '09123889',
-            gender: 'Nam',
-            address: '78 VNG Streeet',
-            is_verified: true
+            username: '',
+            permission: USER_TYPE.PUBLIC,
+            email: '',
+            fullName: '',
+            dateOfBirth: '',
+            phone: '',
+            gender: '',
+            address: '',
+            active: 'TRUE'
         }
     }
 }
@@ -42,6 +44,15 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                         ...state.AdminAddUser.formData,
                         ...action.payload
                     }
+                }
+            };
+
+        case Types.ADMIN_FETCH_USERS:
+            return {
+                ...state,
+                AdminUser: {
+                    ...state.AdminUser,
+                    users: action.payload
                 }
             };
 

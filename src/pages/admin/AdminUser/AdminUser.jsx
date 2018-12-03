@@ -1,41 +1,24 @@
 import React, { Fragment } from 'react';
 import './AdminUser.scss';
 
+import WebService from '../../../services/WebService';
+import AuthService from '../../../services/AuthService';
 import AdminAddUser from './AdminAddUser';
 import Modal from '../../common/Modal';
 import HelperTool from '../../../helpers/lib';
 
 import Paginator from '../../common/Paginator';
 
-const MockUser = [{
-    id: 1,
-    username: 'user1',
-    permission: 'admin',
-    email: 'admin@vng.com.vn',
-    full_name: 'Nguyen Van V',
-    date_of_birth: '12/9/1878',
-    phone: '09123889',
-    gender: 'Nam',
-    address: '78 VNG Streeet',
-    is_verified: true
-},
-{
-    id: 2,
-    username: 'user2',
-    permission: 'user',
-    email: 'user@vng.com.vn',
-    full_name: 'Nguyen Van G',
-    date_of_birth: '12/9/1999',
-    phone: '07890812',
-    gender: 'Nu',
-    address: '8776 Le Dai Hanh',
-    is_verified: false
-}]
+const INTIAL_STATE = {
+    showLoadingBar: false
+}
 
 export default class AdminUser extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = INTIAL_STATE;
 
         this.userIdToRemove = null;
 
@@ -45,9 +28,56 @@ export default class AdminUser extends React.Component {
         this.handleDeleteUser = this.handleDeleteUser.bind(this);
         this.prepareFormData = this.prepareFormData.bind(this);
         this.generateTableRows = this.generateTableRows.bind(this);
+        this.fetchUsers = this.fetchUsers.bind(this);
     }
 
-    handleFilterChange({ currentPage, pageSize }) {
+    componentWillMount() {
+        const params = new URLSearchParams(this.props.history.location.search);
+        const pageIndex = Number(params.get('page'));
+        const pageSize = Number(params.get('size'));
+        if (
+            pageIndex
+            && pageSize
+            && [3, 10, 25, 50, 100].indexOf(pageSize) !== -1
+        ) {
+            this.handleFilterChange({
+                currentPage: pageIndex,
+                pageSize: pageSize
+            });
+        } else {
+            this.fetchUsers(this.props.currentPage, this.props.pageSize);
+            this.updateURLParams(this.props.currentPage, this.props.pageSize);
+        }
+    }
+
+    updateURLParams(currentPage, pageSize) {
+        this.props.history.push({
+            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
+        });
+    }
+
+    fetchUsers(currentPage, pageSize) {
+        // let offset = (this.props.currentPage - 1) * this.props.pageSize;
+        // let limit = this.props.pageSize;
+        this.setState({
+            showLoadingBar: true
+        });
+        WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, {})
+            .then(res => {
+                const result = JSON.parse(res);
+                console.log('ADMIN USERS', result);
+                this.props.fetchUsers(result.accounts);
+                this.handleFilterChange({
+                    totalItems: result.totalItems
+                });
+
+                this.setState({
+                    showLoadingBar: false
+                });
+            });
+    }
+
+    handleFilterChange({ currentPage, pageSize, totalItems }) {
         let payloadObj = {}
 
         if (currentPage) {
@@ -55,11 +85,21 @@ export default class AdminUser extends React.Component {
         }
 
         if (pageSize) {
-            payloadObj.currentPage = 1;
             payloadObj.pageSize = pageSize;
         }
 
+        if (totalItems) {
+            payloadObj.totalItems = totalItems;
+        }
+
         this.props.changePageInfo(payloadObj);
+        if (pageSize || currentPage) {
+            this.updateURLParams(payloadObj.currentPage, payloadObj.pageSize);
+            this.fetchUsers(
+                payloadObj.currentPage || this.props.currentPage,
+                payloadObj.pageSize || this.props.pageSize
+            );
+        }
     }
 
     handleUpdateUser() {
@@ -79,6 +119,11 @@ export default class AdminUser extends React.Component {
     }
 
     prepareFormData(data) {
+        for (let attr in data) {
+            if (data[attr] === null) {
+                data[attr] = '';
+            }
+        }
         this.props.setFormData(data);
     }
 
@@ -102,6 +147,7 @@ export default class AdminUser extends React.Component {
                         <td>{user.permission}</td>
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
+                        <td>{user.active === 'TRUE' ? <i className="fa fa-check"></i> : <i className="fa fa-times-circle"></i>}</td>
                         <td>
                             <div className="btn-group">
                                 <button className="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target={"#detailbox" + user.username} aria-expanded="false" aria-controls="collapseExample">
@@ -115,31 +161,30 @@ export default class AdminUser extends React.Component {
                                 <button className="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-user-modal"
                                     onClick={() => { this.userIdToRemove = user.id; }}
                                 >
-                                    Delete
+                                    Block
                                 </button>
                             </div>
                         </td>
                     </tr>
 
                     {/* ROW DETAIL */}
-                    <tr className="collapse" id={"detailbox" + user.username}>
-                        <td colSpan="6">
-                            <div>
-                                <div className="card card-body">
-                                    <table className="table table-sm">
-                                        <thead>
-                                            {HelperTool.generateTableHeaders(['Full name', 'DOB', 'Gender', 'Address'])}
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{user.full_name}</td>
-                                                <td>{user.date_of_birth}</td>
-                                                <td>{user.gender}</td>
-                                                <td>{user.address}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                    <tr className="collapse no-hover" id={"detailbox" + user.username}>
+                        <td colSpan="7">
+                            <div className="card card-body" style={{ 'border': 'none' }}>
+                                <table className="table table-sm">
+                                    <thead>
+                                        {HelperTool.generateTableHeaders(['Avatar', 'Full name', 'DOB', 'Gender', 'Address'])}
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><img src={user.avatar ? user.avatar : 'http://bestnycacupuncturist.com/wp-content/uploads/2016/11/anonymous-avatar-sm.jpg'} alt="NONE" style={{ width: 40 }} /></td>
+                                            <td>{user.fullName}</td>
+                                            <td>{user.dateOfBirth}</td>
+                                            <td>{user.gender}</td>
+                                            <td>{user.address}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </td>
                     </tr>
@@ -192,6 +237,7 @@ export default class AdminUser extends React.Component {
                                         });
                                     }}
                                 >
+                                    <option value="3">3</option>
                                     <option value="10">10</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -210,27 +256,29 @@ export default class AdminUser extends React.Component {
                             </div>
                         </div>
                         <div className="d-flex">
-                            <span>Displaying {this.props.pageSize * this.props.currentPage} / {this.props.totalItems}</span>
+                            <span>Display {((this.props.pageSize * this.props.currentPage) > this.props.totalItems) ? this.props.totalItems : (this.props.pageSize * this.props.currentPage)} / {this.props.totalItems}</span>
                         </div>
-                        <div className="progress" style={{ height: 5 }}>
-                            <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ "width": "75%" }}></div>
-                        </div>
-                        <div className="table-container table-responsive" >
-                            <table className="table table-hover table-sm table-bordered">
-                                <thead className="">
-                                    {HelperTool.generateTableHeaders(['ID', 'Username', 'Role', 'Email', 'Phone', 'Actions'])}
-                                </thead>
-                                <tbody>
-                                    {this.generateTableRows(MockUser)}
-                                </tbody>
-                            </table>
+                        <div className="table-container" style={{ position: 'relative' }}>
+                            <div className="progress" style={{ width: '100%', height: 5, position: 'absolute' }} hidden={this.state.showLoadingBar ? "" : "hidden"}>
+                                <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ "width": "100%" }}></div>
+                            </div>
+                            <div className="table-container table-responsive" >
+                                <table className="table table-hover table-sm table-bordered">
+                                    <thead className="">
+                                        {HelperTool.generateTableHeaders(['ID', 'Username', 'Role', 'Email', 'Phone', 'Active', 'Actions'])}
+                                    </thead>
+                                    <tbody>
+                                        {this.generateTableRows(this.props.users)}
+                                    </tbody>
+                                </table>
 
-                            <Paginator
-                                handlePageChange={(currentPage) => { this.handleFilterChange({ currentPage }) }}
-                                currentPage={this.props.currentPage}
-                                pageSize={this.props.pageSize}
-                                totalItems={this.props.totalItems}
-                            />
+                                <Paginator
+                                    handlePageChange={(currentPage) => { this.handleFilterChange({ currentPage }) }}
+                                    currentPage={this.props.currentPage}
+                                    pageSize={this.props.pageSize}
+                                    totalItems={this.props.totalItems}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

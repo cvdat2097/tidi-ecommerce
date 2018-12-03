@@ -10,6 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setFormData: (newData) => dispatch(Actions.updateAddUserForm(newData)),
+    fetchUsers: (users) => dispatch(Actions.fetchUsers(users)),
     changePageInfo: (pageInfo) => dispatch(commonActions.changePageInfo(pageInfo))
 });
 

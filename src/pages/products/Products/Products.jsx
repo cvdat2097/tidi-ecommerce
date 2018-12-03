@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './Products.scss';
 
+// import WebService from '../../../services/WebService';
 import MockAPI from '../../../helpers/MockAPI';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
@@ -51,6 +52,7 @@ class Products extends React.Component {
     }
 
     fetchProducts(currentPage, pageSize) {
+        // WebService.getAllProducts(1000, 0, {}).then((res) => {
         MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
             const result = JSON.parse(res);
 

@@ -185,7 +185,7 @@ export default {
     // 3.3 Get all products
     getAllProducts: (limit, offset, { industryId, branchId, categoryId, brandId, keyword, minPrice, maxPrice }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,
@@ -313,17 +313,17 @@ export default {
 
 
     // 6.1 Get all accounts
-    adminGetAllAccounts: (token, limit, offset, { keyword }) => {
+    adminGetAllAccounts: (token, offset, limit, { keyword }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
                     keyword
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/account/all'
         });
     },

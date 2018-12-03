@@ -1,9 +1,9 @@
 import Types from './types';
 
-// const toggleCart = (payload) => ({
-//     type: Types.TOGGLE_CART,
-//     payload
-// });
+const fetchUsers = (payload) => ({
+    type: Types.ADMIN_FETCH_USERS,
+    payload
+});
 
 const updateAddUserForm = (payload) => ({
     type: Types.ADMIN_UPDATE_ADD_USER_FORM,
@@ -13,4 +13,5 @@ const updateAddUserForm = (payload) => ({
 
 export default {
     updateAddUserForm,
+    fetchUsers
 };

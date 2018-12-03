@@ -85,7 +85,7 @@ export default class Header extends React.Component {
             if (categories) {
                 categories.forEach((cat, index) => {
                     R.push(
-                        <Link key={index} to="/">{cat.categoryName}</Link>
+                        <Link className="category-item" key={index} to="/">{cat.categoryName}</Link>
                     );
                 });
             }
@@ -102,7 +102,7 @@ export default class Header extends React.Component {
                         <div key={index} className="branch-container">
                             <h6>{branch.branchName}</h6>
                             <div>
-                                {generateCategories(branch.category)  /* FIXME: Back to cateogires */}
+                                {generateCategories(branch.categories)}
                             </div>
                         </div>
                     );
@@ -112,7 +112,7 @@ export default class Header extends React.Component {
             return R;
         }
 
-        return generateBranches(this.props.currentIndustry.branch); //FIXME: change back to branches
+        return generateBranches(this.props.currentIndustry.branches);
     }
 
     generateMenuItems() {
