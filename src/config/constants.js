@@ -1,11 +1,17 @@
 export default {
     REST_SERVER: 'http://localhost:8080/api/v1',
+    DATE_FORMAT: 'YYYY-MM-DD'
 }
 
 export const USER_TYPE = {
     ADMIN: 'ADMIN',
     CUSTOMER: 'CUSTOMER',
     PUBLIC: 'PUBLIC'
+}
+
+export const USER_GENDER = {
+    MALE: 'MALE',
+    FEMALE: 'FEMALE'
 }
 
 export const ORDER_STATUS = {

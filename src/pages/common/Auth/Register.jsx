@@ -4,7 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import AuthService from '../../../services/AuthService';
 import WebService from '../../../services/WebService';
-
+import CONSTANT from '../../../config/constants';
+import Moment from 'moment';
 
 const INITIAL_STATE = {
     username: '',
@@ -12,9 +13,9 @@ const INITIAL_STATE = {
     passwordConf: '',
     name: '',
     email: '',
-    phone: '',
-    dob: null,
-    gender: '',
+    phone: null, // FIXME: change to type string
+    dob: '',
+    gender: null,
     address: '',
     avatar: '',
 
@@ -60,6 +61,12 @@ export default class Login extends React.Component {
         });
     }
 
+    handleDOBChange(e) {
+        this.setState({
+            dob: e.target.value
+        });
+    }
+
     handleRegister() {
         console.log(this.state);
         if (this.state.password === this.state.passwordConf) {
@@ -67,18 +74,38 @@ export default class Login extends React.Component {
                 message: ''
             });
 
-            WebService.register(this.state.username, this.state.password, this.state.email,
-                this.state.name, this.state.dob, this.state.phone, this.state.gender, this.state.address, this.state.avatar)
-                .then(res => {
-                    let resObj = JSON.parse(res);
+            // DOB format process
 
-                    if (resObj.status.status === 'TRUE') {
-                        AuthService.saveToken(resObj.token);
-                        this.setState({
-                            redirectTo: <Redirect to={ROUTE_NAME.HOME} />
-                        });
-                    }
-                });
+            if (this.state.password) {
+
+                WebService.register(this.state.username,
+                    this.state.password,
+                    this.state.email,
+                    this.state.name,
+                    Moment(this.state.dob).format(CONSTANT.DATE_FORMAT).toString(),
+                    this.state.phone,
+                    this.state.gender,
+                    this.state.address,
+                    this.state.avatar)
+                    .then(res => {
+                        let resObj = JSON.parse(res);
+
+                        if (resObj.status.status === 'TRUE') {
+                            AuthService.saveToken(resObj.token);
+                            this.setState({
+                                redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+                            });
+                        } else {
+                            this.setState({
+                                message: resObj.status.message
+                            })
+                        }
+                    });
+            } else {
+                this.setState({
+                    message: 'Password cannot be empty.'
+                })
+            }
         } else {
             this.setState({
                 message: 'Passwords mismatch'
@@ -152,6 +179,18 @@ export default class Login extends React.Component {
                                 <input className="input100" type="text" name="pass" placeholder="Full Name"
                                     onChange={(e) => { this.handleNameChange(e) }}
                                     value={this.state.name}
+                                />
+                                <span className="focus-input100"></span>
+                                <span className="symbol-input100">
+                                    <i className="fa fa-address-card" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            {/* DOB */}
+                            <div className="wrap-input100 validate-input" data-validate="Password is required">
+                                <input className="input100" type="date" name="pass" placeholder="Date of Birth"
+                                    onChange={(e) => { this.handleDOBChange(e) }}
+                                    value={this.state.dob}
                                 />
                                 <span className="focus-input100"></span>
                                 <span className="symbol-input100">

@@ -6,6 +6,7 @@ import AuthService from '../../../services/AuthService';
 import MockAPI from '../../../helpers/MockAPI';
 import LIB from '../../../helpers/lib';
 import { PAYMENT_METHOD } from '../../../config/constants';
+// import CONSTANT from '../../../config/constants';
 
 const INITIAL_STATE = {
     fullname: '',
