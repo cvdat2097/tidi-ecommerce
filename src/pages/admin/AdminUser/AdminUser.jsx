@@ -10,7 +10,8 @@ import HelperTool from '../../../helpers/lib';
 import Paginator from '../../common/Paginator';
 
 const INTIAL_STATE = {
-    showLoadingBar: false
+    showLoadingBar: false,
+    message: ''
 }
 
 export default class AdminUser extends React.Component {
@@ -21,6 +22,7 @@ export default class AdminUser extends React.Component {
         this.state = INTIAL_STATE;
 
         this.userIdToRemove = null;
+        this.originalAccountInfo = {};
 
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleAddUser = this.handleAddUser.bind(this);
@@ -60,7 +62,7 @@ export default class AdminUser extends React.Component {
         // let offset = (this.props.currentPage - 1) * this.props.pageSize;
         // let limit = this.props.pageSize;
         this.setState({
-            showLoadingBar: true
+            showLoadingBar: true,
         });
         WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, {})
             .then(res => {
@@ -72,7 +74,7 @@ export default class AdminUser extends React.Component {
                 });
 
                 this.setState({
-                    showLoadingBar: false
+                    showLoadingBar: false,
                 });
             });
     }
@@ -103,8 +105,47 @@ export default class AdminUser extends React.Component {
     }
 
     handleUpdateUser() {
-        console.log('Update a user: ');
-        console.log(this.props.formData);
+        return new Promise((resolve, reject) => {
+            console.log('Before', this.originalAccountInfo);
+            console.log(this.props.formData);
+
+            const newInfo = {};
+            for (let attr in this.props.formData) {
+                if (attr !== 'password' && this.props.formData[attr] !== this.originalAccountInfo[attr]) {
+                    newInfo[attr] = this.props.formData[attr];
+                }
+            }
+
+            if (Object.keys(newInfo).length > 0) {
+                this.setState({
+                    message: <Message content="Updating acocunt..." />
+                });
+
+                WebService.adminUpdateAccount(AuthService.getTokenUnsafe(), this.props.formData.id, newInfo)
+                    .then(res => {
+                        const resObj = JSON.parse(res);
+                        if (resObj.status === 'TRUE') {
+                            this.setState({
+                                message: <Message color="green" content="Update account successfully" />
+                            });
+                            this.fetchUsers(this.props.currentPage, this.props.pageSize);
+
+                            resolve(true);
+                        } else {
+                            this.setState({
+                                message: <Message color="red" content={resObj.message} />
+                            });
+                            console.log('UPDATE FAILED', resObj);
+                            resolve(false);
+                        }
+                    });
+            } else {
+                resolve(false);
+                this.setState({
+                    message: 'Nothing to update'
+                })
+            }
+        });
     }
 
     handleAddUser() {
@@ -124,6 +165,7 @@ export default class AdminUser extends React.Component {
                 data[attr] = '';
             }
         }
+        this.originalAccountInfo = data;
         this.props.setFormData(data);
     }
 
@@ -146,7 +188,6 @@ export default class AdminUser extends React.Component {
                         <td>{user.username}</td>
                         <td>{user.permission}</td>
                         <td>{user.email}</td>
-                        <td>{user.phone}</td>
                         <td>{user.active === 'TRUE' ? <i className="fa fa-check"></i> : <i className="fa fa-times-circle"></i>}</td>
                         <td>
                             <div className="btn-group">
@@ -161,7 +202,7 @@ export default class AdminUser extends React.Component {
                                 <button className="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-user-modal"
                                     onClick={() => { this.userIdToRemove = user.id; }}
                                 >
-                                    Block
+                                    {user.active === 'TRUE' ? 'Block' : 'Unblock'}
                                 </button>
                             </div>
                         </td>
@@ -173,12 +214,13 @@ export default class AdminUser extends React.Component {
                             <div className="card card-body" style={{ 'border': 'none' }}>
                                 <table className="table table-sm">
                                     <thead>
-                                        {HelperTool.generateTableHeaders(['Avatar', 'Full name', 'DOB', 'Gender', 'Address'])}
+                                        {HelperTool.generateTableHeaders(['Avatar', 'Full name', 'Phone', 'DOB', 'Gender', 'Address'])}
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><img src={user.avatar ? user.avatar : 'http://bestnycacupuncturist.com/wp-content/uploads/2016/11/anonymous-avatar-sm.jpg'} alt="NONE" style={{ width: 40 }} /></td>
                                             <td>{user.fullName}</td>
+                                            <td>{user.phone}</td>
                                             <td>{user.dateOfBirth}</td>
                                             <td>{user.gender}</td>
                                             <td>{user.address}</td>
@@ -205,14 +247,16 @@ export default class AdminUser extends React.Component {
                     modalHandleSubmit={this.handleAddUser}
                     modalSubmitTitle="Add"
                     modalSubmitClassName="btn-success"
+                    modalMessage={this.state.message}
                 />
                 <Modal
                     modalId="update-user-modal"
                     modalTitle="Update user info"
-                    modalBody={<AdminAddUser />}
+                    modalBody={<AdminAddUser editMode={true} />}
                     modalHandleSubmit={this.handleUpdateUser}
                     modalSubmitTitle="Update"
                     modalSubmitClassName="btn-warning"
+                    modalMessage={this.state.message}
                 />
                 <Modal
                     modalId="delete-user-modal"
@@ -255,8 +299,9 @@ export default class AdminUser extends React.Component {
                                 </button>
                             </div>
                         </div>
-                        <div className="d-flex">
+                        <div className="d-flex justify-content-between">
                             <span>Display {((this.props.pageSize * this.props.currentPage) > this.props.totalItems) ? this.props.totalItems : (this.props.pageSize * this.props.currentPage)} / {this.props.totalItems}</span>
+                            {/* <span>{this.state.message}</span> */}
                         </div>
                         <div className="table-container" style={{ position: 'relative' }}>
                             <div className="progress" style={{ width: '100%', height: 5, position: 'absolute' }} hidden={this.state.showLoadingBar ? "" : "hidden"}>
@@ -265,7 +310,7 @@ export default class AdminUser extends React.Component {
                             <div className="table-container table-responsive" >
                                 <table className="table table-hover table-sm table-bordered">
                                     <thead className="">
-                                        {HelperTool.generateTableHeaders(['ID', 'Username', 'Role', 'Email', 'Phone', 'Active', 'Actions'])}
+                                        {HelperTool.generateTableHeaders(['ID', 'Username', 'Role', 'Email', 'Active', 'Actions'])}
                                     </thead>
                                     <tbody>
                                         {this.generateTableRows(this.props.users)}
@@ -285,4 +330,8 @@ export default class AdminUser extends React.Component {
             </div>
         );
     }
+}
+
+function Message(props) {
+    return <span style={{ color: props.color }}>{props.content}</span>
 }

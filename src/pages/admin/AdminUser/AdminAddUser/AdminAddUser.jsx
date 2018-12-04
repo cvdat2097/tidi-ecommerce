@@ -32,6 +32,23 @@ export default class AdminAddUser extends React.Component {
                         <small className="form-text text-muted"></small>
                     </div>
 
+                    {/* Password */}
+                    {
+                        !this.props.editMode ?
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Password"
+                                    value={this.props.formData.password}
+                                    onChange={(e) => this.props.updateForm({
+                                        password: e.target.value
+                                    })}
+                                />
+                                <small className="form-text text-muted"></small>
+                            </div>
+                            :
+                            null
+                    }
+
                     {/* PHONE */}
                     <div className="form-group">
                         <label>Phone</label>

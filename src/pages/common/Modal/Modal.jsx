@@ -5,7 +5,13 @@ export default class AdminAddUser extends React.Component {
 
     handleSubmit() {
         if (this.props.modalHandleSubmit) {
-            this.props.modalHandleSubmit();
+            this.props.modalHandleSubmit().then(success => {
+                if (success) {
+                    this.hideModal();
+                }
+            }).catch(res => {
+                this.hideModal();
+            });
         }
     }
 
@@ -13,6 +19,10 @@ export default class AdminAddUser extends React.Component {
         if (this.props.modalHandleClose) {
             this.props.modalHandleClose();
         }
+    }
+
+    hideModal() {
+        window.$('#' + this.props.modalId).modal('hide');
     }
 
     render() {
@@ -32,10 +42,11 @@ export default class AdminAddUser extends React.Component {
                                 {this.props.modalBody}
                             </div>
                             <div className="modal-footer">
+                                <span className="mr-auto">{this.props.modalMessage}</span>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
                                     onClick={() => this.handleClose()}
                                 >Close</button>
-                                <button type="button" className={"btn " + (this.props.modalSubmitClassName || "btn-success")} data-dismiss="modal"
+                                <button type="button" className={"btn " + (this.props.modalSubmitClassName || "btn-success")}
                                     onClick={() => this.handleSubmit()}
                                 >{this.props.modalSubmitTitle}</button>
                             </div>

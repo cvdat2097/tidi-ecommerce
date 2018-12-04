@@ -29,7 +29,8 @@ const INITIAL_STATE = {
             phone: '',
             gender: '',
             address: '',
-            active: 'TRUE'
+            active: 'TRUE',
+            password: ''
         }
     }
 }

@@ -354,7 +354,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 username,
                 password,
@@ -368,6 +367,7 @@ export default {
                 permission,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/account/update'
         });
     },
