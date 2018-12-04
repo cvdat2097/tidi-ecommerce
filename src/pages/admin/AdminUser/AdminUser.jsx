@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import './AdminUser.scss';
 
+import { DEFAULT_FORMDATA } from '../../../config/constants';
+
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
 import AdminAddUser from './AdminAddUser';
@@ -11,7 +13,7 @@ import Paginator from '../../common/Paginator';
 
 const INTIAL_STATE = {
     showLoadingBar: false,
-    message: ''
+    message: '',
 }
 
 export default class AdminUser extends React.Component {
@@ -21,7 +23,7 @@ export default class AdminUser extends React.Component {
 
         this.state = INTIAL_STATE;
 
-        this.userIdToRemove = null;
+        this.userToBlock = null;
         this.originalAccountInfo = {};
 
         this.handleFilterChange = this.handleFilterChange.bind(this);
@@ -67,7 +69,6 @@ export default class AdminUser extends React.Component {
         WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, {})
             .then(res => {
                 const result = JSON.parse(res);
-                console.log('ADMIN USERS', result);
                 this.props.fetchUsers(result.accounts);
                 this.handleFilterChange({
                     totalItems: result.totalItems
@@ -106,9 +107,6 @@ export default class AdminUser extends React.Component {
 
     handleUpdateUser() {
         return new Promise((resolve, reject) => {
-            console.log('Before', this.originalAccountInfo);
-            console.log(this.props.formData);
-
             const newInfo = {};
             for (let attr in this.props.formData) {
                 if (attr !== 'password' && this.props.formData[attr] !== this.originalAccountInfo[attr]) {
@@ -128,9 +126,14 @@ export default class AdminUser extends React.Component {
                             this.setState({
                                 message: <Message color="green" content="Update account successfully" />
                             });
-                            this.fetchUsers(this.props.currentPage, this.props.pageSize);
+
 
                             resolve(true);
+                            if ('permission' in newInfo && this.props.formData.username === this.props.username) {
+                                window.location.reload();
+                            } else {
+                                this.fetchUsers(this.props.currentPage, this.props.pageSize);
+                            }
                         } else {
                             this.setState({
                                 message: <Message color="red" content={resObj.message} />
@@ -143,23 +146,83 @@ export default class AdminUser extends React.Component {
                 resolve(false);
                 this.setState({
                     message: 'Nothing to update'
-                })
+                });
             }
         });
     }
 
     handleAddUser() {
-        console.log("Added a new user");
-        console.log(this.props.formData);
+        return new Promise((resolve, reject) => {
+            this.setState({
+                message: <Message content="Creating acocunt..." />
+            });
+
+            if (!this.props.formData.username) {
+                this.setState({
+                    message: <Message color="red" content="Username is empty" />
+                });
+            } else if (!this.props.formData.email) {
+                this.setState({
+                    message: <Message color="red" content="Email is empty" />
+                });
+            } else if (!this.props.formData.password) {
+                this.setState({
+                    message: <Message color="red" content="Password is empty" />
+                });
+            } else {
+                WebService.adminCreateAccount(AuthService.getTokenUnsafe(), this.props.formData)
+                    .then(res => {
+                        const resObj = JSON.parse(res);
+                        if (resObj.status === 'TRUE') {
+                            this.setState({
+                                message: <Message color="green" content="Create account successfully" />
+                            });
+
+                            resolve(true);
+                            this.fetchUsers(this.props.currentPage, this.props.pageSize);
+                        } else {
+                            this.setState({
+                                message: <Message color="red" content={resObj.message} />
+                            });
+                            console.log('ADD FAILED', resObj);
+                            resolve(false);
+                        }
+                    });
+            }
+        });
     }
 
     handleDeleteUser() {
-        if (this.userIdToRemove) {
-            console.log('Deleted user ' + this.userIdToRemove);
-        }
+        return new Promise(resolve => {
+            if (this.userToBlock && this.userToBlock.id) {
+                WebService.adminUpdateAccount(AuthService.getTokenUnsafe(), this.userToBlock.id, {
+                    active: this.userToBlock.active === 'TRUE' ? 'FALSE' : 'TRUE'
+                }).then(res => {
+                    const resObj = JSON.parse(res);
+                    if (resObj.status === 'TRUE') {
+                        this.setState({
+                            message: <Message color="green" content={(this.userToBlock.active === 'TRUE' ? 'Block' : 'Unblock') + "account successfully"} />
+                        });
+
+                        resolve(true);
+                        this.fetchUsers(this.props.currentPage, this.props.pageSize);
+                    } else {
+                        this.setState({
+                            message: <Message color="red" content={resObj.message} />
+                        });
+                        console.log('UPDATE BLOCK STATUS FAILED', resObj);
+                        resolve(false);
+                    }
+                });
+            }
+        });
     }
 
     prepareFormData(data) {
+        this.setState({
+            message: ''
+        });
+
         for (let attr in data) {
             if (data[attr] === null) {
                 data[attr] = '';
@@ -170,11 +233,12 @@ export default class AdminUser extends React.Component {
     }
 
     clearFormData() {
-        let clearObj = {};
-        for (let attr in this.props.formData) {
-            clearObj[attr] = "";
-        }
-        this.props.setFormData(clearObj);
+        this.setState({
+            message: ''
+        });
+
+
+        this.props.setFormData(DEFAULT_FORMDATA.AdminAddUser);
     }
 
     generateTableRows(users) {
@@ -200,7 +264,7 @@ export default class AdminUser extends React.Component {
                                     Edit
                                 </button>
                                 <button className="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-user-modal"
-                                    onClick={() => { this.userIdToRemove = user.id; }}
+                                    onClick={() => { this.userToBlock = user; }}
                                 >
                                     {user.active === 'TRUE' ? 'Block' : 'Unblock'}
                                 </button>
@@ -261,9 +325,9 @@ export default class AdminUser extends React.Component {
                 <Modal
                     modalId="delete-user-modal"
                     modalTitle="Update user info"
-                    modalBody={<div>Are you sure to delete this user?</div>}
+                    modalBody={<div>Are you sure to Block/Unblock this user?</div>}
                     modalHandleSubmit={this.handleDeleteUser}
-                    modalSubmitTitle="Delete"
+                    modalSubmitTitle="Block/Unblock"
                     modalSubmitClassName="btn-danger"
                 />
                 <h2>User</h2>

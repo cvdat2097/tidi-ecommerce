@@ -1,14 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './AdminNavBar.scss';
+
+import AuthService from '../../../../services/AuthService';
 
 import { ROUTE_NAME } from '../../../../routes/main.routing';
 
+const INTIAL_STATE = {
+    redirectTo: null
+}
+
 export default class AdminNavBar extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = INTIAL_STATE;
+    }
+
+    logout() {
+        AuthService.logout();
+        this.setState({
+            redirectTo: <Redirect to={ROUTE_NAME.LOGIN} />
+        });
+    }
     render() {
         return (
             <div className="nav-side-menu">
+                {this.state.redirectTo}
                 <h1 className="brand">ADMIN</h1>
+                <p className="text-center">Hello, <strong>{this.props.username}</strong></p>
+                <p className="text-center"><a href="#/" onClick={() => this.logout()}>Logout</a></p>
                 <i className="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 
                 <div className="menu-list">

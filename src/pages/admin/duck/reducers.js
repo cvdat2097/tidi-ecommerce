@@ -1,6 +1,6 @@
 import Types from './types';
 import commonTypes from '../../common/duck/types';
-import { USER_TYPE } from '../../../config/constants';
+import { DEFAULT_FORMDATA } from '../../../config/constants';
 
 const INITIAL_STATE = {
     AdminUser: {
@@ -21,16 +21,7 @@ const INITIAL_STATE = {
 
     AdminAddUser: {
         formData: {
-            username: '',
-            permission: USER_TYPE.PUBLIC,
-            email: '',
-            fullName: '',
-            dateOfBirth: '',
-            phone: '',
-            gender: '',
-            address: '',
-            active: 'TRUE',
-            password: ''
+            ...DEFAULT_FORMDATA.AdminAddUser
         }
     }
 }

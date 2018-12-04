@@ -27,6 +27,22 @@ export const VERIFICATION_TYPE = {
     PASSWORD: 'PASSWORD'
 }
 
+export const DEFAULT_FORMDATA = {
+    AdminAddUser: {
+        username: '',
+        permission: USER_TYPE.CUSTOMER,
+        email: '',
+        fullName: '',
+        dateOfBirth: '',
+        phone: '',
+        gender: USER_GENDER.MALE,
+        address: '',
+        active: 'TRUE',
+        password: ''
+    }
+}
+
+
 export const PAYMENT_METHOD = [
     {
         ID: 0,

@@ -333,7 +333,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 username,
                 password,
                 email,
@@ -345,6 +344,7 @@ export default {
                 avatar,
                 permission
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/account/create'
         });
     },

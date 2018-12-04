@@ -3,9 +3,13 @@
 @import 'src/assets/scss/mixin';
 @import 'src/assets/scss/responsive';
 
+a {
+  font-size: 1em;
+}
 
 a:hover {
     color: initial !important;
+    font-size: 1em;
 }
   
   .nav-side-menu {
@@ -132,6 +136,9 @@ a:hover {
   @media (min-width: 767px) {
     .nav-side-menu .menu-list .menu-content {
       display: block;
+      li {
+        box-sizing: border-box;
+      }
     }
   }
   

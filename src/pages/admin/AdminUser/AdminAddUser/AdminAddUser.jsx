@@ -1,7 +1,7 @@
 import React from 'react';
 import './AdminAddUser.scss';
 
-import { USER_TYPE } from '../../../../config/constants';
+import { USER_TYPE, USER_GENDER } from '../../../../config/constants';
 
 export default class AdminAddUser extends React.Component {
     render() {
@@ -10,19 +10,19 @@ export default class AdminAddUser extends React.Component {
                 <form >
                     {/* USERNAME */}
                     <div className="form-group">
-                        <label>Username</label>
+                        <label>Username *</label>
                         <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Username"
                             value={this.props.formData.username}
                             onChange={(e) => this.props.updateForm({
                                 username: e.target.value
                             })}
                         />
-                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small className="form-text text-muted"></small>
                     </div>
 
                     {/* EMAIL */}
                     <div className="form-group">
-                        <label>Email</label>
+                        <label>Email *</label>
                         <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter email"
                             value={this.props.formData.email}
                             onChange={(e) => this.props.updateForm({
@@ -36,7 +36,7 @@ export default class AdminAddUser extends React.Component {
                     {
                         !this.props.editMode ?
                             <div className="form-group">
-                                <label>Password</label>
+                                <label>Password *</label>
                                 <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Password"
                                     value={this.props.formData.password}
                                     onChange={(e) => this.props.updateForm({
@@ -49,6 +49,21 @@ export default class AdminAddUser extends React.Component {
                             null
                     }
 
+                    {/* Gender */}
+                    <div className="form-group">
+                        <label>Gender</label>
+                        <select type="text" className="form-control" aria-describedby="emailHelp" placeholder="Gender"
+                            value={this.props.formData.gender}
+                            onChange={(e) => this.props.updateForm({
+                                gender: e.target.value
+                            })}
+                        >
+                            <option value={USER_GENDER.MALE}>{USER_GENDER.MALE}</option>
+                            <option value={USER_GENDER.FEMALE}>{USER_GENDER.FEMALE}</option>
+                        </select>
+                    </div>
+
+
                     {/* PHONE */}
                     <div className="form-group">
                         <label>Phone</label>
@@ -58,7 +73,7 @@ export default class AdminAddUser extends React.Component {
                                 phone: e.target.value
                             })}
                         />
-                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small className="form-text text-muted"></small>
                     </div>
 
                     {/* FULL NAME */}
@@ -70,19 +85,19 @@ export default class AdminAddUser extends React.Component {
                                 fullName: e.target.value
                             })}
                         />
-                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small className="form-text text-muted"></small>
                     </div>
 
                     {/* Date of Birth */}
                     <div className="form-group">
                         <label>Date of Birth</label>
                         <input type="date" className="form-control" aria-describedby="emailHelp" placeholder="DOB"
-                            value={this.props.formData.dob}
+                            value={this.props.formData.dateOfBirth}
                             onChange={(e) => this.props.updateForm({
-                                dob: e.target.value
+                                dateOfBirth: e.target.value
                             })}
                         />
-                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small className="form-text text-muted"></small>
                     </div>
 
                     {/* ADDRESS */}
@@ -94,8 +109,9 @@ export default class AdminAddUser extends React.Component {
                                 address: e.target.value
                             })}
                         />
-                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small className="form-text text-muted"></small>
                     </div>
+
                     {/* Permission */}
                     <div className="form-group">
                         <label>Permission</label>
@@ -105,11 +121,10 @@ export default class AdminAddUser extends React.Component {
                                 permission: e.target.value
                             })}
                         >
-                            <option value={USER_TYPE.PUBLIC}>{USER_TYPE.PUBLIC}</option>
                             <option value={USER_TYPE.CUSTOMER}>{USER_TYPE.CUSTOMER}</option>
                             <option value={USER_TYPE.ADMIN}>{USER_TYPE.ADMIN}</option>
                         </select>
-                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <small className="form-text text-muted"></small>
                     </div>
                 </form>
             </div>
