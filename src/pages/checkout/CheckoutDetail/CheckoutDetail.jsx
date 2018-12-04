@@ -34,6 +34,7 @@ export default class CheckoutDetail extends React.Component {
         this.generatePaymentMethods = this.generatePaymentMethods.bind(this);
         this.handleShippingMethodSelect = this.handleShippingMethodSelect.bind(this);
         this.fetchUserInfo = this.fetchUserInfo.bind(this);
+        this.placeOrder = this.placeOrder.bind(this);
     }
 
     componentWillMount() {
@@ -43,11 +44,17 @@ export default class CheckoutDetail extends React.Component {
 
 
     fetchCartProducts() {
-        MockAPI.CART.getCart().then(res => {
-            const cart = JSON.parse(res);
+        if (this.props.isLoggedIn) {
+            WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
+                // MockAPI.CART.getCart().then(res => {
+                const result = JSON.parse(res);
 
-            this.props.updateCartProducts(cart);
-        });
+                if (result.status.status === 'TRUE' && result.products) {
+                    result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                    this.props.updateCartProducts(result.products);
+                }
+            });
+        }
     }
 
     async fetchUserInfo() {
@@ -67,29 +74,16 @@ export default class CheckoutDetail extends React.Component {
         })
     }
 
-    placeOrder() {
-        if (!this.state.shippingMethod.NAME) {
-            this.setState({
-                shippingMethodIsInvalid: true,
-                errorMessage: 'Please choose a shipping method'
-            });
-        } else {
-            console.log(this.state);
-            this.setState(INITIAL_STATE)
-        }
-    }
-
     generateCartItemList() {
         let totalPrice = 0;
         let itemElements = this.props.cartItems.map((cartItem, index) => {
-            let product = cartItem.product;
-            let price = (product.price - product.price * product.discPercent) * cartItem.amount;
+            let price = (cartItem.price - cartItem.price * cartItem.discPercent) * cartItem.amount;
 
             totalPrice += price;
 
             return (
                 <li key={index} className="item-product-name">
-                    <span>{`[${cartItem.amount}] ${product.productName}`}</span>
+                    <span>{`[${cartItem.amount}] ${cartItem.productName}`}</span>
                     <span>{`${price} ₫`}</span>
                 </li>
             );
@@ -119,6 +113,19 @@ export default class CheckoutDetail extends React.Component {
                 isSelected={method.NAME === this.state.shippingMethod.NAME}
             />
         ));
+    }
+
+    placeOrder() {
+        if (!this.state.shippingMethod.NAME) {
+            this.setState({
+                shippingMethodIsInvalid: true,
+                errorMessage: 'Please choose a shipping method'
+            });
+        } else {
+            console.log(this.state);
+            console.log(this.props.cartItems);
+            this.setState(INITIAL_STATE)
+        }
     }
 
     render() {

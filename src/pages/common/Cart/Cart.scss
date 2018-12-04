@@ -203,6 +203,7 @@
             }
         }
         .cart-amount-summary {
+            overflow-y: scroll;
             padding: 100px 10%;
             position: relative;
             z-index: 10;
