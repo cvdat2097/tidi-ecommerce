@@ -3,3 +3,10 @@
 @import 'src/assets/scss/mixin';
 @import 'src/assets/scss/responsive';
 
+label {
+    font-weight: bold;
+}
+
+.is-required {
+    color: red;
+}

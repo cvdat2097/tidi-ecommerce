@@ -25,6 +25,7 @@ export default class AdminUser extends React.Component {
 
         this.userToBlock = null;
         this.originalAccountInfo = {};
+        this.searchInterval = null;
 
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleAddUser = this.handleAddUser.bind(this);
@@ -42,7 +43,7 @@ export default class AdminUser extends React.Component {
         if (
             pageIndex
             && pageSize
-            && [3, 10, 25, 50, 100].indexOf(pageSize) !== -1
+            && [10, 25, 50, 100].indexOf(pageSize) !== -1
         ) {
             this.handleFilterChange({
                 currentPage: pageIndex,
@@ -133,7 +134,7 @@ export default class AdminUser extends React.Component {
                             if ('permission' in newInfo && this.props.formData.username === this.props.username) {
                                 window.location.reload();
                             } else {
-                                this.fetchUsers(this.props.currentPage, this.props.pageSize,this.props.query);
+                                this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query);
                             }
                         } else {
                             this.setState({
@@ -180,7 +181,7 @@ export default class AdminUser extends React.Component {
                             });
 
                             resolve(true);
-                            this.fetchUsers(this.props.currentPage, this.props.pageSize,this.props.query);
+                            this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query);
                         } else {
                             this.setState({
                                 message: <Message color="red" content={resObj.message} />
@@ -206,7 +207,7 @@ export default class AdminUser extends React.Component {
                         });
 
                         resolve(true);
-                        this.fetchUsers(this.props.currentPage, this.props.pageSize,this.props.query);
+                        this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query);
                     } else {
                         this.setState({
                             message: <Message color="red" content={resObj.message} />
@@ -221,6 +222,10 @@ export default class AdminUser extends React.Component {
 
     handleChangeKeyword(e) {
         this.props.changeKeyword(e.target.value);
+        clearTimeout(this.searchInterval);
+        this.searchInterval = setTimeout(() => {
+            this.handleSearch();
+        }, 300);
     }
 
     handleSearch() {
@@ -265,17 +270,17 @@ export default class AdminUser extends React.Component {
                         <td>
                             <div className="btn-group">
                                 <button className="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target={"#detailbox" + user.username} aria-expanded="false" aria-controls="collapseExample">
-                                    Detail
+                                    <i className="fa fa-info-circle"></i> Detail
                                 </button>
                                 <button className="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-user-modal"
                                     onClick={() => this.prepareFormData(user)}
                                 >
-                                    Edit
+                                    <i className="fa fa-pencil-square-o"></i> Edit
                                 </button>
                                 <button className="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-user-modal"
                                     onClick={() => { this.userToBlock = user; }}
                                 >
-                                    {user.active === 'TRUE' ? 'Block' : 'Unblock'}
+                                    <i className="fa fa-ban"></i> {user.active === 'TRUE' ? 'Block' : 'Unblock'}
                                 </button>
                             </div>
                         </td>
@@ -360,7 +365,6 @@ export default class AdminUser extends React.Component {
                                         });
                                     }}
                                 >
-                                    <option value="3">3</option>
                                     <option value="10">10</option>
                                     <option value="25">25</option>
                                     <option value="50">50</option>
@@ -374,7 +378,7 @@ export default class AdminUser extends React.Component {
                                         this.clearFormData();
                                     }}
                                 >
-                                    Add user
+                                    <i className="fa fa-plus-circle mr-2"></i>Add user
                                 </button>
                             </div>
                         </div>

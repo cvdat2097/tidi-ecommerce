@@ -7,7 +7,7 @@ const INITIAL_STATE = {
         isActive: false,
         currentPage: 1,
         totalItems: 0,
-        pageSize: 3,
+        pageSize: 10,
         users: [],
         query: {
             keyword: ''

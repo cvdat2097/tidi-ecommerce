@@ -41,10 +41,10 @@ export default class AdminNavBar extends React.Component {
                             </a>
                         </li>
 
-                        <li data-toggle="collapse" data-target="#products" className="collapsed active">
+                        <li data-toggle="collapse" data-target="#products" className="show active">
                             <a href="/"><i className="fa fa-briefcase fa-lg"></i> Management <span className="arrow"></span></a>
                         </li>
-                        <ul className="sub-menu collapse" id="products">
+                        <ul className="sub-menu collapse show" id="products">
                             <li className="active"><Link to={ROUTE_NAME.ADMIN.USER}>User</Link></li>
                             <li><Link to={ROUTE_NAME.ADMIN.PRODUCT}>Product</Link></li>
                             <li><Link to={ROUTE_NAME.ADMIN.COUPON}>Coupon</Link></li>

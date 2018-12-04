@@ -10,8 +10,8 @@ export default class AdminAddUser extends React.Component {
                 <form >
                     {/* USERNAME */}
                     <div className="form-group">
-                        <label>Username *</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Username"
+                        <label>Username <span className="is-required">*</span></label>
+                        <input type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.username}
                             onChange={(e) => this.props.updateForm({
                                 username: e.target.value
@@ -22,8 +22,8 @@ export default class AdminAddUser extends React.Component {
 
                     {/* EMAIL */}
                     <div className="form-group">
-                        <label>Email *</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter email"
+                        <label>Email <span className="is-required">*</span></label>
+                        <input type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.email}
                             onChange={(e) => this.props.updateForm({
                                 email: e.target.value
@@ -36,8 +36,8 @@ export default class AdminAddUser extends React.Component {
                     {
                         !this.props.editMode ?
                             <div className="form-group">
-                                <label>Password *</label>
-                                <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Password"
+                                <label>Password <span className="is-required">*</span></label>
+                                <input type="text" className="form-control" aria-describedby="emailHelp"
                                     value={this.props.formData.password}
                                     onChange={(e) => this.props.updateForm({
                                         password: e.target.value
@@ -52,7 +52,7 @@ export default class AdminAddUser extends React.Component {
                     {/* Gender */}
                     <div className="form-group">
                         <label>Gender</label>
-                        <select type="text" className="form-control" aria-describedby="emailHelp" placeholder="Gender"
+                        <select type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.gender}
                             onChange={(e) => this.props.updateForm({
                                 gender: e.target.value
@@ -67,7 +67,7 @@ export default class AdminAddUser extends React.Component {
                     {/* PHONE */}
                     <div className="form-group">
                         <label>Phone</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Phone number"
+                        <input type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.phone}
                             onChange={(e) => this.props.updateForm({
                                 phone: e.target.value
@@ -79,7 +79,7 @@ export default class AdminAddUser extends React.Component {
                     {/* FULL NAME */}
                     <div className="form-group">
                         <label>Full Name</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Fullname"
+                        <input type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.fullName}
                             onChange={(e) => this.props.updateForm({
                                 fullName: e.target.value
@@ -91,7 +91,7 @@ export default class AdminAddUser extends React.Component {
                     {/* Date of Birth */}
                     <div className="form-group">
                         <label>Date of Birth</label>
-                        <input type="date" className="form-control" aria-describedby="emailHelp" placeholder="DOB"
+                        <input type="date" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.dateOfBirth}
                             onChange={(e) => this.props.updateForm({
                                 dateOfBirth: e.target.value
@@ -103,7 +103,7 @@ export default class AdminAddUser extends React.Component {
                     {/* ADDRESS */}
                     <div className="form-group">
                         <label>Address</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp" placeholder="Address"
+                        <input type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.address}
                             onChange={(e) => this.props.updateForm({
                                 address: e.target.value
@@ -115,7 +115,7 @@ export default class AdminAddUser extends React.Component {
                     {/* Permission */}
                     <div className="form-group">
                         <label>Permission</label>
-                        <select type="text" className="form-control" aria-describedby="emailHelp" placeholder="Permission"
+                        <select type="text" className="form-control" aria-describedby="emailHelp"
                             value={this.props.formData.permission}
                             onChange={(e) => this.props.updateForm({
                                 permission: e.target.value
