@@ -2,8 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './Products.scss';
 
-// import WebService from '../../../services/WebService';
-import MockAPI from '../../../helpers/MockAPI';
+import WebService from '../../../services/WebService';
+// import MockAPI from '../../../helpers/MockAPI';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
 import SearchPanel from '../SearchPanel';
@@ -52,12 +52,11 @@ class Products extends React.Component {
     }
 
     fetchProducts(currentPage, pageSize) {
-        // WebService.getAllProducts(1000, 0, {}).then((res) => {
-        MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
+        WebService.getAllProducts(pageSize, (currentPage - 1) * pageSize, {}).then((res) => {
+            // MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
             const result = JSON.parse(res);
-
             // console.log('GOT: ' + result.products.length);
-            this.props.updateProductList(result.products);
+            this.props.updateProductList(result.products.map(prd => ({ ...prd, images: JSON.parse(prd.images) })));
             this.props.changePageInfo({ totalItems: result.totalItems });
         });
     }
@@ -200,6 +199,8 @@ class Products extends React.Component {
 class Product extends React.Component {
     render() {
         const product = this.props.product;
+        const discountedPrice = product.price - product.price * product.discPercent;
+        // const productImages = JSON.parse(product.images);
         return (
             < div className="col-12 col-sm-6 col-lg-4" >
                 <div className="single-product-wrapper">
@@ -210,9 +211,12 @@ class Product extends React.Component {
                         <img className="hover-img" src={product.images[1]} alt="" />
 
                         {/* <!-- Product Badge --> */}
-                        <div className="product-badge offer-badge">
-                            <span>{'-' + product.discPercent * 100 + '%'}</span>
-                        </div>
+                        {
+                            product.discPercent !== 0 &&
+                            <div className="product-badge offer-badge">
+                                <span>{'-' + product.discPercent * 100 + '%'}</span>
+                            </div>
+                        }
 
                         {/* <!-- Favourite --> */}
                         <div className="product-favourite">
@@ -226,7 +230,13 @@ class Product extends React.Component {
                         <a href={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id}>
                             <h6>{product.productName}</h6>
                         </a>
-                        <p className="product-price"><span className="old-price">{product.price + 'VND'}</span> {product.price * product.discPercent + 'VND'}</p>
+                        <p className="product-price">
+                            {
+                                product.discPercent !== 0 &&
+                                <span className="old-price">{product.price + 'VND'}</span>
+                            }
+                            {discountedPrice + 'VND'}
+                        </p>
 
                         {/* <!-- Hover Content --> */}
                         <div className="hover-content">
