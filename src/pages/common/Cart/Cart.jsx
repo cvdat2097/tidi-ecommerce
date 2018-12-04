@@ -137,7 +137,7 @@ export default class Cart extends React.Component {
                             (!this.props.products || this.props.products.length === 0) &&
                             <div className="empty-cart">
                                 <img src="/img/core-img/emptycart.png" alt="" draggable="false" />
-                                <h2>Your cart is empty!</h2>
+                                <h2 className="text-center">Your cart is empty!</h2>
                             </div>
                         }
 

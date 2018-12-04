@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import './Products.scss';
 
 import { showAlert } from '../../../helpers/lib';
@@ -248,9 +248,11 @@ class Product extends React.Component {
                 <div className="single-product-wrapper">
                     {/* <!-- Product Image --> */}
                     <div className="product-img">
-                        <img src={product.images[0]} alt="" />
-                        {/* <!-- Hover Thumb --> */}
-                        <img className="hover-img" src={product.images[1]} alt="" />
+                        <Link to={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id}>
+                            <img src={product.images[0]} alt="" />
+                            {/* <!-- Hover Thumb --> */}
+                            <img className="hover-img" src={product.images[1]} alt="" />
+                        </Link>
 
                         {/* <!-- Product Badge --> */}
                         {
@@ -262,16 +264,16 @@ class Product extends React.Component {
 
                         {/* <!-- Favourite --> */}
                         <div className="product-favourite">
-                            <a href="/" className="favme fa fa-heart">f</a>
+                            <a href="/" className="favme fa fa-heart"><span></span></a>
                         </div>
                     </div>
 
                     {/* <!-- Product Description --> */}
                     <div className="product-description">
                         <span>{product.category.categoryName}</span>
-                        <a href={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id}>
+                        <Link to={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id}>
                             <h6>{product.productName}</h6>
-                        </a>
+                        </Link>
                         <p className="product-price">
                             {
                                 product.discPercent !== 0 &&

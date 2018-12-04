@@ -36,6 +36,7 @@ class HOC extends React.Component {
 
             this.setState(newState);
         });
+        window.scrollTo(0, 0);
     }
 
     render() {

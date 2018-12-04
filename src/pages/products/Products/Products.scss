@@ -155,6 +155,9 @@
             animation: favme-anime .5s;
         }
     }
+    .favme:hover {
+        color: #f60a0a !important;
+    }
     &:hover {
         .product-img {
             .hover-img {

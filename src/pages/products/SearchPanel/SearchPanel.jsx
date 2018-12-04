@@ -166,7 +166,7 @@ export default class SearchPanel extends React.Component {
                 </div>
 
                 <div className="widget mb-50 d-flex justify-content-center">
-                    <button className="btn btn-primary"
+                    <button className="btn essence-btn btn-sm"
                         onClick={this.handleApplyFilter}
                     >Apply Filter</button>
                 </div>

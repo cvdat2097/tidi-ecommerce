@@ -34,7 +34,6 @@ export const showAlert = (message, type = 'success', position = 'top-end') => {
         title: message,
         showConfirmButton: false,
         timer: 1500,
-        backdrop: false,
         customClass: 'add-to-cart-alert',
         showCloseButton: true,
         toast: true
