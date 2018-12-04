@@ -49,7 +49,7 @@ export default class AdminUser extends React.Component {
                 pageSize: pageSize
             });
         } else {
-            this.fetchUsers(this.props.currentPage, this.props.pageSize);
+            this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query);
             this.updateURLParams(this.props.currentPage, this.props.pageSize);
         }
     }
@@ -60,13 +60,13 @@ export default class AdminUser extends React.Component {
         });
     }
 
-    fetchUsers(currentPage, pageSize) {
+    fetchUsers(currentPage, pageSize, query = {}) {
         // let offset = (this.props.currentPage - 1) * this.props.pageSize;
         // let limit = this.props.pageSize;
         this.setState({
             showLoadingBar: true,
         });
-        WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, {})
+        WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, query)
             .then(res => {
                 const result = JSON.parse(res);
                 this.props.fetchUsers(result.accounts);
@@ -100,7 +100,8 @@ export default class AdminUser extends React.Component {
             this.updateURLParams(payloadObj.currentPage, payloadObj.pageSize);
             this.fetchUsers(
                 payloadObj.currentPage || this.props.currentPage,
-                payloadObj.pageSize || this.props.pageSize
+                payloadObj.pageSize || this.props.pageSize,
+                this.props.query
             );
         }
     }
@@ -132,7 +133,7 @@ export default class AdminUser extends React.Component {
                             if ('permission' in newInfo && this.props.formData.username === this.props.username) {
                                 window.location.reload();
                             } else {
-                                this.fetchUsers(this.props.currentPage, this.props.pageSize);
+                                this.fetchUsers(this.props.currentPage, this.props.pageSize,this.props.query);
                             }
                         } else {
                             this.setState({
@@ -179,7 +180,7 @@ export default class AdminUser extends React.Component {
                             });
 
                             resolve(true);
-                            this.fetchUsers(this.props.currentPage, this.props.pageSize);
+                            this.fetchUsers(this.props.currentPage, this.props.pageSize,this.props.query);
                         } else {
                             this.setState({
                                 message: <Message color="red" content={resObj.message} />
@@ -205,7 +206,7 @@ export default class AdminUser extends React.Component {
                         });
 
                         resolve(true);
-                        this.fetchUsers(this.props.currentPage, this.props.pageSize);
+                        this.fetchUsers(this.props.currentPage, this.props.pageSize,this.props.query);
                     } else {
                         this.setState({
                             message: <Message color="red" content={resObj.message} />
@@ -216,6 +217,14 @@ export default class AdminUser extends React.Component {
                 });
             }
         });
+    }
+
+    handleChangeKeyword(e) {
+        this.props.changeKeyword(e.target.value);
+    }
+
+    handleSearch() {
+        this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query)
     }
 
     prepareFormData(data) {
@@ -333,7 +342,13 @@ export default class AdminUser extends React.Component {
                 <h2>User</h2>
                 <hr />
                 <div className="card">
-                    <div className="card-header">User list</div>
+                    <div className="card-header d-flex justify-content-end">
+                        <input className="search-bar form-control col-md-4 col-sm-6" type="text" placeholder="Search for something..."
+                            value={this.props.query.keyword}
+                            onChange={(e) => this.handleChangeKeyword(e)}
+                            onKeyDown={(e) => e.keyCode === 13 && this.handleSearch()}
+                        />
+                    </div>
                     <div className="card-body">
                         <div className="controllers d-flex">
                             <div>

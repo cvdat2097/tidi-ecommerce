@@ -10,8 +10,14 @@ const updateAddUserForm = (payload) => ({
     payload
 });
 
+const updateUserKeyword = (payload) => ({
+    type: Types.ADMIN_UPDATE_USER_KEYWORD,
+    payload
+});
+
 
 export default {
     updateAddUserForm,
+    updateUserKeyword,
     fetchUsers
 };

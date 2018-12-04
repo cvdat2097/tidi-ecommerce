@@ -11,7 +11,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     setFormData: (newData) => dispatch(Actions.updateAddUserForm(newData)),
     fetchUsers: (users) => dispatch(Actions.fetchUsers(users)),
-    changePageInfo: (pageInfo) => dispatch(commonActions.changePageInfo(pageInfo))
+    changePageInfo: (pageInfo) => dispatch(commonActions.changePageInfo(pageInfo)),
+    changeKeyword: (keyword) => dispatch(Actions.updateUserKeyword(keyword))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUser);

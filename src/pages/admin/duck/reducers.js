@@ -8,7 +8,10 @@ const INITIAL_STATE = {
         currentPage: 1,
         totalItems: 0,
         pageSize: 3,
-        users: []
+        users: [],
+        query: {
+            keyword: ''
+        }
     },
 
     Admin: {
@@ -38,6 +41,19 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                     }
                 }
             };
+
+        case Types.ADMIN_UPDATE_USER_KEYWORD:
+            return {
+                ...state,
+                AdminUser: {
+                    ...state.AdminUser,
+                    query: {
+                        ...state.AdminUser.query,
+                        keyword: action.payload
+                    }
+                }
+            };
+
 
         case Types.ADMIN_FETCH_USERS:
             return {
