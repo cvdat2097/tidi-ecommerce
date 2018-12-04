@@ -3,8 +3,8 @@ import './CheckoutDetail.scss';
 
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import MockAPI from '../../../helpers/MockAPI';
-import LIB from '../../../helpers/lib';
+// import MockAPI from '../../../helpers/MockAPI';
+import LIB, { withCommas } from '../../../helpers/lib';
 import { PAYMENT_METHOD } from '../../../config/constants';
 // import CONSTANT from '../../../config/constants';
 
@@ -49,8 +49,10 @@ export default class CheckoutDetail extends React.Component {
                 // MockAPI.CART.getCart().then(res => {
                 const result = JSON.parse(res);
 
-                if (result.status.status === 'TRUE' && result.products) {
-                    result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                if (result.status.status === 'TRUE') {
+                    if (result.products) {
+                        result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                    }
                     this.props.updateCartProducts(result.products);
                 }
             });
@@ -84,7 +86,7 @@ export default class CheckoutDetail extends React.Component {
             return (
                 <li key={index} className="item-product-name">
                     <span>{`[${cartItem.amount}] ${cartItem.productName}`}</span>
-                    <span>{`${price} ₫`}</span>
+                    <span>{`${withCommas(price)} ₫`}</span>
                 </li>
             );
         });
@@ -221,28 +223,33 @@ export default class CheckoutDetail extends React.Component {
 
                             <div className="col-12 col-md-6 col-lg-5 ml-lg-auto">
                                 <div className="order-details-confirmation">
+                                    {
+                                        (this.props.cartItems && this.props.cartItems.length > 0) ?
+                                            <>
+                                                <div className="cart-page-heading">
+                                                    <h5>Your Order</h5>
+                                                    <p>The Details</p>
+                                                </div>
 
-                                    <div className="cart-page-heading">
-                                        <h5>Your Order</h5>
-                                        <p>The Details</p>
-                                    </div>
+                                                <ul className="order-details-form mb-4">
+                                                    <li className="item-header"><span>Product</span> <span>Price</span></li>
+                                                    {this.generateCartItemList()}
+                                                    <li className="item-header"><span>Shipping</span> <span>{`${!this.state.shippingFee ? 'FREE' : withCommas(this.state.shippingFee)}`}</span></li>
+                                                    <li className="total-header"><span>Total</span> <span>{`${withCommas(this.total + this.state.shippingFee)} ₫`}</span></li>
+                                                </ul>
 
-                                    <ul className="order-details-form mb-4">
-                                        <li className="item-header"><span>Product</span> <span>Price</span></li>
-                                        {this.generateCartItemList()}
-                                        <li className="item-header"><span>Shipping</span> <span>{`${!this.state.shippingFee ? 'FREE' : this.state.shippingFee}`}</span></li>
-                                        <li className="total-header"><span>Total</span> <span>{`${this.total + this.state.shippingFee} ₫`}</span></li>
-                                    </ul>
-
-                                    <div id="accordion" role="tablist" className={"mb-4 form-control shipping-method-container" + (this.state.shippingMethodIsInvalid ? ' is-invalid' : '')}>
-                                        {this.generatePaymentMethods()}
-                                    </div>
-                                    <div className="error-message d-flex justicy-content-center">
-                                        {this.state.errorMessage}
-                                    </div>
-                                    <button className="btn essence-btn"
-                                        onClick={() => this.placeOrder()}
-                                    >Place Order</button>
+                                                <div id="accordion" role="tablist" className={"mb-4 form-control shipping-method-container" + (this.state.shippingMethodIsInvalid ? ' is-invalid' : '')}>
+                                                    {this.generatePaymentMethods()}
+                                                </div>
+                                                <div className="error-message d-flex justicy-content-center">
+                                                    {this.state.errorMessage}
+                                                </div>
+                                                <button className="btn essence-btn"
+                                                    onClick={() => this.placeOrder()}
+                                                >Place Order</button>
+                                            </>
+                                            : <div className="text-center">Cart is Empty!</div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -272,7 +279,7 @@ class PaymentMethod extends React.Component {
                 <div id={collapseId} className="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                     <div className="card-body">
                         <p>{this.props.description}</p>
-                        <p><b>FEE: </b>{this.props.fee}</p>
+                        <p><b>FEE: </b>{withCommas(this.props.fee)} ₫</p>
                     </div>
                 </div>
             </div>

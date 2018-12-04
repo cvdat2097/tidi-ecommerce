@@ -10,10 +10,15 @@ const changePageInfo = (payload) => ({
     payload
 });
 
-const updateCartProduct = (payload) => ({
-    type: Types.UPDATE_CART_PRODUCTS,
-    payload
-});
+const updateCartProduct = (payload) => {
+    if (payload === null) {
+        payload = [];
+    }
+    return {
+        type: Types.UPDATE_CART_PRODUCTS,
+        payload
+    }
+};
 
 const updateAuthStatus = (payload) => ({
     type: Types.UPDATE_AUTH_STATUS,

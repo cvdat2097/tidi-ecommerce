@@ -4,8 +4,10 @@ import './ProductDetail.scss';
 // import MockAPI from '../../../helpers/MockAPI';
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
+import { showAlert } from '../../../helpers/lib';
 
 import Loader from '../../common/Loader/Loader';
+import { withCommas } from '../../../helpers/lib';
 
 const INTITIAL_STATE = {
     product: {},
@@ -24,26 +26,32 @@ export default class ProductDetail extends React.Component {
     }
 
     componentWillMount() {
-        const productId = Number(this.props.match.params.id);
-        if (!isNaN(productId) && productId > 0) {
-            this.fetchProduct(productId);
+        this.fetchProduct();
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.match.params.id !== this.props.match.params.id) {
+            this.fetchProduct();
         }
     }
 
-    fetchProduct(productId) {
-        WebService.getProduct(productId).then(res => {
-            // MockAPI.Product.getOne(productId).then((res) => {
-            const product = JSON.parse(res);
-            if (product.status !== 500) {
-                product.images = JSON.parse(product.images);
-                this.setState({
-                    product,
-                    productFound: true
-                });
-            } else {
-                console.log(product);
-            }
-        });
+    fetchProduct() {
+        const productId = Number(this.props.match.params.id);
+        if (!isNaN(productId) && productId > 0) {
+            WebService.getProduct(productId).then(res => {
+                // MockAPI.Product.getOne(productId).then((res) => {
+                const product = JSON.parse(res);
+                if (product.status !== 500) {
+                    product.images = JSON.parse(product.images);
+                    this.setState({
+                        product,
+                        productFound: true
+                    });
+                } else {
+                    console.log(product);
+                }
+            });
+        }
     }
 
     fetchCartProducts() {
@@ -52,8 +60,10 @@ export default class ProductDetail extends React.Component {
                 // MockAPI.CART.getCart().then(res => {
                 const result = JSON.parse(res);
 
-                if (result.status.status === 'TRUE' && result.products) {
-                    result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                if (result.status.status === 'TRUE') {
+                    if (result.products) {
+                        result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                    }
                     this.props.updateCartProducts(result.products);
                 }
             });
@@ -74,6 +84,7 @@ export default class ProductDetail extends React.Component {
                 .then(r => {
                     const res = JSON.parse(r);
                     if (res.status) {
+                        showAlert(`Added ${product.productName} to Cart!`);
                         this.fetchCartProducts();
                     }
                 })
@@ -131,9 +142,9 @@ export default class ProductDetail extends React.Component {
                         <p className="product-price">
                             {
                                 product.discPercent !== 0 &&
-                                <span className="old-price">{product.price + ' VND'}</span>
+                                <span className="old-price">{withCommas(product.price) + ' ₫'}</span>
                             }
-                            {discountedPrice + ' VND'}
+                            {withCommas(discountedPrice) + ' ₫'}
                         </p>
                         <p className="product-desc">{product.description}</p>
 

@@ -35,6 +35,31 @@
     margin-top: 20px;
 }
 
+.product-remove {
+    z-index: 9;
+
+    i {
+        font-size: 1.2rem;
+    }
+
+    i:hover {
+        font-size: 1.4rem;
+        transition: cubic-bezier();
+        transition-duration: .2s;
+       cursor: pointer;
+    }
+
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: $white-color;
+    font-size: 12px;
+    padding: 5px;
+    @media #{$breakpoint-xs} {
+        top: 5px;
+        right: 5px;
+    }
+}
 
 .right-side-cart-area {
     position: fixed;
@@ -140,18 +165,7 @@
                         @media #{$breakpoint-sm} {
                             padding: 30px 20px;
                         }
-                        .product-remove {
-                            position: absolute;
-                            top: 15px;
-                            right: 15px;
-                            color: $white-color;
-                            font-size: 12px;
-                            padding: 5px;
-                            @media #{$breakpoint-xs} {
-                                top: 5px;
-                                right: 5px;
-                            }
-                        }
+                        
                         .badge {
                             display: block;
                             font-weight: 600;

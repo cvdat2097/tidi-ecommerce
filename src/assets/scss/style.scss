@@ -319,6 +319,10 @@ img {
     }
 }
 
+body.swal2-toast-shown .swal2-container {
+    top: 90px !important;
+    z-index: 99999;
+}
 
 /* :: 5.0 Welcome Area CSS */
 

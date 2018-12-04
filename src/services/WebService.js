@@ -254,7 +254,7 @@ export default {
     },
 
     // 4.4 Delete item
-    deleteItemToCart: (token, productId) => {
+    deleteItemFromCart: (token, productId) => {
         return fetch({
             method: 'POST',
             reqBody: {

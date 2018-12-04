@@ -2,8 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './Products.scss';
 
+import { showAlert } from '../../../helpers/lib';
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
+import { withCommas } from '../../../helpers/lib';
 
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
@@ -69,8 +71,10 @@ class Products extends React.Component {
                 // MockAPI.CART.getCart().then(res => {
                 const result = JSON.parse(res);
 
-                if (result.status.status === 'TRUE' && result.products) {
-                    result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                if (result.status.status === 'TRUE') {
+                    if (result.products) {
+                        result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                    }
                     this.props.updateCartProducts(result.products);
                 }
             });
@@ -91,6 +95,7 @@ class Products extends React.Component {
                 .then(r => {
                     const res = JSON.parse(r);
                     if (res.status) {
+                        showAlert(`Added ${product.productName} to Cart!`);
                         this.fetchCartProducts();
                     }
                 })
@@ -270,9 +275,9 @@ class Product extends React.Component {
                         <p className="product-price">
                             {
                                 product.discPercent !== 0 &&
-                                <span className="old-price">{product.price + 'VND'}</span>
+                                <span className="old-price">{withCommas(product.price) + ' ₫'}</span>
                             }
-                            {discountedPrice + 'VND'}
+                            {withCommas(discountedPrice) + ' ₫'}
                         </p>
 
                         {/* <!-- Hover Content --> */}
