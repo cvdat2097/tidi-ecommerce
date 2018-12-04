@@ -301,6 +301,7 @@ img {
 /* ScrollUp */
 
 #scrollUp {
+    z-index: 7 !important;
     background-color: #ff084e;
     border-radius: 0;
     bottom: 60px;

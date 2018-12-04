@@ -5,6 +5,17 @@
 
 /* Cart Area CSS */
 
+.right-side-cart-area .cart-content .empty-cart{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    img {
+        user-select: none;
+    }
+}
+
 .right-side-cart-area .cart-content .cart-list {
     overflow-y: scroll !important;
 }

@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 import './Products.scss';
 
 import WebService from '../../../services/WebService';
-// import MockAPI from '../../../helpers/MockAPI';
+import AuthService from '../../../services/AuthService';
+
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
 import SearchPanel from '../SearchPanel';
@@ -23,6 +24,7 @@ class Products extends React.Component {
         this.generateProducts = this.generateProducts.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.fetchProducts = this.fetchProducts.bind(this);
+        this.handleAddProductToCart = this.handleAddProductToCart.bind(this);
     }
 
     componentDidMount() {
@@ -59,6 +61,40 @@ class Products extends React.Component {
             this.props.updateProductList(result.products.map(prd => ({ ...prd, images: JSON.parse(prd.images) })));
             this.props.changePageInfo({ totalItems: result.totalItems });
         });
+    }
+
+    fetchCartProducts() {
+        if (this.props.isLoggedIn) {
+            WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
+                // MockAPI.CART.getCart().then(res => {
+                const result = JSON.parse(res);
+
+                if (result.status.status === 'TRUE' && result.products) {
+                    result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                    this.props.updateCartProducts(result.products);
+                }
+            });
+        }
+    }
+
+    handleAddProductToCart(product) {
+        const currentCartItems = this.props.cart.products;
+        if (product.id) {
+            let cartItemAmount = 0;
+            for (let cartItem in currentCartItems) {
+                if (cartItem.id === product.id) {
+                    cartItemAmount = cartItem.amount;
+                }
+            }
+
+            WebService.addItemToCart(AuthService.getTokenUnsafe(), product.id, cartItemAmount + 1)
+                .then(r => {
+                    const res = JSON.parse(r);
+                    if (res.status) {
+                        this.fetchCartProducts();
+                    }
+                })
+        }
     }
 
     handleFilterChange({ currentPage, pageSize, totalItems }) {
@@ -98,6 +134,7 @@ class Products extends React.Component {
                     key={index}
                     product={product}
                     buttonTitle="Add to cart"
+                    onClickHandler={this.handleAddProductToCart}
                 />
             );
         });
@@ -242,7 +279,9 @@ class Product extends React.Component {
                         <div className="hover-content">
                             {/* <!-- Add to Cart --> */}
                             <div className="add-to-cart-btn">
-                                <a href={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id} className="btn essence-btn">{this.props.buttonTitle}</a>
+                                <button className="btn essence-btn"
+                                    onClick={() => this.props.onClickHandler(product)}
+                                >{this.props.buttonTitle}</button>
                             </div>
                         </div>
                     </div>

@@ -112,8 +112,8 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token
             },
+            jwtToken: token,
             route: apiPrefix.authentication + '/verifyToken'
         });
     },
@@ -137,14 +137,14 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 newInfo: {
                     dateOfBirth,
                     address,
                     avatar
                 },
-                route: apiPrefix.account + '/updateInfo'
-            }
+            },
+            jwtToken: token,
+            route: apiPrefix.account + '/updateInfo'
         });
     },
 
@@ -153,10 +153,10 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 password,
                 newPassword,
             },
+            jwtToken: token,
             route: apiPrefix.account + '/updatePassword'
         });
     },
@@ -222,9 +222,7 @@ export default {
     getCart: (token) => {
         return fetch({
             method: 'GET',
-            reqBody: {
-                token
-            },
+            jwtToken: token,
             route: apiPrefix.cart + '/all'
         });
     },
@@ -234,11 +232,11 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 productId,
                 amount
             },
-            route: apiPrefix.cart + '/item'
+            jwtToken: token,
+            route: apiPrefix.cart + '/insert'
         });
     },
 
@@ -247,10 +245,10 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 productId,
                 amount
             },
+            jwtToken: token,
             route: apiPrefix.cart + '/update'
         });
     },
@@ -260,9 +258,9 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 productId,
             },
+            jwtToken: token,
             route: apiPrefix.cart + '/delete'
         });
     },
@@ -277,8 +275,8 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
             },
+            jwtToken: token,
             route: apiPrefix.checkout + '/order'
         });
     },
@@ -288,8 +286,8 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
             },
+            jwtToken: token,
             route: apiPrefix.checkout + '/order/all'
         });
     },
@@ -299,9 +297,9 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 orderId
             },
+            jwtToken: token,
             route: apiPrefix.checkout + '/order/one'
         });
     },
@@ -377,11 +375,11 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: { keyword }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/product/all'
         });
     },
@@ -391,7 +389,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 productName,
                 industryId,
                 branchId,
@@ -403,6 +400,7 @@ export default {
                 longDescription,
                 amount
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/product/insert'
         });
     },
@@ -412,7 +410,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 productName,
                 industryId,
@@ -426,6 +423,7 @@ export default {
                 amount,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/product/update'
         });
     },
@@ -435,13 +433,13 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
                     keyword
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/brand/all'
         });
     },
@@ -451,9 +449,9 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 brandName
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/brand/insert'
         });
     },
@@ -463,11 +461,11 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 brandName,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/brand/update'
         });
     },
@@ -477,13 +475,13 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
                     keyword
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/industry/all'
         });
     },
@@ -493,9 +491,9 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 industryName
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/industry/insert'
         });
     },
@@ -505,11 +503,11 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 industryName,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/industry/update'
         });
     },
@@ -519,13 +517,13 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
                     keyword
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/branch/all'
         });
     },
@@ -535,10 +533,10 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 branchName,
                 industryId,
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/branch/insert'
         });
     },
@@ -548,12 +546,12 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 branchName,
                 industryId,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/branch/update'
         });
     },
@@ -563,13 +561,13 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
                     keyword
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/category/all'
         });
     },
@@ -579,11 +577,11 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 categoryName,
                 industryId,
                 branchId
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/category/insert'
         });
     },
@@ -593,13 +591,13 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 categoryName,
                 industryId,
                 branchId,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/category/update'
         });
     },
@@ -609,7 +607,6 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
@@ -618,6 +615,7 @@ export default {
                     expiredTime
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/campaign/all'
         });
     },
@@ -627,12 +625,12 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 campaignName,
                 description,
                 startTime,
                 expiredTime
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/campaign/insert'
         });
     },
@@ -642,7 +640,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 id,
                 campaignName,
                 description,
@@ -650,6 +647,7 @@ export default {
                 expiredTime,
                 active
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/campaign/update'
         });
     },
@@ -659,7 +657,6 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
@@ -667,6 +664,7 @@ export default {
                     expiredTime
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/coupon/all'
         });
     },
@@ -676,7 +674,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 campaignId,
                 couponCode,
                 percent,
@@ -686,6 +683,7 @@ export default {
                 amount,
                 productsId
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/coupon/insert'
         });
     },
@@ -695,7 +693,6 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 campaignId,
                 couponCode,
                 percent,
@@ -706,6 +703,7 @@ export default {
                 active,
                 productsId
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/coupon/update'
         });
     },
@@ -715,7 +713,6 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
@@ -723,6 +720,7 @@ export default {
                     expiredTime
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/discount/all'
         });
     },
@@ -732,12 +730,12 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 percent,
                 startTime,
                 expiredTime,
                 productsId
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/discount/insert'
         });
     },
@@ -747,13 +745,13 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 percent,
                 startTime,
                 expiredTime,
                 active,
                 productsId
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/discount/update'
         });
     },
@@ -763,7 +761,6 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 limit,
                 offset,
                 query: {
@@ -771,6 +768,7 @@ export default {
                     expiredTime
                 }
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/order/all'
         });
     },
@@ -780,9 +778,9 @@ export default {
         return fetch({
             method: 'GET',
             reqBody: {
-                token,
                 orderId
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/order/one'
         });
     },
@@ -792,10 +790,10 @@ export default {
         return fetch({
             method: 'POST',
             reqBody: {
-                token,
                 orderId,
                 orderStatus
             },
+            jwtToken: token,
             route: apiPrefix.admin + '/order/update'
         });
     },

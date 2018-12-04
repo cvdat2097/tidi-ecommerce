@@ -80,7 +80,7 @@ const ROUTES = [
         component: (props) => (
             <div className="main-wrapper">
                 <Header {...props} />
-                <Cart />
+                <Cart {...props}/>
                 <div className="main-content">
                     {props.routes.map((route, index) => <RouteWithSubRoutes key={index} {...route} />)}
                 </div>

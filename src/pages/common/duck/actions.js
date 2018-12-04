@@ -20,9 +20,15 @@ const updateAuthStatus = (payload) => ({
     payload
 });
 
+const refreshCart = (payload) => ({
+    type: Types.REFRESH_CART,
+    payload
+});
+
 export default {
     toggleCart,
     changePageInfo,
     updateCartProduct,
-    updateAuthStatus
+    updateAuthStatus,
+    refreshCart
 };

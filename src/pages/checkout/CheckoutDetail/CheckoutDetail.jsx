@@ -74,7 +74,6 @@ export default class CheckoutDetail extends React.Component {
                 errorMessage: 'Please choose a shipping method'
             });
         } else {
-
             console.log(this.state);
             this.setState(INITIAL_STATE)
         }

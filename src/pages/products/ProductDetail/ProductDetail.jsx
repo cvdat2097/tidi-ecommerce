@@ -3,6 +3,7 @@ import './ProductDetail.scss';
 
 // import MockAPI from '../../../helpers/MockAPI';
 import WebService from '../../../services/WebService';
+import AuthService from '../../../services/AuthService';
 
 import Loader from '../../common/Loader/Loader';
 
@@ -17,6 +18,9 @@ export default class ProductDetail extends React.Component {
         super(props);
 
         this.state = INTITIAL_STATE;
+
+        this.fetchCartProducts = this.fetchCartProducts.bind(this);
+        this.handleAddProductToCart = this.handleAddProductToCart.bind(this);
     }
 
     componentWillMount() {
@@ -40,6 +44,40 @@ export default class ProductDetail extends React.Component {
                 console.log(product);
             }
         });
+    }
+
+    fetchCartProducts() {
+        if (this.props.isLoggedIn) {
+            WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
+                // MockAPI.CART.getCart().then(res => {
+                const result = JSON.parse(res);
+
+                if (result.status.status === 'TRUE' && result.products) {
+                    result.products.forEach(prd => prd.images = JSON.parse(prd.images));
+                    this.props.updateCartProducts(result.products);
+                }
+            });
+        }
+    }
+
+    handleAddProductToCart(product) {
+        const currentCartItems = this.props.cart.products;
+        if (product.id) {
+            let cartItemAmount = 0;
+            for (let cartItem in currentCartItems) {
+                if (cartItem.id === product.id) {
+                    cartItemAmount = cartItem.amount;
+                }
+            }
+
+            WebService.addItemToCart(AuthService.getTokenUnsafe(), product.id, cartItemAmount + 1)
+                .then(r => {
+                    const res = JSON.parse(r);
+                    if (res.status) {
+                        this.fetchCartProducts();
+                    }
+                })
+        }
     }
 
     generatePictures() {
@@ -119,7 +157,9 @@ export default class ProductDetail extends React.Component {
                             {/* <!-- Cart & Favourite Box --> */}
                             <div className="cart-fav-box d-flex align-items-center">
                                 {/* <!-- Cart --> */}
-                                <button type="submit" name="addtocart" value="5" className="btn essence-btn">Add to cart</button>
+                                <button type="button" name="addtocart" className="btn essence-btn"
+                                    onClick={() => this.handleAddProductToCart(product)}
+                                >Add to cart</button>
                                 {/* <!-- Favourite --> */}
                                 <div className="product-favourite ml-4">
                                     <a href="#/" className="favme fa fa-heart" ><span></span></a>
