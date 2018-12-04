@@ -205,7 +205,7 @@ export default {
     // 3.4 Get one product
     getProduct: (id) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 id
             },

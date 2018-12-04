@@ -95,7 +95,7 @@ export default class Cart extends React.Component {
                         onClick={() => { this.props.toggleCart(false) }}
                     >
                         <div id="rightSideCart">
-                            <img src="img/core-img/cancel.svg" alt="Close" />
+                            <img src="/img/core-img/cancel.svg" alt="Close" />
                         </div>
                     </div>
 

@@ -125,10 +125,11 @@
         .cart-fav-box {
             .favme {
                 cursor: pointer;
-                color: #ccc;
+                color: #ff5050;
                 font-size: 24px;
-                &.active {
-                    color: $hover-color !important;
+                &:hover {
+        
+                    color:  #ce4444 !important;
                 }
             }
         }

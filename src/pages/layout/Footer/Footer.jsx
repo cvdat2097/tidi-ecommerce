@@ -13,7 +13,7 @@ export default class Footer extends React.Component {
                             <div className="single_widget_area d-flex mb-30">
                                 {/* <!-- Logo --> */}
                                 <div className="footer-logo mr-50">
-                                    <a href="/"><img src="img/core-img/logo.png" alt="" /></a>
+                                    <a href="/"><img src="/img/core-img/logo.png" alt="" /></a>
                                 </div>
                                 {/* <!-- Footer Menu --> */}
                                 <div className="footer_menu">

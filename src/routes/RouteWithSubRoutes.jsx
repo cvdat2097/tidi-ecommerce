@@ -6,6 +6,8 @@ import { Route } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import { USER_TYPE } from '../config/constants';
 
+import Loader from '../pages/common/Loader/Loader';
+
 const INTIIAL_STATE = {
     tokenVerificationCompleted: false,
     isLoggedIn: false,
@@ -52,9 +54,7 @@ class HOC extends React.Component {
             }
         }
         return (
-            <div className="d-flex justify-content-center align-items-center p-5" >
-                <div className="loader"></div>
-            </div>
+            <Loader />
         );
     }
 }

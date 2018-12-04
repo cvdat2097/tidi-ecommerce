@@ -53,7 +53,7 @@ export default class Login extends React.Component {
                 <div className="container-login100">
                     <div className="wrap-login100">
                         <div className="login100-pic js-tilt" data-tilt>
-                            <img src="img/img-01.png" alt="IMG" />
+                            <img src="/img/img-01.png" alt="IMG" />
                         </div>
 
                         <form className="login100-form validate-form">
