@@ -68,7 +68,6 @@ export default class Login extends React.Component {
     }
 
     handleRegister() {
-        console.log(this.state);
         if (this.state.password === this.state.passwordConf) {
             this.setState({
                 message: ''
@@ -76,7 +75,7 @@ export default class Login extends React.Component {
 
             // DOB format process
 
-            if (this.state.password) {
+            if (this.state.password && this.state.username && this.state.email) {
 
                 WebService.register(this.state.username,
                     this.state.password,
@@ -103,13 +102,13 @@ export default class Login extends React.Component {
                     });
             } else {
                 this.setState({
-                    message: 'Password cannot be empty.'
-                })
+                    message: 'Information is missing.'
+                });
             }
         } else {
             this.setState({
                 message: 'Passwords mismatch'
-            })
+            });
         }
     }
 
@@ -128,7 +127,7 @@ export default class Login extends React.Component {
 
                             {/* Username */}
                             <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                <input className="input100" type="text" name="email" placeholder="Username"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="email" placeholder="Username"
                                     onChange={(e) => { this.handleUsernameChange(e) }}
                                     value={this.state.username}
                                 />
@@ -140,7 +139,7 @@ export default class Login extends React.Component {
 
                             {/* Password */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className={"input100 form-control" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Password"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Password"
                                     onChange={(e) => { this.handlePasswordChange(e) }}
                                     value={this.state.password}
                                 />
@@ -152,7 +151,7 @@ export default class Login extends React.Component {
 
                             {/* Confirm password */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className={"input100 form-control" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Confirm Password"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Confirm Password"
                                     onChange={(e) => { this.handlePasswordConfChange(e) }}
                                     value={this.state.passwordConf}
                                 />
@@ -164,7 +163,7 @@ export default class Login extends React.Component {
 
                             {/* Email */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="text" name="pass" placeholder="Email address"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="pass" placeholder="Email address"
                                     onChange={(e) => { this.handleEmailChange(e) }}
                                     value={this.state.email}
                                 />

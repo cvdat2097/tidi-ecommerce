@@ -65,10 +65,10 @@ export default class CheckoutDetail extends React.Component {
 
             if (res.status.status === 'TRUE') {
                 this.setState({
-                    fullname: res.fullName,
-                    address: res.address,
-                    phoneNumber: res.phone,
-                    email: res.email,
+                    fullname: res.fullName ? res.fullName : '',
+                    address: res.address ? res.address : '',
+                    phoneNumber: res.phone ? res.phone : '',
+                    email: res.email ? res.email : '',
                 });
             } else {
                 console.err('Retrieve User info failed');
