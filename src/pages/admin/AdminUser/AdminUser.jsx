@@ -8,10 +8,11 @@ import PropTypes from 'prop-types';
 // Internal dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import AdminAddUser from './AdminAddUser';
-import { DEFAULT_FORMDATA, USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../config/constants';
-import Modal from '../../common/Modal';
 import HelperTool from '../../../helpers/lib';
+import { DEFAULT_FORMDATA, USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../config/constants';
+
+import Modal from '../../common/Modal';
+import AdminAddUser from './AdminAddUser';
 import Paginator from '../../common/Paginator';
 
 const INTIAL_STATE = {

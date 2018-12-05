@@ -1,133 +1,136 @@
-import React from 'react';
+// Stylesheet
 import './AdminAddUser.scss';
 
-import { USER_TYPE, USER_GENDER } from '../../../../config/constants';
+// External dependencies
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class AdminAddUser extends React.Component {
+// Internal dependencies
+import { USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../../config/constants';
+
+import FormInput from '../../../common/FormInput';
+
+class AdminAddUser extends React.Component {
+    static propTypes = {
+        updateForm: PropTypes.func,
+        editMode: PropTypes.bool,
+        formData: PropTypes.shape({
+            username: PropTypes.string,
+            permission: PropTypes.oneOf([USER_TYPE.ADMIN, USER_TYPE.PUBLIC, USER_TYPE.CUSTOMER]),
+            email: PropTypes.string,
+            fullName: PropTypes.string,
+            dateOfBirth: PropTypes.string,
+            phone: PropTypes.string,
+            gender: PropTypes.oneOf([USER_GENDER.MALE, USER_GENDER.FEMALE]),
+            address: PropTypes.string,
+            active: PropTypes.oneOf([ACTIVE_TYPE.TRUE, ACTIVE_TYPE.FALSE]),
+            password: PropTypes.string,
+        })
+    }
+
     render() {
         return (
             <div>
                 <form >
                     {/* USERNAME */}
-                    <div className="form-group">
-                        <label>Username <span className="is-required">*</span></label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.username}
-                            onChange={(e) => this.props.updateForm({
-                                username: e.target.value
-                            })}
-                        />
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Username"
+                        type="text"
+                        value={this.props.formData.username}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            username: e.target.value
+                        })}
+                    />
 
                     {/* EMAIL */}
-                    <div className="form-group">
-                        <label>Email <span className="is-required">*</span></label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.email}
-                            onChange={(e) => this.props.updateForm({
-                                email: e.target.value
-                            })}
-                        />
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Email"
+                        type="text"
+                        value={this.props.formData.email}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            email: e.target.value
+                        })}
+                    />
 
                     {/* Password */}
                     {
-                        !this.props.editMode ?
-                            <div className="form-group">
-                                <label>Password <span className="is-required">*</span></label>
-                                <input type="text" className="form-control" aria-describedby="emailHelp"
-                                    value={this.props.formData.password}
-                                    onChange={(e) => this.props.updateForm({
-                                        password: e.target.value
-                                    })}
-                                />
-                                <small className="form-text text-muted"></small>
-                            </div>
-                            :
-                            null
+                        !this.props.editMode &&
+                        <FormInput
+                            label="Password"
+                            type="text"
+                            value={this.props.formData.password}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                password: e.target.value
+                            })}
+                        />
                     }
 
                     {/* Gender */}
-                    <div className="form-group">
-                        <label>Gender</label>
-                        <select type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.gender}
-                            onChange={(e) => this.props.updateForm({
-                                gender: e.target.value
-                            })}
-                        >
-                            <option value={USER_GENDER.MALE}>{USER_GENDER.MALE}</option>
-                            <option value={USER_GENDER.FEMALE}>{USER_GENDER.FEMALE}</option>
-                        </select>
-                    </div>
-
+                    <FormInput
+                        label="Gender"
+                        type="select"
+                        value={this.props.formData.gender}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            gender: e.target.value
+                        })}
+                        options={[USER_GENDER.FEMALE, USER_GENDER.MALE]}
+                    />
 
                     {/* PHONE */}
-                    <div className="form-group">
-                        <label>Phone</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.phone}
-                            onChange={(e) => this.props.updateForm({
-                                phone: e.target.value
-                            })}
-                        />
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Phone"
+                        type="text"
+                        value={this.props.formData.phone}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            phone: e.target.value
+                        })}
+                    />
 
                     {/* FULL NAME */}
-                    <div className="form-group">
-                        <label>Full Name</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.fullName}
-                            onChange={(e) => this.props.updateForm({
-                                fullName: e.target.value
-                            })}
-                        />
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Full name"
+                        type="text"
+                        value={this.props.formData.fullName}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            fullName: e.target.value
+                        })}
+                    />
 
                     {/* Date of Birth */}
-                    <div className="form-group">
-                        <label>Date of Birth</label>
-                        <input type="date" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.dateOfBirth}
-                            onChange={(e) => this.props.updateForm({
-                                dateOfBirth: e.target.value
-                            })}
-                        />
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Date of Birth"
+                        type="date"
+                        value={this.props.formData.dateOfBirth}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            dateOfBirth: e.target.value
+                        })}
+                    />
 
                     {/* ADDRESS */}
-                    <div className="form-group">
-                        <label>Address</label>
-                        <input type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.address}
-                            onChange={(e) => this.props.updateForm({
-                                address: e.target.value
-                            })}
-                        />
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Address"
+                        type="text"
+                        value={this.props.formData.address}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            address: e.target.value
+                        })}
+                    />
 
                     {/* Permission */}
-                    <div className="form-group">
-                        <label>Permission</label>
-                        <select type="text" className="form-control" aria-describedby="emailHelp"
-                            value={this.props.formData.permission}
-                            onChange={(e) => this.props.updateForm({
-                                permission: e.target.value
-                            })}
-                        >
-                            <option value={USER_TYPE.CUSTOMER}>{USER_TYPE.CUSTOMER}</option>
-                            <option value={USER_TYPE.ADMIN}>{USER_TYPE.ADMIN}</option>
-                        </select>
-                        <small className="form-text text-muted"></small>
-                    </div>
+                    <FormInput
+                        label="Permission"
+                        type="select"
+                        value={this.props.formData.permission}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            permission: e.target.value
+                        })}
+                        options={[USER_TYPE.CUSTOMER, USER_TYPE.ADMIN]}
+                    />
+
                 </form>
             </div>
         );
     }
 }
+
+export default AdminAddUser;
