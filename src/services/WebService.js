@@ -373,7 +373,7 @@ export default {
     // 6.4 Get all products
     adminGetAllProducts: (token, limit, offset, { keyword }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,

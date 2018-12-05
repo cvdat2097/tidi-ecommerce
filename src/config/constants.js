@@ -3,6 +3,11 @@ export default {
     DATE_FORMAT: 'YYYY-MM-DD'
 }
 
+export const ACTIVE_TYPE = {
+    TRUE: 'TRUE',
+    FALSE: 'FALSE'
+}
+
 export const USER_TYPE = {
     ADMIN: 'ADMIN',
     CUSTOMER: 'CUSTOMER',
@@ -37,14 +42,23 @@ export const DEFAULT_FORMDATA = {
         phone: '',
         gender: USER_GENDER.MALE,
         address: '',
-        active: 'TRUE',
+        active: ACTIVE_TYPE.TRUE,
         password: ''
-    }
-}
+    },
 
-export const ACTIVE_TYPE = {
-    TRUE: 'TRUE',
-    FALSE: 'FALSE'
+    AdminAddProduct: {
+        productName: '',
+        brandId: '',
+        industryId: '',
+        branchId: '',
+        categoryId: '',
+        price: 0,
+        images: '',
+        description: '',
+        longDescription: '',
+        amount: 0,
+        active: ACTIVE_TYPE.TRUE,
+    }
 }
 
 export const PAYMENT_METHOD = [

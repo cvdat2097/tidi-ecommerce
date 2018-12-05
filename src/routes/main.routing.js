@@ -12,6 +12,7 @@ import ProductDetail from '../pages/products/ProductDetail';
 import CheckoutDetail from '../pages/checkout/CheckoutDetail';
 import Admin from '../pages/admin/Admin';
 import AdminUser from '../pages/admin/AdminUser';
+import AdminProduct from '../pages/admin/AdminProduct';
 
 import { USER_TYPE } from '../config/constants';
 
@@ -44,7 +45,7 @@ const ROUTES = [
             },
             {
                 path: ROUTE_NAME.ADMIN.PRODUCT,
-                component: () => <div>Admin Product</div>,
+                component: AdminProduct,
                 permission: USER_TYPE.ADMIN,
             },
             {
@@ -80,7 +81,7 @@ const ROUTES = [
         component: (props) => (
             <div className="main-wrapper">
                 <Header {...props} />
-                <Cart {...props}/>
+                <Cart {...props} />
                 <div className="main-content">
                     {props.routes.map((route, index) => <RouteWithSubRoutes key={index} {...route} />)}
                 </div>

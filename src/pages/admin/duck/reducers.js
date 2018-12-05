@@ -7,6 +7,22 @@ const INITIAL_STATE = {
         users: [],
     },
 
+    AdminAddUser: {
+        formData: {
+            ...DEFAULT_FORMDATA.AdminAddUser
+        }
+    },
+
+    AdminProduct: {
+        products: []
+    },
+
+    AdminAddProduct: {
+        formData: {
+            ...DEFAULT_FORMDATA.AdminAddProduct
+        }
+    },
+
     AdminFilter: {
         currentPage: 1,
         totalItems: 0,
@@ -22,28 +38,11 @@ const INITIAL_STATE = {
 
     AdminNavBar: {
 
-    },
-
-    AdminAddUser: {
-        formData: {
-            ...DEFAULT_FORMDATA.AdminAddUser
-        }
     }
 }
 
 const adminReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case Types.ADMIN_USER_UPDATE_FORM:
-            return {
-                ...state,
-                AdminAddUser: {
-                    formData: {
-                        ...state.AdminAddUser.formData,
-                        ...action.payload
-                    }
-                }
-            };
-
         case Types.ADMIN_UPDATE_FILTER:
             return {
                 ...state,
@@ -56,6 +55,26 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                 }
             };
 
+        case commonTypes.CHANGE_PAGE_INFO:
+            return {
+                ...state,
+                AdminFilter: {
+                    ...state.AdminFilter,
+                    ...action.payload
+                }
+            };
+
+
+        case Types.ADMIN_USER_UPDATE_FORM:
+            return {
+                ...state,
+                AdminAddUser: {
+                    formData: {
+                        ...state.AdminAddUser.formData,
+                        ...action.payload
+                    }
+                }
+            };
 
         case Types.ADMIN_USER_FETCH_USERS:
             return {
@@ -66,12 +85,23 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                 }
             };
 
-        case commonTypes.CHANGE_PAGE_INFO:
+        case Types.ADMIN_PRODUCT_UPDATE_FORM:
             return {
                 ...state,
-                AdminFilter: {
-                    ...state.AdminFilter,
-                    ...action.payload
+                AdminAddProduct: {
+                    formData: {
+                        ...state.AdminAddProduct.formData,
+                        ...action.payload
+                    }
+                }
+            };
+
+        case Types.ADMIN_PRODUCT_FETCH_PRODUCTS:
+            return {
+                ...state,
+                AdminProduct: {
+                    ...state.AdminProduct,
+                    products: action.payload
                 }
             };
 
