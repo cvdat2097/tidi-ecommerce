@@ -1,14 +1,17 @@
-import React, { Fragment } from 'react';
+// Stylsheet
 import './AdminUser.scss';
 
-import { DEFAULT_FORMDATA } from '../../../config/constants';
+// External dependencies
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 
+// Internal dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
 import AdminAddUser from './AdminAddUser';
+import { DEFAULT_FORMDATA, USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../config/constants';
 import Modal from '../../common/Modal';
 import HelperTool from '../../../helpers/lib';
-
 import Paginator from '../../common/Paginator';
 
 const INTIAL_STATE = {
@@ -16,16 +19,38 @@ const INTIAL_STATE = {
     message: '',
 }
 
-export default class AdminUser extends React.Component {
+class AdminUser extends React.Component {
+    static propTypes = {
+        currentPage: PropTypes.number,
+        pageSize: PropTypes.number,
+        totalItems: PropTypes.number,
+        fetchUsers: PropTypes.func,
+        changePageInfo: PropTypes.func,
+        query: PropTypes.shape({
+            keyword: PropTypes.string
+        }),
+        formData: PropTypes.shape({
+            username: PropTypes.string,
+            permission: PropTypes.oneOf([USER_TYPE.ADMIN, USER_TYPE.PUBLIC, USER_TYPE.CUSTOMER]),
+            email: PropTypes.string,
+            fullName: PropTypes.string,
+            dateOfBirth: PropTypes.string,
+            phone: PropTypes.string,
+            gender: PropTypes.oneOf([USER_GENDER.MALE, USER_GENDER.FEMALE]),
+            address: PropTypes.string,
+            active: PropTypes.oneOf([ACTIVE_TYPE.TRUE, ACTIVE_TYPE.FALSE]),
+            password: PropTypes.string,
+        })
+    }
+
+    userToBlock = null;
+    originalAccountInfo = {};
+    searchInterval = null;
 
     constructor(props) {
         super(props);
 
         this.state = INTIAL_STATE;
-
-        this.userToBlock = null;
-        this.originalAccountInfo = {};
-        this.searchInterval = null;
 
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleAddUser = this.handleAddUser.bind(this);
@@ -79,6 +104,29 @@ export default class AdminUser extends React.Component {
                     showLoadingBar: false,
                 });
             });
+    }
+
+    prepareFormData(data) {
+        this.setState({
+            message: ''
+        });
+
+        for (let attr in data) {
+            if (data[attr] === null) {
+                data[attr] = '';
+            }
+        }
+        this.originalAccountInfo = data;
+        this.props.setFormData(data);
+    }
+
+    clearFormData() {
+        this.setState({
+            message: ''
+        });
+
+
+        this.props.setFormData(DEFAULT_FORMDATA.AdminAddUser);
     }
 
     handleFilterChange({ currentPage, pageSize, totalItems }) {
@@ -230,29 +278,6 @@ export default class AdminUser extends React.Component {
 
     handleSearch() {
         this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query)
-    }
-
-    prepareFormData(data) {
-        this.setState({
-            message: ''
-        });
-
-        for (let attr in data) {
-            if (data[attr] === null) {
-                data[attr] = '';
-            }
-        }
-        this.originalAccountInfo = data;
-        this.props.setFormData(data);
-    }
-
-    clearFormData() {
-        this.setState({
-            message: ''
-        });
-
-
-        this.props.setFormData(DEFAULT_FORMDATA.AdminAddUser);
     }
 
     generateTableRows(users) {
@@ -415,6 +440,8 @@ export default class AdminUser extends React.Component {
     }
 }
 
-function Message(props) {
-    return <span style={{ color: props.color }}>{props.content}</span>
-}
+const Message = (props) => (
+    <span style={{ color: props.color }}>{props.content}</span>
+);
+
+export default AdminUser;

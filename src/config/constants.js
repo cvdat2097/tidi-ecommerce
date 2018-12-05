@@ -42,6 +42,10 @@ export const DEFAULT_FORMDATA = {
     }
 }
 
+export const ACTIVE_TYPE = {
+    TRUE: 'TRUE',
+    FALSE: 'FALSE'
+}
 
 export const PAYMENT_METHOD = [
     {
