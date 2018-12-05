@@ -10,6 +10,7 @@ import { USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../../config/constant
 
 import FormInput from '../../../common/FormInput';
 
+
 class AdminAddUser extends React.Component {
     static propTypes = {
         updateForm: PropTypes.func,

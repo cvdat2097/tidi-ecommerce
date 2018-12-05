@@ -4,11 +4,13 @@ import { DEFAULT_FORMDATA } from '../../../config/constants';
 
 const INITIAL_STATE = {
     AdminUser: {
-        isActive: false,
+        users: [],
+    },
+
+    AdminFilter: {
         currentPage: 1,
         totalItems: 0,
         pageSize: 10,
-        users: [],
         query: {
             keyword: ''
         }
@@ -31,7 +33,7 @@ const INITIAL_STATE = {
 
 const adminReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case Types.ADMIN_UPDATE_ADD_USER_FORM:
+        case Types.ADMIN_USER_UPDATE_FORM:
             return {
                 ...state,
                 AdminAddUser: {
@@ -42,20 +44,20 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                 }
             };
 
-        case Types.ADMIN_UPDATE_USER_KEYWORD:
+        case Types.ADMIN_UPDATE_FILTER:
             return {
                 ...state,
-                AdminUser: {
-                    ...state.AdminUser,
+                AdminFilter: {
+                    ...state.AdminFilter,
                     query: {
-                        ...state.AdminUser.query,
-                        keyword: action.payload
+                        ...state.AdminFilter.query,
+                        ...action.payload
                     }
                 }
             };
 
 
-        case Types.ADMIN_FETCH_USERS:
+        case Types.ADMIN_USER_FETCH_USERS:
             return {
                 ...state,
                 AdminUser: {
@@ -67,8 +69,8 @@ const adminReducer = (state = INITIAL_STATE, action) => {
         case commonTypes.CHANGE_PAGE_INFO:
             return {
                 ...state,
-                AdminUser: {
-                    ...state.AdminUser,
+                AdminFilter: {
+                    ...state.AdminFilter,
                     ...action.payload
                 }
             };

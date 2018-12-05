@@ -14,10 +14,19 @@ import { DEFAULT_FORMDATA, USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../
 import Modal from '../../common/Modal';
 import AdminAddUser from './AdminAddUser';
 import Paginator from '../../common/Paginator';
+import Message from '../../common/FormMessage';
 
 const INTIAL_STATE = {
     showLoadingBar: false,
     message: '',
+}
+
+const INTERNAL_CONFIG = {
+    HEADING_NAME: 'User',
+    SEARCH_DELAY_DURATION: 300,
+    PAGE_SIZE_ARR: [10, 25, 50, 100],
+    MAIN_HEADERS: ['ID', 'Username', 'Role', 'Email', 'Active', 'Actions'],
+    DETAIL_HEADERS: ['Avatar', 'Full name', 'Phone', 'DOB', 'Gender', 'Address'],
 }
 
 class AdminUser extends React.Component {
@@ -60,6 +69,11 @@ class AdminUser extends React.Component {
         this.prepareFormData = this.prepareFormData.bind(this);
         this.generateTableRows = this.generateTableRows.bind(this);
         this.fetchUsers = this.fetchUsers.bind(this);
+
+        this.props.changePageInfo({
+            currentPage: 1,
+            pageSize: INTERNAL_CONFIG.PAGE_SIZE_ARR[0],
+        });
     }
 
     componentWillMount() {
@@ -69,15 +83,15 @@ class AdminUser extends React.Component {
         if (
             pageIndex
             && pageSize
-            && [10, 25, 50, 100].indexOf(pageSize) !== -1
+            && INTERNAL_CONFIG.PAGE_SIZE_ARR.indexOf(pageSize) !== -1
         ) {
             this.handleFilterChange({
                 currentPage: pageIndex,
                 pageSize: pageSize
             });
         } else {
-            this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query);
-            this.updateURLParams(this.props.currentPage, this.props.pageSize);
+            this.fetchUsers(this.props.currentPage, INTERNAL_CONFIG.PAGE_SIZE_ARR[0], this.props.query);
+            this.updateURLParams(this.props.currentPage, INTERNAL_CONFIG.PAGE_SIZE_ARR[0]);
         }
     }
 
@@ -88,11 +102,10 @@ class AdminUser extends React.Component {
     }
 
     fetchUsers(currentPage, pageSize, query = {}) {
-        // let offset = (this.props.currentPage - 1) * this.props.pageSize;
-        // let limit = this.props.pageSize;
         this.setState({
             showLoadingBar: true,
         });
+
         WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, query)
             .then(res => {
                 const result = JSON.parse(res);
@@ -134,15 +147,15 @@ class AdminUser extends React.Component {
         let payloadObj = {}
 
         if (currentPage) {
-            payloadObj.currentPage = currentPage;
+            payloadObj.currentPage = Number(currentPage);
         }
 
         if (pageSize) {
-            payloadObj.pageSize = pageSize;
+            payloadObj.pageSize = Number(pageSize);
         }
 
         if (totalItems) {
-            payloadObj.totalItems = totalItems;
+            payloadObj.totalItems = Number(totalItems);
         }
 
         this.props.changePageInfo(payloadObj);
@@ -155,6 +168,19 @@ class AdminUser extends React.Component {
             );
         }
     }
+
+    handleChangeKeyword(e) {
+        this.props.updateFilter({ keyword: e.target.value });
+        clearTimeout(this.searchInterval);
+        this.searchInterval = setTimeout(() => {
+            this.handleSearch();
+        }, INTERNAL_CONFIG.SEARCH_DELAY_DURATION);
+    }
+
+    handleSearch() {
+        this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query)
+    }
+
 
     handleUpdateUser() {
         return new Promise((resolve, reject) => {
@@ -173,7 +199,7 @@ class AdminUser extends React.Component {
                 WebService.adminUpdateAccount(AuthService.getTokenUnsafe(), this.props.formData.id, newInfo)
                     .then(res => {
                         const resObj = JSON.parse(res);
-                        if (resObj.status === 'TRUE') {
+                        if (resObj.status === ACTIVE_TYPE.TRUE) {
                             this.setState({
                                 message: <Message color="green" content="Update account successfully" />
                             });
@@ -224,7 +250,7 @@ class AdminUser extends React.Component {
                 WebService.adminCreateAccount(AuthService.getTokenUnsafe(), this.props.formData)
                     .then(res => {
                         const resObj = JSON.parse(res);
-                        if (resObj.status === 'TRUE') {
+                        if (resObj.status === ACTIVE_TYPE.TRUE) {
                             this.setState({
                                 message: <Message color="green" content="Create account successfully" />
                             });
@@ -247,12 +273,12 @@ class AdminUser extends React.Component {
         return new Promise(resolve => {
             if (this.userToBlock && this.userToBlock.id) {
                 WebService.adminUpdateAccount(AuthService.getTokenUnsafe(), this.userToBlock.id, {
-                    active: this.userToBlock.active === 'TRUE' ? 'FALSE' : 'TRUE'
+                    active: this.userToBlock.active === ACTIVE_TYPE.TRUE ? ACTIVE_TYPE.FALSE : ACTIVE_TYPE.TRUE
                 }).then(res => {
                     const resObj = JSON.parse(res);
-                    if (resObj.status === 'TRUE') {
+                    if (resObj.status === ACTIVE_TYPE.TRUE) {
                         this.setState({
-                            message: <Message color="green" content={(this.userToBlock.active === 'TRUE' ? 'Block' : 'Unblock') + "account successfully"} />
+                            message: <Message color="green" content={(this.userToBlock.active === ACTIVE_TYPE.TRUE ? 'Block' : 'Unblock') + "account successfully"} />
                         });
 
                         resolve(true);
@@ -269,18 +295,6 @@ class AdminUser extends React.Component {
         });
     }
 
-    handleChangeKeyword(e) {
-        this.props.changeKeyword(e.target.value);
-        clearTimeout(this.searchInterval);
-        this.searchInterval = setTimeout(() => {
-            this.handleSearch();
-        }, 300);
-    }
-
-    handleSearch() {
-        this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query)
-    }
-
     generateTableRows(users) {
         let r = [];
 
@@ -292,7 +306,7 @@ class AdminUser extends React.Component {
                         <td>{user.username}</td>
                         <td>{user.permission}</td>
                         <td>{user.email}</td>
-                        <td>{user.active === 'TRUE' ? <i className="fa fa-check"></i> : <i className="fa fa-times-circle"></i>}</td>
+                        <td>{user.active === ACTIVE_TYPE.TRUE ? <i className="fa fa-check"></i> : <i className="fa fa-times-circle"></i>}</td>
                         <td>
                             <div className="btn-group">
                                 <button className="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target={"#detailbox" + user.username} aria-expanded="false" aria-controls="collapseExample">
@@ -306,7 +320,7 @@ class AdminUser extends React.Component {
                                 <button className="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-user-modal"
                                     onClick={() => { this.userToBlock = user; }}
                                 >
-                                    <i className="fa fa-ban"></i> {user.active === 'TRUE' ? 'Block' : 'Unblock'}
+                                    <i className="fa fa-ban"></i> {user.active === ACTIVE_TYPE.TRUE ? 'Block' : 'Unblock'}
                                 </button>
                             </div>
                         </td>
@@ -314,11 +328,11 @@ class AdminUser extends React.Component {
 
                     {/* ROW DETAIL */}
                     <tr className="collapse no-hover" id={"detailbox" + user.username}>
-                        <td colSpan="7">
+                        <td colSpan={INTERNAL_CONFIG.MAIN_HEADERS.length}>
                             <div className="card card-body" style={{ 'border': 'none' }}>
                                 <table className="table table-sm">
                                     <thead>
-                                        {HelperTool.generateTableHeaders(['Avatar', 'Full name', 'Phone', 'DOB', 'Gender', 'Address'])}
+                                        {HelperTool.generateTableHeaders(INTERNAL_CONFIG.DETAIL_HEADERS)}
                                     </thead>
                                     <tbody>
                                         <tr>
@@ -370,7 +384,7 @@ class AdminUser extends React.Component {
                     modalSubmitTitle="Block/Unblock"
                     modalSubmitClassName="btn-danger"
                 />
-                <h2>User</h2>
+                <h2>{INTERNAL_CONFIG.HEADING_NAME}</h2>
                 <hr />
                 <div className="card">
                     <div className="card-header d-flex justify-content-end">
@@ -419,7 +433,7 @@ class AdminUser extends React.Component {
                             <div className="table-container table-responsive" >
                                 <table className="table table-hover table-sm table-bordered">
                                     <thead className="">
-                                        {HelperTool.generateTableHeaders(['ID', 'Username', 'Role', 'Email', 'Active', 'Actions'])}
+                                        {HelperTool.generateTableHeaders(INTERNAL_CONFIG.MAIN_HEADERS)}
                                     </thead>
                                     <tbody>
                                         {this.generateTableRows(this.props.users)}
@@ -441,8 +455,5 @@ class AdminUser extends React.Component {
     }
 }
 
-const Message = (props) => (
-    <span style={{ color: props.color }}>{props.content}</span>
-);
 
 export default AdminUser;

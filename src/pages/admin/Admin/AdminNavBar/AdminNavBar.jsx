@@ -1,16 +1,21 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+// Stylesheet
 import './AdminNavBar.scss';
 
-import AuthService from '../../../../services/AuthService';
+// External dependencies
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
+// Internal dependencies
+import AuthService from '../../../../services/AuthService';
 import { ROUTE_NAME } from '../../../../routes/main.routing';
+
 
 const INTIAL_STATE = {
     redirectTo: null
 }
 
-export default class AdminNavBar extends React.Component {
+
+class AdminNavBar extends React.Component {
     constructor(props) {
         super(props);
 
@@ -23,6 +28,7 @@ export default class AdminNavBar extends React.Component {
             redirectTo: <Redirect to={ROUTE_NAME.LOGIN} />
         });
     }
+
     render() {
         return (
             <div className="nav-side-menu">
@@ -55,3 +61,5 @@ export default class AdminNavBar extends React.Component {
         );
     }
 }
+
+export default AdminNavBar;
