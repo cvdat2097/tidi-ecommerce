@@ -9,7 +9,8 @@ class FormInput extends React.Component {
         smallLabel: PropTypes.string,
         value: PropTypes.any.isRequired,
         onChangeHandler: PropTypes.func.isRequired,
-        options: PropTypes.array
+        options: PropTypes.array,
+        additionalClass: PropTypes.string
     }
 
     render() {
@@ -21,9 +22,18 @@ class FormInput extends React.Component {
                             value={this.props.value}
                             onChange={this.props.onChangeHandler}
                         >
-                            {this.props.options.map((opt, idx) => <option key={idx} value={opt}>{opt}</option>)}
+                            {this.props.options.map((opt, idx) => <option key={idx} value={opt.value || opt}>{opt.name || opt}</option>)}
                         </select>
                     );
+
+                case 'textarea':
+                    return (
+                        <textarea
+                            className="form-control"
+                            value={this.props.value}
+                            onChange={this.props.onChangeHandler}
+                        />
+                    )
 
                 default:
                     return (
@@ -38,7 +48,7 @@ class FormInput extends React.Component {
         }
 
         return (
-            <div className="form-group">
+            <div className={"form-group " + this.props.additionalClass}>
                 <label>{this.props.label}</label>
 
                 {generateInput(this.props.type)}

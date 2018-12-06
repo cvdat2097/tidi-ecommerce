@@ -20,7 +20,7 @@ const INITIAL_STATE = {
     AdminAddProduct: {
         formData: {
             ...DEFAULT_FORMDATA.AdminAddProduct
-        }
+        },
     },
 
     AdminFilter: {

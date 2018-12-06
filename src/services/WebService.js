@@ -385,7 +385,7 @@ export default {
     },
 
     // 6.5 Insert product 
-    adminInsertProduct: (token, { productName, industryId, branchId, categoryId, brandId, price, images, description, longDescription, amount }) => {
+    adminInsertProduct: (token, { productName, industryId, branchId, categoryId, brandId, price, images, description, amount }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -397,7 +397,6 @@ export default {
                 price,
                 images,
                 description,
-                longDescription,
                 amount
             },
             jwtToken: token,
@@ -431,7 +430,7 @@ export default {
     // 6.7 Get all brands  
     adminGetAllBrands: (token, limit, offset, { keyword }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,
@@ -473,7 +472,7 @@ export default {
     // 6.10 Get all industries
     adminGetAllIndustries: (token, limit, offset, { keyword }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,
@@ -515,7 +514,7 @@ export default {
     // 6.13 Get all Branches
     adminGetAllBranches: (token, limit, offset, { keyword }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,
@@ -559,7 +558,7 @@ export default {
     // 6.16 Get all Categories
     adminGetAllCategories: (token, limit, offset, { keyword }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,

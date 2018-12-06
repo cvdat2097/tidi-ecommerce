@@ -19,6 +19,10 @@ import Message from '../../common/FormMessage';
 const INTIAL_STATE = {
     showLoadingBar: false,
     message: '',
+    brands: [],
+    industries: [],
+    branches: [],
+    categories: []
 }
 
 const INTERNAL_CONFIG = {
@@ -60,6 +64,10 @@ class AdminProduct extends React.Component {
         this.prepareFormData = this.prepareFormData.bind(this);
         this.generateTableRows = this.generateTableRows.bind(this);
         this.fetchProducts = this.fetchProducts.bind(this);
+        this.fetchAllBrands = this.fetchAllBrands.bind(this);
+        this.fetchAllIndustries = this.fetchAllIndustries.bind(this);
+        this.fetchAllBranches = this.fetchAllBranches.bind(this);
+        this.fetchAllCategories = this.fetchAllCategories.bind(this);
 
         this.props.changePageInfo({
             currentPage: 1,
@@ -84,6 +92,13 @@ class AdminProduct extends React.Component {
             this.fetchProducts(this.props.currentPage, INTERNAL_CONFIG.PAGE_SIZE_ARR[0], this.props.query);
             this.updateURLParams(this.props.currentPage, INTERNAL_CONFIG.PAGE_SIZE_ARR[0]);
         }
+
+        this.fetchAllBrands();
+        this.fetchAllIndustries();
+        this.fetchAllBranches();
+        this.fetchAllCategories();
+
+        console.log(this.props);
     }
 
     updateURLParams(currentPage, pageSize) {
@@ -100,7 +115,7 @@ class AdminProduct extends React.Component {
         WebService.adminGetAllProducts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, query)
             .then(res => {
                 const result = JSON.parse(res);
-                this.props.fetchProducts(result); // FIXME: Totalitems
+                this.props.fetchProducts(result.products);
                 this.handleFilterChange({
                     totalItems: result.totalItems
                 });
@@ -111,16 +126,68 @@ class AdminProduct extends React.Component {
             });
     }
 
+    fetchAllBrands() {
+        WebService.adminGetAllBrands(AuthService.getTokenUnsafe(), 10000, 0, {}).then(res => {
+            const result = JSON.parse(res);
+
+            if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
+                this.setState({
+                    brands: result.brands
+                });
+            }
+        })
+    }
+
+    fetchAllIndustries() {
+        WebService.adminGetAllIndustries(AuthService.getTokenUnsafe(), 10000, 0, {}).then(res => {
+            const result = JSON.parse(res);
+
+            if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
+                this.setState({
+                    industries: result.industries
+                });
+            }
+        })
+    }
+
+    fetchAllBranches() {
+        WebService.adminGetAllBranches(AuthService.getTokenUnsafe(), 10000, 0, {}).then(res => {
+            const result = JSON.parse(res);
+
+            if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
+                this.setState({
+                    branches: result.branches
+                });
+            }
+        })
+    }
+
+    fetchAllCategories() {
+        WebService.adminGetAllCategories(AuthService.getTokenUnsafe(), 10000, 0, {}).then(res => {
+            const result = JSON.parse(res);
+
+            if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
+                this.setState({
+                    categories: result.categories
+                });
+            }
+        })
+    }
+
     prepareFormData(data) {
         this.setState({
             message: ''
         });
 
         for (let attr in data) {
-            if (data[attr] === null) {
+            if (!(attr in DEFAULT_FORMDATA.AdminAddProduct)) {
+                data[attr + 'Id'] = data[attr].id;
+                delete data[attr];
+            } else if (data[attr] === null) {
                 data[attr] = '';
             }
         }
+        console.log(data);
         this.originalProductInfo = data;
         this.props.setFormData(data);
     }
@@ -150,6 +217,7 @@ class AdminProduct extends React.Component {
         }
 
         this.props.changePageInfo(payloadObj);
+
         if (pageSize || currentPage) {
             this.updateURLParams(payloadObj.currentPage, payloadObj.pageSize);
             this.fetchProducts(
@@ -308,7 +376,7 @@ class AdminProduct extends React.Component {
                                     <i className="fa fa-info-circle"></i> Detail
                                 </button>
                                 <button className="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-product-modal"
-                                    onClick={() => this.prepareFormData(product)}
+                                    onClick={() => this.prepareFormData({ ...product })}
                                 >
                                     <i className="fa fa-pencil-square-o"></i> Edit
                                 </button>
@@ -355,7 +423,14 @@ class AdminProduct extends React.Component {
                 <Modal
                     modalId="add-product-modal"
                     modalTitle="Create new product"
-                    modalBody={<AdminAddProduct />}
+                    modalBody={
+                        <AdminAddProduct
+                            brands={this.state.brands}
+                            industries={this.state.industries}
+                            branches={this.state.branches}
+                            categories={this.state.categories}
+                        />
+                    }
                     modalHandleSubmit={this.handleAddProduct}
                     modalSubmitTitle="Add"
                     modalSubmitClassName="btn-success"
@@ -364,7 +439,15 @@ class AdminProduct extends React.Component {
                 <Modal
                     modalId="update-product-modal"
                     modalTitle="Update product info"
-                    modalBody={<AdminAddProduct editMode={true} />}
+                    modalBody={
+                        <AdminAddProduct
+                            editMode={true}
+                            brands={this.state.brands}
+                            industries={this.state.industries}
+                            branches={this.state.branches}
+                            categories={this.state.categories}
+                        />
+                    }
                     modalHandleSubmit={this.handleUpdateProduct}
                     modalSubmitTitle="Update"
                     modalSubmitClassName="btn-warning"

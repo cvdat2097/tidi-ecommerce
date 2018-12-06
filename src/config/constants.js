@@ -34,6 +34,7 @@ export const VERIFICATION_TYPE = {
 
 export const DEFAULT_FORMDATA = {
     AdminAddUser: {
+        id: '',
         username: '',
         permission: USER_TYPE.CUSTOMER,
         email: '',
@@ -47,6 +48,7 @@ export const DEFAULT_FORMDATA = {
     },
 
     AdminAddProduct: {
+        id: '',
         productName: '',
         brandId: '',
         industryId: '',
@@ -55,7 +57,6 @@ export const DEFAULT_FORMDATA = {
         price: 0,
         images: '',
         description: '',
-        longDescription: '',
         amount: 0,
         active: ACTIVE_TYPE.TRUE,
     }

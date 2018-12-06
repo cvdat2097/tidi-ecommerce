@@ -25,26 +25,100 @@ class AdminAddProduct extends React.Component {
             <div>
                 <form >
                     {/* PRODUCTNAME */}
+                    <div className="row">
+                        <FormInput
+                            label="Product Name"
+                            type="text"
+                            value={this.props.formData.productName}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                productName: e.target.value
+                            })}
+                            additionalClass="col-md-6 col-sm-6"
+                        />
+
+                        {/* PRICE */}
+                        <FormInput
+                            label="Price"
+                            type="text"
+                            value={this.props.formData.price}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                price: e.target.value
+                            })}
+                            additionalClass="col-md-3 col-sm-6"
+                        />
+
+                        {/* AMOUNT */}
+                        <FormInput
+                            label="Amount"
+                            type="text"
+                            value={this.props.formData.amount}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                amount: e.target.value
+                            })}
+                            additionalClass="col-md-3 col-sm-6"
+                        />
+                    </div>
+
+                    <div className="row">
+                        {/* BRAND */}
+                        <FormInput
+                            label="Brand"
+                            type="select"
+                            value={this.props.formData.brandId}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                brandId: e.target.value,
+                            })}
+                            options={this.props.brands.map(brand => ({ value: brand.id, name: brand.brandName }))}
+                            additionalClass="col-md-3 col-sm-6"
+                        />
+
+                        {/* INDUSTRY */}
+                        <FormInput
+                            label="Industry"
+                            type="select"
+                            value={this.props.formData.industryId}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                industryId: e.target.value
+                            })}
+                            options={this.props.industries.map(industry => ({ value: industry.id, name: industry.industryName }))}
+                            additionalClass="col-md-3 col-sm-6"
+                        />
+
+                        {/* BRANCH */}
+                        <FormInput
+                            label="Branch"
+                            type="select"
+                            value={this.props.formData.branchId}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                branchId: e.target.value
+                            })}
+                            options={this.props.branches.map(branch => ({ value: branch.id, name: branch.branchName }))}
+                            additionalClass="col-md-3 col-sm-6"
+                        />
+
+                        {/* CATEGORY */}
+                        <FormInput
+                            label="Branch"
+                            type="select"
+                            value={this.props.formData.categoryId}
+                            innerHTML={this.props.formData.categoryName}
+                            onChangeHandler={(e) => this.props.updateForm({
+                                categoryId: e.target.value
+                            })}
+                            options={this.props.categories.map(category => ({ value: category.id, name: category.categoryName }))}
+                            additionalClass="col-md-3 col-sm-6"
+                        />
+                    </div>
+
+                    {/* DESCRIPTION */}
                     <FormInput
-                        label="Productname"
-                        type="text"
-                        value={this.props.formData.productName}
+                        label="Description"
+                        type="textarea"
+                        value={this.props.formData.description}
                         onChangeHandler={(e) => this.props.updateForm({
-                            productName: e.target.value
+                            description: e.target.value
                         })}
                     />
-
-                    {/* Gender */}
-                    <FormInput
-                        label="Gender"
-                        type="select"
-                        value={this.props.formData.brandId}
-                        onChangeHandler={(e) => this.props.updateForm({
-                            brandId: e.target.value
-                        })}
-                        options={[]}
-                    />
-
                 </form>
             </div>
         );
