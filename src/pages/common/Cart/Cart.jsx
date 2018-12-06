@@ -77,7 +77,7 @@ export default class Cart extends React.Component {
 
                                 <span className="badge">{cartItem.category.categoryName}</span>
                                 <h6>{cartItem.productName}</h6>
-                                <span className="badge">{'X' + cartItem.amount}</span>
+                                <span className="badge">{`X  ${cartItem.amount}`}</span>
                                 <p className="price">{withCommas(cartItem.price) + ' ₫'}</p>
                             </div>
                         </Link>

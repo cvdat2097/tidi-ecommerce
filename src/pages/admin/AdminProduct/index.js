@@ -13,7 +13,10 @@ const mapDispatchToProps = (dispatch) => ({
     setFormData: (newData) => dispatch(Actions.updateAddProductForm(newData)),
     fetchProducts: (users) => dispatch(Actions.fetchProducts(users)),
     changePageInfo: (pageInfo) => dispatch(commonActions.changePageInfo(pageInfo)),
-    updateFilter: (query) => dispatch(Actions.updateFilter(query))
+    updateFilter: (query) => dispatch(Actions.updateFilter(query)),
+    updateForm: (newFormObj) => {
+        dispatch(Actions.updateAddProductForm(newFormObj));
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminProduct);

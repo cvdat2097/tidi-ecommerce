@@ -21,7 +21,9 @@ const INTIAL_STATE = {
     message: '',
     brands: [],
     industries: [],
+    selectedIndustryId: 0,
     branches: [],
+    selectedBranchId: 0,
     categories: []
 }
 
@@ -55,12 +57,17 @@ class AdminProduct extends React.Component {
     constructor(props) {
         super(props);
 
+        this.orignalBranches = [];
+        this.originalCategories = [];
+
         this.state = INTIAL_STATE;
 
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleAddProduct = this.handleAddProduct.bind(this);
         this.handleUpdateProduct = this.handleUpdateProduct.bind(this);
         this.handleDeleteProduct = this.handleDeleteProduct.bind(this);
+        this.handleIndustryChange = this.handleIndustryChange.bind(this);
+        this.handleBranchChange = this.handleBranchChange.bind(this);
         this.prepareFormData = this.prepareFormData.bind(this);
         this.generateTableRows = this.generateTableRows.bind(this);
         this.fetchProducts = this.fetchProducts.bind(this);
@@ -97,8 +104,6 @@ class AdminProduct extends React.Component {
         this.fetchAllIndustries();
         this.fetchAllBranches();
         this.fetchAllCategories();
-
-        console.log(this.props);
     }
 
     updateURLParams(currentPage, pageSize) {
@@ -155,9 +160,8 @@ class AdminProduct extends React.Component {
             const result = JSON.parse(res);
 
             if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
-                this.setState({
-                    branches: result.branches
-                });
+                this.orignalBranches = result.branches;
+                this.handleIndustryChange(this.props.formData.industryId);
             }
         })
     }
@@ -167,9 +171,8 @@ class AdminProduct extends React.Component {
             const result = JSON.parse(res);
 
             if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
-                this.setState({
-                    categories: result.categories
-                });
+                this.originalCategories = result.categories;
+                this.handleBranchChange(this.props.formData.branchId);
             }
         })
     }
@@ -187,7 +190,7 @@ class AdminProduct extends React.Component {
                 data[attr] = '';
             }
         }
-        console.log(data);
+
         this.originalProductInfo = data;
         this.props.setFormData(data);
     }
@@ -199,6 +202,28 @@ class AdminProduct extends React.Component {
 
 
         this.props.setFormData(DEFAULT_FORMDATA.AdminAddProduct);
+    }
+
+    handleIndustryChange(newIndustryId) {
+        // eslint-disable-next-line
+        const filteredBranches = this.orignalBranches.filter(branch => branch.industry.id == newIndustryId);
+        this.setState({
+            branches: filteredBranches
+        });
+        this.handleBranchChange(filteredBranches[0] && filteredBranches[0].id);
+    }
+
+    handleBranchChange(newBranchId) {
+        if (newBranchId) {
+            this.setState({
+                // eslint-disable-next-line
+                categories: this.originalCategories.filter(cat => cat.branch.id == newBranchId)
+            });
+        } else {
+            this.setState({
+                categories: []
+            })
+        }
     }
 
     handleFilterChange({ currentPage, pageSize, totalItems }) {
@@ -295,15 +320,19 @@ class AdminProduct extends React.Component {
 
             if (!this.props.formData.productName) {
                 this.setState({
-                    message: <Message color="red" content="Productname is empty" />
+                    message: <Message color="red" content="Product Name is empty" />
                 });
-            } else if (!this.props.formData.email) {
+            } else if (!this.props.formData.price) {
                 this.setState({
-                    message: <Message color="red" content="Email is empty" />
+                    message: <Message color="red" content="Price is invalid" />
                 });
-            } else if (!this.props.formData.password) {
+            } else if (!this.props.formData.amount) {
                 this.setState({
-                    message: <Message color="red" content="Password is empty" />
+                    message: <Message color="red" content="Amount is invalid" />
+                });
+            } else if (!this.props.formData.images) {
+                this.setState({
+                    message: <Message color="red" content="Images is empty" />
                 });
             } else {
                 WebService.adminInsertProduct(AuthService.getTokenUnsafe(), this.props.formData)
@@ -358,7 +387,13 @@ class AdminProduct extends React.Component {
         let r = [];
 
         products.forEach((product, id) => {
-            let productImages = JSON.parse(product.images);
+            let productImages;
+            try {
+                productImages = JSON.parse(product.images);
+            } catch (e) {
+                productImages = [];
+            }
+
             let randomStr = HelperTool.generateRandomString();
             r.push(
                 <Fragment key={id}>
@@ -429,6 +464,8 @@ class AdminProduct extends React.Component {
                             industries={this.state.industries}
                             branches={this.state.branches}
                             categories={this.state.categories}
+                            changeIndustryHandler={this.handleIndustryChange}
+                            changeBranchHandler={this.handleBranchChange}
                         />
                     }
                     modalHandleSubmit={this.handleAddProduct}
@@ -446,6 +483,8 @@ class AdminProduct extends React.Component {
                             industries={this.state.industries}
                             branches={this.state.branches}
                             categories={this.state.categories}
+                            changeIndustryHandler={this.handleIndustryChange}
+                            changeBranchHandler={this.handleBranchChange}
                         />
                     }
                     modalHandleSubmit={this.handleUpdateProduct}

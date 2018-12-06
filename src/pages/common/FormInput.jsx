@@ -32,6 +32,7 @@ class FormInput extends React.Component {
                             className="form-control"
                             value={this.props.value}
                             onChange={this.props.onChangeHandler}
+                            rows={this.props.rows}
                         />
                     )
 

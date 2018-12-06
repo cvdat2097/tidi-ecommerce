@@ -77,9 +77,12 @@ class AdminAddProduct extends React.Component {
                             label="Industry"
                             type="select"
                             value={this.props.formData.industryId}
-                            onChangeHandler={(e) => this.props.updateForm({
-                                industryId: e.target.value
-                            })}
+                            onChangeHandler={(e) => {
+                                this.props.updateForm({
+                                    industryId: e.target.value
+                                });
+                                this.props.changeIndustryHandler(e.target.value);
+                            }}
                             options={this.props.industries.map(industry => ({ value: industry.id, name: industry.industryName }))}
                             additionalClass="col-md-3 col-sm-6"
                         />
@@ -89,16 +92,19 @@ class AdminAddProduct extends React.Component {
                             label="Branch"
                             type="select"
                             value={this.props.formData.branchId}
-                            onChangeHandler={(e) => this.props.updateForm({
-                                branchId: e.target.value
-                            })}
+                            onChangeHandler={(e) => {
+                                this.props.updateForm({
+                                    branchId: e.target.value
+                                });
+                                this.props.changeBranchHandler(e.target.value);
+                            }}
                             options={this.props.branches.map(branch => ({ value: branch.id, name: branch.branchName }))}
                             additionalClass="col-md-3 col-sm-6"
                         />
 
                         {/* CATEGORY */}
                         <FormInput
-                            label="Branch"
+                            label="Category"
                             type="select"
                             value={this.props.formData.categoryId}
                             innerHTML={this.props.formData.categoryName}
@@ -110,6 +116,17 @@ class AdminAddProduct extends React.Component {
                         />
                     </div>
 
+                    {/* Images */}
+                    <FormInput
+                        label="Images"
+                        type="textarea"
+                        value={this.props.formData.images}
+                        onChangeHandler={(e) => this.props.updateForm({
+                            images: e.target.value
+                        })}
+                        rows="7"
+                    />
+
                     {/* DESCRIPTION */}
                     <FormInput
                         label="Description"
@@ -118,6 +135,7 @@ class AdminAddProduct extends React.Component {
                         onChangeHandler={(e) => this.props.updateForm({
                             description: e.target.value
                         })}
+                        rows="5"
                     />
                 </form>
             </div>
