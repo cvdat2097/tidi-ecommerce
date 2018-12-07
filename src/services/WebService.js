@@ -289,25 +289,28 @@ export default {
     },
 
     // 5.2 Get all orders
-    getAllOrders: (token) => {
+    getAllOrders: (token, limit, offset, query) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
+                limit,
+                offset,
+                query
             },
             jwtToken: token,
-            route: apiPrefix.checkout + '/order/all'
+            route: apiPrefix.checkout + '/all'
         });
     },
 
     // 5.3 Get one order
     getOneOrder: (token, orderId) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 orderId
             },
             jwtToken: token,
-            route: apiPrefix.checkout + '/order/one'
+            route: apiPrefix.checkout + '/one'
         });
     },
 

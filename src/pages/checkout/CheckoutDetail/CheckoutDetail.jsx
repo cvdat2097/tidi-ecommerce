@@ -182,8 +182,8 @@ export default class CheckoutDetail extends React.Component {
 
     placeOrder() {
         return new Promise((resolve, reject) => {
-            console.log(this.state);
-            console.log(this.props.cartItems);
+            // console.log(this.state);
+            // console.log(this.props.cartItems);
 
             WebService.toCheckout(
                 AuthService.getTokenUnsafe(),
@@ -196,7 +196,6 @@ export default class CheckoutDetail extends React.Component {
                 this.state.shippingMethod.NAME
             ).then(res => {
                 let result = JSON.parse(res);
-                console.log(result);
                 if (result.status === ACTIVE_TYPE.TRUE) {
                     resolve(true);
                 } else {

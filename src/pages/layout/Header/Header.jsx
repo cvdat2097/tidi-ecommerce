@@ -231,7 +231,7 @@ export default class Header extends React.Component {
                                         <div className="dropdown-menu">
                                             <span className="d-flex justify-content-center">Hello, {this.props.username}</span>
                                             <div className="dropdown-divider"></div>
-                                            <button className="dropdown-item text-center" >My Orders</button>
+                                            <Link to={ROUTE_NAME.ORDERS} className="dropdown-item text-center" >My Orders</Link>
                                             <button className="dropdown-item text-center" >Settings</button>
                                             <button className="dropdown-item text-center" >Help</button>
                                             <div className="dropdown-divider"></div>
