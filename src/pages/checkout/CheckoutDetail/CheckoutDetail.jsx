@@ -1,25 +1,33 @@
-import React from 'react';
+// Stylesheet
 import './CheckoutDetail.scss';
 
+// External dependencies
+import React from 'react';
+import Swal from 'sweetalert2';
+import { Redirect } from 'react-router-dom';
+
+// Internal Dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-// import MockAPI from '../../../helpers/MockAPI';
 import LIB, { withCommas } from '../../../helpers/lib';
-import { PAYMENT_METHOD } from '../../../config/constants';
-// import CONSTANT from '../../../config/constants';
+import { PAYMENT_METHOD, ACTIVE_TYPE } from '../../../config/constants';
+import FormInput from '../../common/FormInput';
+import { ROUTE_NAME } from '../../../routes/main.routing';
 
 const INITIAL_STATE = {
-    fullname: '',
+    fullName: '',
     address: '',
     phoneNumber: '',
     email: '',
     shippingNote: '',
     shippingFee: null,
     shippingMethod: {},
+    couponCode: '',
 
-    fullnameIsInvalid: false,
+    fullNameIsInvalid: false,
     shippingMethodIsInvalid: false,
-    errorMessage: ''
+    errorMessage: '',
+    redirectTo: null
 }
 
 
@@ -35,6 +43,7 @@ export default class CheckoutDetail extends React.Component {
         this.handleShippingMethodSelect = this.handleShippingMethodSelect.bind(this);
         this.fetchUserInfo = this.fetchUserInfo.bind(this);
         this.placeOrder = this.placeOrder.bind(this);
+        this.handleOrder = this.handleOrder.bind(this);
     }
 
     componentWillMount() {
@@ -45,7 +54,7 @@ export default class CheckoutDetail extends React.Component {
 
     fetchCartProducts() {
         if (this.props.isLoggedIn) {
-            WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
+            return WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
                 // MockAPI.CART.getCart().then(res => {
                 const result = JSON.parse(res);
 
@@ -56,16 +65,18 @@ export default class CheckoutDetail extends React.Component {
                     this.props.updateCartProducts(result.products);
                 }
             });
+        } else {
+            return Promise.reject('Refresh cart failed');
         }
     }
 
-    async fetchUserInfo() {
+    fetchUserInfo() {
         WebService.readAccountInfo(AuthService.getTokenUnsafe()).then(response => {
             let res = JSON.parse(response);
 
             if (res.status.status === 'TRUE') {
                 this.setState({
-                    fullname: res.fullName ? res.fullName : '',
+                    fullName: res.fullName ? res.fullName : '',
                     address: res.address ? res.address : '',
                     phoneNumber: res.phone ? res.phone : '',
                     email: res.email ? res.email : '',
@@ -117,22 +128,89 @@ export default class CheckoutDetail extends React.Component {
         ));
     }
 
-    placeOrder() {
+    handleOrder() {
         if (!this.state.shippingMethod.NAME) {
             this.setState({
                 shippingMethodIsInvalid: true,
                 errorMessage: 'Please choose a shipping method'
             });
+        } else if (!this.state.fullName) {
+            this.setState({
+                fullNameIsInvalid: true,
+                errorMessage: 'Please enter your name'
+            });
         } else {
+            Swal({
+                title: 'Ordering...',
+                timer: 2000,
+                allowOutsideClick: false,
+                onOpen: () => {
+                    Swal.showLoading();
+                    this.placeOrder().then(res => {
+                        if (res === true) {
+                            Swal({
+                                type: 'success',
+                                title: 'Yayy!!',
+                                text: `You ordered successfully.`,
+                                onClose: () => {
+                                    this.setState({
+                                        redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+                                    })
+                                }
+                            });
+                        } else {
+                            Swal({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: `Can't place your order.`,
+                            });
+                        }
+                    });
+                },
+            }).then(modalInfo => {
+                if (modalInfo.dismiss === Swal.DismissReason.timer) {
+                    Swal({
+                        type: 'question',
+                        title: 'Noo...',
+                        text: `Server time out! Please try again later.`,
+                    });
+                }
+            });
+        }
+    }
+
+    placeOrder() {
+        return new Promise((resolve, reject) => {
             console.log(this.state);
             console.log(this.props.cartItems);
-            this.setState(INITIAL_STATE)
-        }
+
+            WebService.toCheckout(
+                AuthService.getTokenUnsafe(),
+                this.state.couponCode,
+                this.state.fullName,
+                this.state.phone,
+                this.state.email,
+                this.state.address,
+                this.state.shippingNote,
+                this.state.shippingMethod.NAME
+            ).then(res => {
+                let result = JSON.parse(res);
+
+                if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
+                    result(true);
+                } else {
+                    resolve(false);
+                }
+            }).catch(res => {
+                resolve(false);
+            });
+        });
     }
 
     render() {
         return (
             <div>
+                {this.state.redirectTo}
                 {/* <!-- ##### Breadcumb Area Start ##### --> */}
                 <div className="breadcumb_area bg-img" style={{ backgroundImage: "url(/img/bg-img/breadcumb.jpg)" }}>
                     <div className="container h-100">
@@ -163,9 +241,9 @@ export default class CheckoutDetail extends React.Component {
                                         <div className="row">
                                             <div className="col-md-12 mb-3">
                                                 <label htmlFor="full_name">Fullname <span>*</span></label>
-                                                <input type="text" className="form-control" id="full_name" required
-                                                    value={this.state.fullname}
-                                                    onChange={(e) => this.setState({ fullname: e.target.value })}
+                                                <input type="text" className={"form-control" + (this.state.fullNameIsInvalid ? " is-invalid" : "")} id="full_name" required
+                                                    value={this.state.fullName}
+                                                    onChange={(e) => this.setState({ fullName: e.target.value, fullNameIsInvalid: false })}
                                                 />
                                             </div>
                                             <div className="col-12 mb-4">
@@ -235,6 +313,19 @@ export default class CheckoutDetail extends React.Component {
                                                     <li className="item-header"><span>Product</span> <span>Price</span></li>
                                                     {this.generateCartItemList()}
                                                     <li className="item-header"><span>Shipping</span> <span>{`${!this.state.shippingFee ? 'FREE' : withCommas(this.state.shippingFee)}`}</span></li>
+                                                    <li className="item-header">
+                                                        <div className="row">
+                                                            <div className="col-md-5 d-flex align-items-center">
+                                                                <span>COUPON</span>
+                                                            </div>
+                                                            <FormInput
+                                                                type="text"
+                                                                additionalClass="col-md-7 mb-0"
+                                                                value={this.state.couponCode.toUpperCase()}
+                                                                onChangeHandler={(e) => { this.setState({ couponCode: e.target.value }) }}
+                                                            />
+                                                        </div>
+                                                    </li>
                                                     <li className="total-header"><span>Total</span> <span>{`${withCommas(this.total + this.state.shippingFee)} ₫`}</span></li>
                                                 </ul>
 
@@ -245,7 +336,7 @@ export default class CheckoutDetail extends React.Component {
                                                     {this.state.errorMessage}
                                                 </div>
                                                 <button className="btn essence-btn"
-                                                    onClick={() => this.placeOrder()}
+                                                    onClick={() => this.handleOrder()}
                                                 >Place Order</button>
                                             </>
                                             : <div className="text-center">Cart is Empty!</div>

@@ -50,7 +50,10 @@ class FormInput extends React.Component {
 
         return (
             <div className={"form-group " + this.props.additionalClass}>
-                <label>{this.props.label}</label>
+                {
+                    this.props.label &&
+                    <label>{this.props.label}</label>
+                }
 
                 {generateInput(this.props.type)}
 

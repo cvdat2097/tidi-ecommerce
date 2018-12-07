@@ -28,7 +28,6 @@ export default class Cart extends React.Component {
     fetchCartProducts() {
         if (this.props.isLoggedIn) {
             WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
-                // MockAPI.CART.getCart().then(res => {
                 const result = JSON.parse(res);
 
                 if (result.status.status === 'TRUE') {

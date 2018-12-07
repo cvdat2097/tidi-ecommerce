@@ -117,7 +117,7 @@ class AdminProduct extends React.Component {
             showLoadingBar: true,
         });
 
-        WebService.adminGetAllProducts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, query)
+        WebService.adminGetAllProducts(AuthService.getTokenUnsafe(), pageSize, query)
             .then(res => {
                 const result = JSON.parse(res);
                 this.props.fetchProducts(result.products);

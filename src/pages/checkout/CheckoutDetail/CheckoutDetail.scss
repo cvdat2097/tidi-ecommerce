@@ -24,6 +24,10 @@
     border: none;
 }
 
+.is-invalid {
+    border :1px solid red !important;
+}
+
 .error-message {
     color: red !important;
     margin-bottom: 15px;

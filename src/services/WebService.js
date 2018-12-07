@@ -271,10 +271,17 @@ export default {
     */
 
     // 5.1 Checkout (Cart to Order) 
-    toCheckout: (token) => {
+    toCheckout: (token, couponCode, fullName, phone, email, address, note, shippingMethod) => {
         return fetch({
             method: 'POST',
             reqBody: {
+                couponCode,
+                fullName,
+                phone,
+                email,
+                address,
+                note,
+                shippingMethod
             },
             jwtToken: token,
             route: apiPrefix.checkout + '/order'
