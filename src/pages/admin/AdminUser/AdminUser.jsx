@@ -93,7 +93,6 @@ class AdminUser extends React.Component {
             this.fetchUsers(this.props.currentPage, INTERNAL_CONFIG.PAGE_SIZE_ARR[0], this.props.query);
             this.updateURLParams(this.props.currentPage, INTERNAL_CONFIG.PAGE_SIZE_ARR[0]);
         }
-        console.log(this.props);
     }
 
     updateURLParams(currentPage, pageSize) {

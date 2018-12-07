@@ -3,6 +3,16 @@
 @import 'src/assets/scss/mixin';
 @import 'src/assets/scss/responsive';
 
+h1 {
+  a {
+    font-size: 1.5em !important;
+  }
+  small {
+    font-style: italic;
+    font-size: .6em;
+  }
+}
+
 a {
   font-size: 1em;
 }

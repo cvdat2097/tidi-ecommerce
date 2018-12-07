@@ -28,7 +28,8 @@ export const ROUTE_NAME = {
         HOME: '/admin',
         USER: '/admin/user',
         PRODUCT: '/admin/product',
-        COUPON: '/admin/coupon'
+        COUPON: '/admin/coupon',
+        ORDER: '/admin/order',
     }
 };
 
@@ -51,6 +52,11 @@ const ROUTES = [
             {
                 path: ROUTE_NAME.ADMIN.COUPON,
                 component: () => <div>Admin Coupon</div>,
+                permission: USER_TYPE.ADMIN,
+            },
+            {
+                path: ROUTE_NAME.ADMIN.ORDER,
+                component: () => <div>Admin Order</div>,
                 permission: USER_TYPE.ADMIN,
             },
             {

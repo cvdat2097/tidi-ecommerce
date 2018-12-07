@@ -284,7 +284,7 @@ export default {
                 shippingMethod
             },
             jwtToken: token,
-            route: apiPrefix.checkout + '/order'
+            route: apiPrefix.checkout + '/checkout'
         });
     },
 

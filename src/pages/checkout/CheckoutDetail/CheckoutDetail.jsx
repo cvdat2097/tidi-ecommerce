@@ -153,8 +153,9 @@ export default class CheckoutDetail extends React.Component {
                                 title: 'Yayy!!',
                                 text: `You ordered successfully.`,
                                 onClose: () => {
+                                    this.fetchCartProducts();
                                     this.setState({
-                                        redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+                                        redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
                                     })
                                 }
                             });
@@ -188,16 +189,16 @@ export default class CheckoutDetail extends React.Component {
                 AuthService.getTokenUnsafe(),
                 this.state.couponCode,
                 this.state.fullName,
-                this.state.phone,
+                this.state.phoneNumber,
                 this.state.email,
                 this.state.address,
                 this.state.shippingNote,
                 this.state.shippingMethod.NAME
             ).then(res => {
                 let result = JSON.parse(res);
-
-                if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
-                    result(true);
+                console.log(result);
+                if (result.status === ACTIVE_TYPE.TRUE) {
+                    resolve(true);
                 } else {
                     resolve(false);
                 }
