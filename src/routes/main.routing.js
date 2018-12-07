@@ -9,7 +9,9 @@ import Auth from '../pages/common/Auth';
 import Cart from '../pages/common/Cart';
 import Products from '../pages/products/Products';
 import ProductDetail from '../pages/products/ProductDetail';
+import Orders from '../pages/orders/Orders';
 import CheckoutDetail from '../pages/checkout/CheckoutDetail';
+import OrderDetail from '../pages/orders/OrderDetail';
 import Admin from '../pages/admin/Admin';
 import AdminUser from '../pages/admin/AdminUser';
 import AdminProduct from '../pages/admin/AdminProduct';
@@ -25,6 +27,8 @@ export const ROUTE_NAME = {
     PRODUCTS: '/products',
     PRODUCT_DETAIL: '/product',
     CHECKOUT: '/checkout',
+    ORDERS: '/orders',
+    ORDER_DETAIL: '/order',
     ADMIN: {
         HOME: '/admin',
         USER: '/admin/user',
@@ -101,19 +105,26 @@ const ROUTES = [
                 path: ROUTE_NAME.PRODUCTS,
                 component: Products,
                 permission: USER_TYPE.PUBLIC,
-
             },
             {
                 path: ROUTE_NAME.PRODUCT_DETAIL + '/:id',
                 component: ProductDetail,
                 permission: USER_TYPE.PUBLIC,
-
+            },
+            {
+                path: ROUTE_NAME.ORDERS,
+                component: Orders,
+                permission: USER_TYPE.CUSTOMER,
+            },
+            {
+                path: ROUTE_NAME.ORDER_DETAIL + '/:id',
+                component: OrderDetail,
+                permission: USER_TYPE.CUSTOMER,
             },
             {
                 path: ROUTE_NAME.CHECKOUT,
                 component: CheckoutDetail,
                 permission: USER_TYPE.CUSTOMER,
-
             }
         ]
     },

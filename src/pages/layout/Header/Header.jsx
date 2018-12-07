@@ -185,6 +185,10 @@ export default class Header extends React.Component {
                                         pathname: ROUTE_NAME.ADMIN.HOME,
                                         search: ''
                                     }}>Admin</Link></li>
+                                    <li><Link to={{
+                                        pathname: ROUTE_NAME.ORDERS,
+                                        search: ''
+                                    }}>Orders</Link></li>
                                 </ul>
                             </div>
                             {/* <!-- Nav End --> */}

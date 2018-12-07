@@ -152,7 +152,7 @@ class Products extends React.Component {
             <div>
                 {this.state.loadingBar}
                 {/* <!-- ##### Breadcumb Area Start ##### --> */}
-                <div className="breadcumb_area bg-img" style={{ backgroundImage: "url(img/bg-img/breadcumb.jpg)" }}>
+                <div className="breadcumb_area bg-img" style={{ backgroundImage: "url(/img/bg-img/breadcumb.jpg)" }}>
                     <div className="container h-100">
                         <div className="row h-100 align-items-center">
                             <div className="col-12">
