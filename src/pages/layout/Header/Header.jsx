@@ -175,7 +175,7 @@ export default class Header extends React.Component {
                                                 {this.generateMenuItems()}
                                             </div>
 
-                                            {/* CATALOG DETAIL */}
+                                            {/* BRAND DETAIL */}
                                             <div className="catalog-detail">
                                                 {this.generateCatalog()}
                                             </div>

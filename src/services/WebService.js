@@ -435,14 +435,14 @@ export default {
     },
 
     // 6.7 Get all brands  
-    adminGetAllBrands: (token, limit, offset, { keyword }) => {
+    adminGetAllBrands: (token, limit, offset, query) => {
         return fetch({
             method: 'POST',
             reqBody: {
                 limit,
                 offset,
                 query: {
-                    keyword
+                    ...query
                 }
             },
             jwtToken: token,

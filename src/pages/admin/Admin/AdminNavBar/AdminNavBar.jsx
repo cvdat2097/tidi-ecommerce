@@ -53,7 +53,7 @@ class AdminNavBar extends React.Component {
                             <li className={this.props.location.pathname === ROUTE_NAME.ADMIN.USER ? "active" : ""}><Link to={ROUTE_NAME.ADMIN.USER}>User</Link></li>
                             <li className={this.props.location.pathname === ROUTE_NAME.ADMIN.PRODUCT ? "active" : ""}><Link to={ROUTE_NAME.ADMIN.PRODUCT}>Product</Link></li>
                             <li className={this.props.location.pathname === ROUTE_NAME.ADMIN.ORDER ? "active" : ""}><Link to={ROUTE_NAME.ADMIN.ORDER}>Order</Link></li>
-                            <li className={this.props.location.pathname === ROUTE_NAME.ADMIN.COUPON ? "active" : ""}><Link to={ROUTE_NAME.ADMIN.COUPON}>Coupon</Link></li>
+                            <li className={this.props.location.pathname === ROUTE_NAME.ADMIN.BRAND ? "active" : ""}><Link to={ROUTE_NAME.ADMIN.BRAND}>Brand</Link></li>
                         </ul>
                     </ul>
                 </div>

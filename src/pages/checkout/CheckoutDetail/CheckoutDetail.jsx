@@ -317,7 +317,7 @@ export default class CheckoutDetail extends React.Component {
                                                     <li className="item-header">
                                                         <div className="row">
                                                             <div className="col-md-5 d-flex align-items-center">
-                                                                <span>COUPON</span>
+                                                                <span>BRAND</span>
                                                             </div>
                                                             <FormInput
                                                                 type="text"

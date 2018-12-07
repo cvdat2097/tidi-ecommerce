@@ -13,6 +13,7 @@ import CheckoutDetail from '../pages/checkout/CheckoutDetail';
 import Admin from '../pages/admin/Admin';
 import AdminUser from '../pages/admin/AdminUser';
 import AdminProduct from '../pages/admin/AdminProduct';
+import AdminBrand from '../pages/admin/AdminBrand';
 
 import { USER_TYPE } from '../config/constants';
 
@@ -28,7 +29,7 @@ export const ROUTE_NAME = {
         HOME: '/admin',
         USER: '/admin/user',
         PRODUCT: '/admin/product',
-        COUPON: '/admin/coupon',
+        BRAND: '/admin/catalog',
         ORDER: '/admin/order',
     }
 };
@@ -50,8 +51,8 @@ const ROUTES = [
                 permission: USER_TYPE.ADMIN,
             },
             {
-                path: ROUTE_NAME.ADMIN.COUPON,
-                component: () => <div>Admin Coupon</div>,
+                path: ROUTE_NAME.ADMIN.BRAND,
+                component: AdminBrand,
                 permission: USER_TYPE.ADMIN,
             },
             {

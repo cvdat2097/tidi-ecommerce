@@ -23,6 +23,35 @@ const INITIAL_STATE = {
         },
     },
 
+    AdminBrand: {
+
+    },
+
+    AdminAddBrand: {
+        formData: {
+            ...DEFAULT_FORMDATA.AdminAddBrand
+        },
+    },
+
+    AdminIndustry: {
+
+    },
+
+    AdminAddIndustry: {
+
+    },
+    AdminBranch: {
+
+    },
+
+    AdminAddBranch: {
+
+    },
+
+    AdminAddCategory: {
+
+    },
+
     AdminFilter: {
         currentPage: 1,
         totalItems: 0,
@@ -104,6 +133,18 @@ const adminReducer = (state = INITIAL_STATE, action) => {
                     products: action.payload
                 }
             };
+
+        case Types.ADMIN_BRAND_UPDATE_FORM:
+            return {
+                ...state,
+                AdminAddBrand: {
+                    formData: {
+                        ...state.AdminAddBrand.formData,
+                        ...action.payload
+                    }
+                }
+            };
+
 
         default:
             return state;

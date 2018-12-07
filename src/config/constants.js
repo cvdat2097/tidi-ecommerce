@@ -59,6 +59,11 @@ export const DEFAULT_FORMDATA = {
         description: '',
         amount: 0,
         active: ACTIVE_TYPE.TRUE,
+    },
+
+    AdminAddBrand: {
+        id: '',
+        brandName: ''
     }
 }
 
