@@ -56,6 +56,7 @@ class AdminUser extends React.Component {
     userToBlock = null;
     originalAccountInfo = {};
     searchInterval = null;
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -95,6 +96,14 @@ class AdminUser extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     updateURLParams(currentPage, pageSize) {
         this.props.history.push({
             search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
@@ -114,9 +123,12 @@ class AdminUser extends React.Component {
                     totalItems: result.totalItems
                 });
 
-                this.setState({
-                    showLoadingBar: false,
-                });
+
+                if (this._isMounted) {
+                    this.setState({
+                        showLoadingBar: false,
+                    });
+                }
             });
     }
 

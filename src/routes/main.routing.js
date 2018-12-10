@@ -18,6 +18,7 @@ import AdminProduct from '../pages/admin/AdminProduct';
 import AdminBrand from '../pages/admin/AdminBrand';
 
 import { USER_TYPE } from '../config/constants';
+import AdminOrder from '../pages/admin/AdminOrder';
 
 export const ROUTE_NAME = {
     HOME: '/',
@@ -61,7 +62,7 @@ const ROUTES = [
             },
             {
                 path: ROUTE_NAME.ADMIN.ORDER,
-                component: () => <div>Admin Order</div>,
+                component: AdminOrder,
                 permission: USER_TYPE.ADMIN,
             },
             {

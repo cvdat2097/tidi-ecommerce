@@ -53,6 +53,7 @@ class AdminProduct extends React.Component {
     productToBlock = null;
     originalProductInfo = {};
     searchInterval = null;
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -106,6 +107,14 @@ class AdminProduct extends React.Component {
         this.fetchAllCategories();
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     updateURLParams(currentPage, pageSize) {
         this.props.history.push({
             search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
@@ -125,9 +134,11 @@ class AdminProduct extends React.Component {
                     totalItems: result.totalItems
                 });
 
-                this.setState({
-                    showLoadingBar: false,
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        showLoadingBar: false,
+                    });
+                }
             });
     }
 
@@ -136,9 +147,11 @@ class AdminProduct extends React.Component {
             const result = JSON.parse(res);
 
             if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
-                this.setState({
-                    brands: result.brands
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        brands: result.brands
+                    });
+                }
             }
         })
     }
@@ -148,9 +161,11 @@ class AdminProduct extends React.Component {
             const result = JSON.parse(res);
 
             if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
-                this.setState({
-                    industries: result.industries
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        industries: result.industries
+                    });
+                }
             }
         })
     }

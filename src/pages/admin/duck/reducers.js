@@ -33,6 +33,10 @@ const INITIAL_STATE = {
         },
     },
 
+    AdminOrder: {
+        orders: []
+    },
+
     AdminIndustry: {
 
     },

@@ -768,7 +768,7 @@ export default {
     // 6.28 Get all Orders
     adminGetAllOrders: (token, limit, offset, { startTime, expiredTime }) => {
         return fetch({
-            method: 'GET',
+            method: 'POST',
             reqBody: {
                 limit,
                 offset,
@@ -795,12 +795,12 @@ export default {
     },
 
     // 6.30 Change order status
-    admimChangeOrderStatus: (token, orderId, orderStatus) => {
+    admimChangeOrderStatus: (token, orderId, status) => {
         return fetch({
             method: 'POST',
             reqBody: {
                 orderId,
-                orderStatus
+                status
             },
             jwtToken: token,
             route: apiPrefix.admin + '/order/update'
