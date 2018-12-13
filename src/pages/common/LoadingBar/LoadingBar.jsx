@@ -2,7 +2,7 @@ import React from 'react';
 import './LoadingBar.scss';
 
 const INTITIAL_STATE = {
-    percent: 0,
+    percent: 100,
     loadingInterval: null
 }
 
@@ -28,7 +28,7 @@ export default class LoadingBar extends React.Component {
 
     stopLoadingBar() {
         this.setState({
-            percent: 0
+            percent: 100
         });
         clearInterval(this.state.loadingInterval);
     }

@@ -14,7 +14,7 @@ import Paginator from '../../common/Paginator';
 import LoadingBar from '../../common/LoadingBar';
 
 const INTIAL_STATE = {
-    loadingBar: <LoadingBar />
+    showLoadingBar: false,
 }
 
 class Products extends React.Component {
@@ -22,6 +22,7 @@ class Products extends React.Component {
         super(props);
 
         this.state = INTIAL_STATE;
+        this.categoryIdFromURL = null;
 
         this.generateProducts = this.generateProducts.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
@@ -33,6 +34,12 @@ class Products extends React.Component {
         const params = new URLSearchParams(this.props.history.location.search);
         const pageIndex = Number(params.get('page'));
         const pageSize = Number(params.get('size'));
+        const categoryIdFromURL = Number(params.get('cat'));
+
+        if (categoryIdFromURL && categoryIdFromURL !== this.categoryIdFromURL) {
+            this.categoryIdFromURL = categoryIdFromURL;
+        }
+
         if (
             pageIndex
             && pageSize
@@ -49,19 +56,49 @@ class Products extends React.Component {
 
     }
 
+    componentWillReceiveProps(newProps) {
+        const params = new URLSearchParams(newProps.history.location.search);
+        const categoryIdFromURL = Number(params.get('cat'));
+
+        if (categoryIdFromURL && categoryIdFromURL !== this.categoryIdFromURL) {
+            this.categoryIdFromURL = categoryIdFromURL;
+            this.fetchProducts(this.props.currentPage, this.props.pageSize);
+        }
+    }
+
     updateURLParams(currentPage, pageSize) {
+        let searchQuery = `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`;
+
+        if (this.categoryIdFromURL) {
+            searchQuery += `&cat=${this.categoryIdFromURL}`
+        }
+
         this.props.history.push({
-            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
+            search: searchQuery
         });
     }
 
     fetchProducts(currentPage, pageSize) {
-        WebService.getAllProducts(pageSize, (currentPage - 1) * pageSize, {}).then((res) => {
+        this.setState({
+            showLoadingBar: true
+        });
+
+        const queryObj = {};
+
+        if (this.categoryIdFromURL) {
+            queryObj.categoryId = this.categoryIdFromURL
+        }
+
+        WebService.getAllProducts(pageSize, (currentPage - 1) * pageSize, queryObj).then((res) => {
             // MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
             const result = JSON.parse(res);
             // console.log('GOT: ' + result.products.length);
             this.props.updateProductList(result.products.map(prd => ({ ...prd, images: JSON.parse(prd.images) })));
             this.props.changePageInfo({ totalItems: result.totalItems });
+
+            this.setState({
+                showLoadingBar: false
+            });
         });
     }
 
@@ -150,7 +187,9 @@ class Products extends React.Component {
     render() {
         return (
             <div>
-                {this.state.loadingBar}
+                {
+                    this.state.showLoadingBar ? <LoadingBar /> : null
+                }
                 {/* <!-- ##### Breadcumb Area Start ##### --> */}
                 <div className="breadcumb_area bg-img" style={{ backgroundImage: "url(/img/bg-img/breadcumb.jpg)" }}>
                     <div className="container h-100">
@@ -241,7 +280,7 @@ class Products extends React.Component {
 class Product extends React.Component {
     render() {
         const product = this.props.product;
-        const discountedPrice = product.price - product.price * product.discPercent;
+        const discountedPrice = Math.round(product.price - product.price * product.discPercent);
         // const productImages = JSON.parse(product.images);
         return (
             < div className="col-12 col-sm-6 col-lg-4" >
@@ -251,14 +290,17 @@ class Product extends React.Component {
                         <Link to={ROUTE_NAME.PRODUCT_DETAIL + '/' + product.id}>
                             <img src={product.images[0]} alt="" />
                             {/* <!-- Hover Thumb --> */}
-                            <img className="hover-img" src={product.images[1]} alt="" />
+                            {
+                                product.images[1] &&
+                                <img className="hover-img" src={product.images[1]} alt="" />
+                            }
                         </Link>
 
                         {/* <!-- Product Badge --> */}
                         {
                             product.discPercent !== 0 &&
                             <div className="product-badge offer-badge">
-                                <span>{'-' + product.discPercent * 100 + '%'}</span>
+                                <span>{'-' + Math.round(product.discPercent * 100) + '%'}</span>
                             </div>
                         }
 

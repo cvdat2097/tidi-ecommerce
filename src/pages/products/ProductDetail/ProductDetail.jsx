@@ -116,7 +116,7 @@ export default class ProductDetail extends React.Component {
         }
         else {
             const product = this.state.product;
-            const discountedPrice = product.price - product.price * product.discPercent;
+            const discountedPrice = Math.round(product.price - product.price * product.discPercent);
             return (
                 <div className="single_product_details_area d-flex align-items-center">
                     <div id="images-slider" className="single_product_thumb carousel slide" data-ride="carousel">

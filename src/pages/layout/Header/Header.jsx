@@ -85,7 +85,7 @@ export default class Header extends React.Component {
             if (categories) {
                 categories.forEach((cat, index) => {
                     R.push(
-                        <Link className="category-item" key={index} to="/">{cat.categoryName}</Link>
+                        <Link className="category-item" key={index} to={`/products?cat=${cat.id}`}>{cat.categoryName}</Link>
                     );
                 });
             }
