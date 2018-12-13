@@ -70,7 +70,7 @@ export default class SearchPanel extends React.Component {
                             id={idName}>
                             {branch.categories.map((category, index) => <li key={index}><Link to={{
                                 pathname: ROUTE_NAME.PRODUCTS,
-                                search: `?category=${category.id}`
+                                search: `?cat=${category.id}`
                             }} >{category.categoryName}</Link></li>)}
                         </ul>
                     </li>

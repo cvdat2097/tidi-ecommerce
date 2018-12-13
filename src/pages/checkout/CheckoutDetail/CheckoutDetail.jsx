@@ -147,7 +147,7 @@ export default class CheckoutDetail extends React.Component {
                 onOpen: () => {
                     Swal.showLoading();
                     this.placeOrder().then(res => {
-                        if (res === true) {
+                        if (res.status === true) {
                             Swal({
                                 type: 'success',
                                 title: 'Yayy!!',
@@ -160,10 +160,11 @@ export default class CheckoutDetail extends React.Component {
                                 }
                             });
                         } else {
+                            console.log(res);
                             Swal({
                                 type: 'error',
                                 title: 'Oops...',
-                                text: `Can't place your order.`,
+                                text: `${res.message}`,
                             });
                         }
                     });
@@ -197,12 +198,20 @@ export default class CheckoutDetail extends React.Component {
             ).then(res => {
                 let result = JSON.parse(res);
                 if (result.status === ACTIVE_TYPE.TRUE) {
-                    resolve(true);
+                    resolve({
+                        status: true
+                    });
                 } else {
-                    resolve(false);
+                    resolve({
+                        status: false,
+                        message: result.message
+                    });
                 }
             }).catch(res => {
-                resolve(false);
+                resolve({
+                    status: false,
+                    message: JSON.parse(res).message
+                });
             });
         });
     }
