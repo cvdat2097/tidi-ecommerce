@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Switch } from 'react-router-dom';
 
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
@@ -7,6 +7,7 @@ import Header from '../pages/layout/Header';
 import Footer from '../pages/layout/Footer';
 import Auth from '../pages/common/Auth';
 import Cart from '../pages/common/Cart';
+import HomePage from '../pages/common/HomePage';
 import Products from '../pages/products/Products';
 import ProductDetail from '../pages/products/ProductDetail';
 import Orders from '../pages/orders/Orders';
@@ -95,7 +96,9 @@ const ROUTES = [
                 <Header {...props} />
                 <Cart {...props} />
                 <div className="main-content">
-                    {props.routes.map((route, index) => <RouteWithSubRoutes key={index} {...route} />)}
+                    <Switch>
+                        {props.routes.map((route, index) => <RouteWithSubRoutes key={index} {...route} />)}
+                    </Switch>
                 </div>
                 <Footer />
             </div>
@@ -126,6 +129,11 @@ const ROUTES = [
                 path: ROUTE_NAME.CHECKOUT,
                 component: CheckoutDetail,
                 permission: USER_TYPE.CUSTOMER,
+            },
+            {
+                path: ROUTE_NAME.HOME,
+                component: HomePage,
+                permission: USER_TYPE.PUBLIC,
             }
         ]
     },
