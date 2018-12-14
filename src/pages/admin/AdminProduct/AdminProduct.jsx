@@ -3,7 +3,7 @@ import './AdminProduct.scss';
 
 // External dependencies
 import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
 import WebService from '../../../services/WebService';
@@ -37,17 +37,15 @@ const INTERNAL_CONFIG = {
 
 class AdminProduct extends React.Component {
     static propTypes = {
-        // currentPage: PropTypes.number,
-        // pageSize: PropTypes.number,
-        // totalItems: PropTypes.number,
-        // fetchProducts: PropTypes.func,
-        // changePageInfo: PropTypes.func,
-        // query: PropTypes.shape({
-        //     keyword: PropTypes.string
-        // }),
-        // formData: PropTypes.shape({
-
-        // })
+        currentPage: PropTypes.number,
+        pageSize: PropTypes.number,
+        totalItems: PropTypes.number,
+        fetchProducts: PropTypes.func,
+        changePageInfo: PropTypes.func,
+        query: PropTypes.shape({
+            keyword: PropTypes.string
+        }),
+        formData: PropTypes.object
     }
 
     productToBlock = null;

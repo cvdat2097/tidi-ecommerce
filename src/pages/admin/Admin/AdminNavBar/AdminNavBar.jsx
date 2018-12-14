@@ -4,6 +4,7 @@ import './AdminNavBar.scss';
 // External dependencies
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
 import AuthService from '../../../../services/AuthService';
@@ -14,8 +15,11 @@ const INTIAL_STATE = {
     redirectTo: null
 }
 
-
 class AdminNavBar extends React.Component {
+    static propTypes = {
+        username: PropTypes.string
+    }
+
     constructor(props) {
         super(props);
 

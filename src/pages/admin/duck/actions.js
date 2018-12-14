@@ -1,3 +1,4 @@
+// Internal dependencies
 import Types from './types';
 
 const updateFilter = (payload) => ({

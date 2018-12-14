@@ -3,7 +3,7 @@ import './AdminAddBrand.scss';
 
 // External dependencies
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
 import FormInput from '../../../common/FormInput';
@@ -11,11 +11,8 @@ import FormInput from '../../../common/FormInput';
 
 class AdminAddBrand extends React.Component {
     static propTypes = {
-        // updateForm: PropTypes.func,
-        // editMode: PropTypes.bool,
-        // formData: PropTypes.shape({
-
-        // })
+        updateForm: PropTypes.func,
+        editMode: PropTypes.bool
     }
 
     render() {

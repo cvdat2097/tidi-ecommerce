@@ -1,4 +1,7 @@
+// External dependencies
 import { connect } from 'react-redux';
+
+// Internal dependencies
 import Actions from '../duck/actions';
 import commonActions from '../../common/duck/actions';
 import AdminProduct from './AdminProduct';

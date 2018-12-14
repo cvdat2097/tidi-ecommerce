@@ -3,21 +3,21 @@ import './AdminAddProduct.scss';
 
 // External dependencies
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
-// import { ACTIVE_TYPE } from '../../../../config/constants';
-
 import FormInput from '../../../common/FormInput';
 
 
 class AdminAddProduct extends React.Component {
     static propTypes = {
-        // updateForm: PropTypes.func,
-        // editMode: PropTypes.bool,
-        // formData: PropTypes.shape({
-
-        // })
+        updateForm: PropTypes.func,
+        editMode: PropTypes.bool,
+        formData: PropTypes.object,
+        brands: PropTypes.array,
+        industries: PropTypes.array,
+        branches: PropTypes.array,
+        categories: PropTypes.array
     }
 
     render() {

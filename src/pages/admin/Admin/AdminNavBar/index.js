@@ -1,10 +1,9 @@
+// External dependencies
 import { connect } from 'react-redux';
-// import Actions from '../duck/actions';
+
+// Internal dependencies
 import AdminNavBar from './AdminNavBar';
 
 const mapStateToProps = (state) => state.admin.AdminNavBar;
-const mapDispatchToProps = (dispatch) => ({
-   
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminNavBar);
+export default connect(mapStateToProps)(AdminNavBar);

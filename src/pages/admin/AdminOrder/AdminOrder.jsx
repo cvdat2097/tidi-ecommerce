@@ -3,7 +3,7 @@ import './AdminOrder.scss';
 
 // External dependencies
 import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
 import WebService from '../../../services/WebService';
@@ -12,9 +12,7 @@ import HelperTool, { withCommas } from '../../../helpers/lib';
 import { ORDER_STATUS, ACTIVE_TYPE } from '../../../config/constants';
 
 
-// import Modal from '../../common/Modal';
 import Paginator from '../../common/Paginator';
-// import Message from '../../common/FormMessage';
 import FormInput from '../../common/FormInput';
 
 const INTIAL_STATE = {
@@ -32,17 +30,16 @@ const INTERNAL_CONFIG = {
 }
 
 class AdminOrder extends React.Component {
-    // static propTypes = {
-    //     currentPage: PropTypes.number,
-    //     pageSize: PropTypes.number,
-    //     totalItems: PropTypes.number,
-    //     fetchOrders: PropTypes.func,
-    //     changePageInfo: PropTypes.func,
-    //     query: PropTypes.shape({
-    //         keyword: PropTypes.string
-    //     }),
-
-    // }
+    static propTypes = {
+        currentPage: PropTypes.number,
+        pageSize: PropTypes.number,
+        totalItems: PropTypes.number,
+        fetchOrders: PropTypes.func,
+        changePageInfo: PropTypes.func,
+        query: PropTypes.shape({
+            keyword: PropTypes.string
+        })
+    }
 
     orderToBlock = null;
     originalAccountInfo = {};
@@ -84,18 +81,18 @@ class AdminOrder extends React.Component {
         }
     }
 
+    updateURLParams(currentPage, pageSize) {
+        this.props.history.push({
+            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
+        });
+    }
+
     componentDidMount() {
         this._isMounted = true;
     }
 
     componentWillUnmount() {
         this._isMounted = false;
-    }
-
-    updateURLParams(currentPage, pageSize) {
-        this.props.history.push({
-            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
-        });
     }
 
     fetchOrders(currentPage, pageSize, query = {}) {

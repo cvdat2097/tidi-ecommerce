@@ -104,12 +104,6 @@ class AdminUser extends React.Component {
         this._isMounted = false;
     }
 
-    updateURLParams(currentPage, pageSize) {
-        this.props.history.push({
-            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
-        });
-    }
-
     fetchUsers(currentPage, pageSize, query = {}) {
         this.setState({
             showLoadingBar: true,
@@ -130,6 +124,13 @@ class AdminUser extends React.Component {
                     });
                 }
             });
+    }
+
+
+    updateURLParams(currentPage, pageSize) {
+        this.props.history.push({
+            search: `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`
+        });
     }
 
     prepareFormData(data) {
@@ -194,7 +195,6 @@ class AdminUser extends React.Component {
     handleSearch() {
         this.fetchUsers(this.props.currentPage, this.props.pageSize, this.props.query)
     }
-
 
     handleUpdateUser() {
         return new Promise((resolve, reject) => {
