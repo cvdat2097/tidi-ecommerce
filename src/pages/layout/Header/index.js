@@ -1,7 +1,9 @@
+// External Dependencies
 import { connect } from 'react-redux';
+
+// Internal Dependencies
 import commonActions from '../../common/duck/actions';
 import layoutActions from '../../layout/duck/actions';
-
 import Header from './Header';
 
 const mapStateToProps = (state) => ({

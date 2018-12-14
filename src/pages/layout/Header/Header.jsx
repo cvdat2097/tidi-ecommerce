@@ -1,7 +1,12 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+// StyleSheets
 import './Header.scss';
 
+// External Dependencies
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+// Internal Dependencies
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import AuthService from '../../../services/AuthService';
 import WebService from '../../../services/WebService';
@@ -15,7 +20,19 @@ const INITIAL_STATE = {
     redirectTo: null
 }
 
-export default class Header extends React.Component {
+class Header extends React.Component {
+    static propTypes = {
+        fetchIndustries: PropTypes.func,
+        changeIndustryHover:  PropTypes.func,
+        changeLoginStatus:  PropTypes.func,
+        currentIndustry: PropTypes.shape({
+            branches: PropTypes.array
+        }),
+        industries: PropTypes.array,
+        isLoggedIn: PropTypes.bool,
+        username: PropTypes.string
+    }
+
     constructor(props) {
         super(props);
 
@@ -46,29 +63,12 @@ export default class Header extends React.Component {
         });
     }
 
-    toggleMegaMenu(open) {
-        this.setState({
-            openMegaMenu: open !== undefined ? open : !this.state.openMegaMenu
-        });
-    }
-
-    toggleDropdownMenu(open) {
-        this.setState({
-            openDropdownMenu: open !== undefined ? open : !this.state.openDropdownMenu
-        });
-    }
-
     toggleMenuMobile(open) {
         this.setState({
             openMenuMobile: open !== undefined ? open : !this.state.openMenuMobile
         });
     }
 
-    toggleCatalogDetail(open) {
-        this.setState({
-            openCatalogDetail: open !== undefined ? open : !this.state.openCatalogDetail
-        });
-    }
 
     handleLogout() {
         AuthService.logout();
@@ -76,6 +76,11 @@ export default class Header extends React.Component {
         this.setState({
             redirectTo: <Redirect to={ROUTE_NAME.LOGIN} />
         });
+    }
+
+
+    handleHoverMenuItem(industry) {
+        this.props.changeIndustryHover(industry);
     }
 
     generateCatalog() {
@@ -136,10 +141,6 @@ export default class Header extends React.Component {
         }
 
         return R;
-    }
-
-    handleHoverMenuItem(industry) {
-        this.props.changeIndustryHover(industry);
     }
 
     render() {
@@ -253,3 +254,5 @@ export default class Header extends React.Component {
         );
     }
 }
+
+export default Header;

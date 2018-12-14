@@ -1,9 +1,9 @@
+// External Dependencies
 import { connect } from 'react-redux';
+
+// Internal Dependencies
 import Footer from './Footer';
 
 const mapStateToProps = (state) => state.layout.Footer;
-const mapDispatchToProps = (dispatch) => ({
-   
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export default connect(mapStateToProps)(Footer);

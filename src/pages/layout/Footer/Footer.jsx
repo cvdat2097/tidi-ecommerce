@@ -1,7 +1,10 @@
-import React from 'react';
+// StyleSheets
 import './Footer.scss';
 
-export default class Footer extends React.Component {
+// External Dependencies
+import React from 'react';
+
+class Footer extends React.Component {
     render() {
         return (
             // <!-- ##### Footer Area Start ##### -->
@@ -85,3 +88,5 @@ export default class Footer extends React.Component {
         );
     }
 }
+
+export default Footer;
