@@ -1,10 +1,9 @@
+// External Dependencies
 import { connect } from 'react-redux';
-// import Actions from '../duck/actions';
+
+// Internal Dependencies
 import Modal from './Modal';
 
 const mapStateToProps = (state) => state.common.Modal;
-const mapDispatchToProps = (dispatch) => ({
-   
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal);
+export default connect(mapStateToProps)(Modal);

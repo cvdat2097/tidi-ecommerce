@@ -1,6 +1,8 @@
+// Stylesheets
+import './HomePage.scss';
+
 // External Dependencies
 import React from 'react';
-import './HomePage.scss';
 
 class HomePage extends React.Component {
     render() {

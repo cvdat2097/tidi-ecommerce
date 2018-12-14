@@ -1,15 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+// StyleSheets
 import './Cart.scss';
 
+// External Denpendencies
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+// Internal Dependencies
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import { withCommas, showAlert } from '../../../helpers/lib';
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
 
 
-export default class Cart extends React.Component {
+class Cart extends React.Component {
+    static propTypes = {
+        toggleCart: PropTypes.func,
+        updateCartProducts: PropTypes.func,
+        isLoggedIn: PropTypes.bool,
+        products: PropTypes.array,
+    }
+
     constructor(props) {
         super(props);
 
@@ -172,3 +183,5 @@ export default class Cart extends React.Component {
         );
     }
 }
+
+export default Cart;

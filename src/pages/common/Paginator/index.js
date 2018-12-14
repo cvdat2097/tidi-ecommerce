@@ -1,4 +1,7 @@
+// External Dependencies
 import { connect } from 'react-redux';
+
+// Internal Dependencies
 import Actions from '../duck/actions';
 import Paginator from './Paginator';
 

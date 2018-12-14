@@ -1,16 +1,38 @@
-import React from 'react';
+// StyleSheets
 import './LoadingBar.scss';
+
+// External Dependencies
+import React from 'react';
+import PropTypes from 'prop-types';
+
 
 const INTITIAL_STATE = {
     percent: 100,
     loadingInterval: null
 }
 
-export default class LoadingBar extends React.Component {
+
+class LoadingBar extends React.Component {
+    static propTyeps = {
+        loadingBarHeight: PropTypes.number
+    }
+
+    static defaultProps = {
+        loadingBarHeight: 3
+    }
+
     constructor(props) {
         super(props);
 
         this.state = INTITIAL_STATE;
+    }
+
+    componentDidMount() {
+        this.startLoadingBar();
+    }
+
+    componentWillUnmount() {
+        this.stopLoadingBar();
     }
 
     startLoadingBar() {
@@ -23,7 +45,7 @@ export default class LoadingBar extends React.Component {
                     clearInterval(this.state.loadingInterval);
                 }
             }, 50)
-        })
+        });
     }
 
     stopLoadingBar() {
@@ -33,17 +55,9 @@ export default class LoadingBar extends React.Component {
         clearInterval(this.state.loadingInterval);
     }
 
-    componentDidMount() {
-        this.startLoadingBar();
-    }
-
-    componentWillUnmount() {
-        this.stopLoadingBar();
-    }
-
     render() {
         return (
-            <div id="tidi-loading-bar" className="progress" style={{ height: this.props.loadingBarHeight || 3 }}>
+            <div id="tidi-loading-bar" className="progress" style={{ height: this.props.loadingBarHeight }}>
                 <div className="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
                     style={{ width: this.state.percent + "%" }}>
                 </div>
@@ -51,3 +65,5 @@ export default class LoadingBar extends React.Component {
         );
     }
 }
+
+export default LoadingBar;

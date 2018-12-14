@@ -1,9 +1,20 @@
-import React from 'react';
+// Stylesheets
 import './Paginator.scss';
 
+// External Dependencies
+import React from 'react';
+import PropTypes from 'prop-types';
+
+// Internal Dependencies
 import Pagination from 'react-js-pagination';
 
-export default class Paginator extends React.Component {
+
+class Paginator extends React.Component {
+    static propTypes = {
+        currentPage: PropTypes.number,
+        pageSize: PropTypes.number,
+        totalItems: PropTypes.number,
+    }
 
     render() {
         return (
@@ -22,3 +33,5 @@ export default class Paginator extends React.Component {
         );
     }
 }
+
+export default Paginator;

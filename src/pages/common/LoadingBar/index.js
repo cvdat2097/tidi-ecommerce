@@ -1,10 +1,9 @@
+// External Dependecies
 import { connect } from 'react-redux';
-// import Actions from '../duck/actions';
+
+// Internal Dependencies
 import LoadingBar from './LoadingBar';
 
 const mapStateToProps = (state) => state.common.LoadingBar;
-const mapDispatchToProps = (dispatch) => ({
-   
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingBar);
+export default connect(mapStateToProps)(LoadingBar);

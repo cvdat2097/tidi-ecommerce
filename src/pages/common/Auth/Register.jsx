@@ -1,11 +1,13 @@
+// External Dependencies
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import Moment from 'moment';
 
+// Internal Dependencies
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import AuthService from '../../../services/AuthService';
 import WebService from '../../../services/WebService';
 import CONSTANT from '../../../config/constants';
-import Moment from 'moment';
 
 const INITIAL_STATE = {
     username: '',
@@ -23,7 +25,11 @@ const INITIAL_STATE = {
     message: ''
 }
 
-export default class Login extends React.Component {
+class Register extends React.Component {
+    static propTypes = {
+        // NONE
+    }
+
     constructor(props) {
         super(props);
 
@@ -127,7 +133,7 @@ export default class Login extends React.Component {
 
                             {/* Username */}
                             <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="email" placeholder="Username"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="email" placeholder="Username" autoComplete="off"
                                     onChange={(e) => { this.handleUsernameChange(e) }}
                                     value={this.state.username}
                                 />
@@ -139,7 +145,7 @@ export default class Login extends React.Component {
 
                             {/* Password */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Password"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Password" autoComplete="off"
                                     onChange={(e) => { this.handlePasswordChange(e) }}
                                     value={this.state.password}
                                 />
@@ -151,7 +157,7 @@ export default class Login extends React.Component {
 
                             {/* Confirm password */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Confirm Password"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="password" name="pass" placeholder="Confirm Password" autoComplete="off"
                                     onChange={(e) => { this.handlePasswordConfChange(e) }}
                                     value={this.state.passwordConf}
                                 />
@@ -163,7 +169,7 @@ export default class Login extends React.Component {
 
                             {/* Email */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="pass" placeholder="Email address"
+                                <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="pass" placeholder="Email address" autoComplete="off"
                                     onChange={(e) => { this.handleEmailChange(e) }}
                                     value={this.state.email}
                                 />
@@ -175,7 +181,7 @@ export default class Login extends React.Component {
 
                             {/* Name */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="text" name="pass" placeholder="Full Name"
+                                <input className="input100" type="text" name="pass" placeholder="Full Name" autoComplete="off"
                                     onChange={(e) => { this.handleNameChange(e) }}
                                     value={this.state.name}
                                 />
@@ -187,7 +193,7 @@ export default class Login extends React.Component {
 
                             {/* DOB */}
                             <div className="wrap-input100 validate-input" data-validate="Password is required">
-                                <input className="input100" type="date" name="pass" placeholder="Date of Birth"
+                                <input className="input100" type="date" name="pass" placeholder="Date of Birth" autoComplete="off"
                                     onChange={(e) => { this.handleDOBChange(e) }}
                                     value={this.state.dob}
                                 />
@@ -226,3 +232,5 @@ export default class Login extends React.Component {
         );
     }
 }
+
+export default Register;

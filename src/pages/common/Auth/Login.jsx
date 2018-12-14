@@ -1,6 +1,9 @@
+// External Dependencies
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+// Internal Dependencies
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import AuthService from '../../../services/AuthService';
 
@@ -11,7 +14,11 @@ const INITIAL_STATE = {
     message: ''
 }
 
-export default class Login extends React.Component {
+class Login extends React.Component {
+    static propTypes = {
+        changeLoginStatus: PropTypes.func
+    }
+
     constructor(props) {
         super(props);
 
@@ -31,7 +38,6 @@ export default class Login extends React.Component {
     }
 
     handleLogin() {
-        // console.log(this.state);
         AuthService.login(this.state.username, this.state.password).then(loggedInSuccess => {
             if (loggedInSuccess === true) {
                 this.props.changeLoginStatus(true);
@@ -111,3 +117,5 @@ export default class Login extends React.Component {
         );
     }
 }
+
+export default Login;

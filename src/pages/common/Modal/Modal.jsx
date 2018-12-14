@@ -1,7 +1,30 @@
-import React from 'react';
+// StyleSheets
 import './Modal.scss';
 
-export default class AdminAddUser extends React.Component {
+// External Dependencies
+import React from 'react';
+import PropTypes from 'prop-types';
+
+
+class Modal extends React.Component {
+    static propTypes = {
+        modalId: PropTypes.string,
+        modalHandleSubmit: PropTypes.func,
+        modalHandleClose: PropTypes.func,
+        modalBody: PropTypes.element,
+        modalMessage: PropTypes.string,
+        modalSubmitTitle: PropTypes.string,
+        modalSubmitClassName: PropTypes.string
+    }
+
+    static defaultProps = {
+        modalSubmitClassName: "btn-success"
+    }
+    
+
+    hideModal() {
+        window.$('#' + this.props.modalId).modal('hide');
+    }
 
     handleSubmit() {
         if (this.props.modalHandleSubmit) {
@@ -19,10 +42,6 @@ export default class AdminAddUser extends React.Component {
         if (this.props.modalHandleClose) {
             this.props.modalHandleClose();
         }
-    }
-
-    hideModal() {
-        window.$('#' + this.props.modalId).modal('hide');
     }
 
     render() {
@@ -46,7 +65,7 @@ export default class AdminAddUser extends React.Component {
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
                                     onClick={() => this.handleClose()}
                                 >Close</button>
-                                <button type="button" className={"btn " + (this.props.modalSubmitClassName || "btn-success")}
+                                <button type="button" className={"btn " + this.props.modalSubmitClassName}
                                     onClick={() => this.handleSubmit()}
                                 >{this.props.modalSubmitTitle}</button>
                             </div>
@@ -57,3 +76,5 @@ export default class AdminAddUser extends React.Component {
         );
     }
 }
+
+export default Modal;

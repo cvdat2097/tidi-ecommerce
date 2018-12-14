@@ -1,13 +1,20 @@
+// External Dependencies
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// Internal Dependencies
 import { ROUTE_NAME } from '../../../routes/main.routing';
+
 
 const INITIAL_STATE = {
     email: ''
 }
 
-export default class Login extends React.Component {
+class ResetPassword extends React.Component {
+    static propTypes = {
+        // NOENE
+    }
+
     constructor(props) {
         super(props);
 
@@ -37,7 +44,7 @@ export default class Login extends React.Component {
                             <span className="login100-form-title">Reset Password</span>
 
                             <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                <input className="input100" type="text" name="email" placeholder="Email"
+                                <input className="input100" type="text" name="email" placeholder="Email" autoComplete="off"
                                     onChange={(e) => { this.handleEmailChange(e) }}
                                     value={this.state.email}
                                 />
@@ -71,3 +78,5 @@ export default class Login extends React.Component {
         );
     }
 }
+
+export default ResetPassword;
