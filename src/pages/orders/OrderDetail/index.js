@@ -1,5 +1,7 @@
+// External Dependencies
 import { connect } from 'react-redux';
 
+// Internal Dependencies
 import Actions from '../duck/actions';
 
 import OrderDetails from './OrderDetail';
@@ -9,7 +11,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    changePageInfo: (pageInfo) => { dispatch() },
     fetchOrderDetail: (order) => { dispatch(Actions.fetchOrderDetail(order)) },
 });
 

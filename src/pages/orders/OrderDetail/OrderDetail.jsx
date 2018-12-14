@@ -4,7 +4,7 @@ import './OrderDetail.scss';
 // External dependencies
 import React from 'react';
 import Moment from 'moment';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
 import AuthService from '../../../services/AuthService';
@@ -12,18 +12,16 @@ import WebService from '../../../services/WebService';
 import { ACTIVE_TYPE } from '../../../config/constants';
 import { withCommas } from '../../../helpers/lib';
 
-const INTIAL_STATE = {
-}
-
 
 class OrderDetail extends React.Component {
     static propTypes = {
-
+        fetchOrderDetail: PropTypes.func,
+        order: PropTypes.object,
+        history: PropTypes.object
     }
 
     constructor(props) {
         super(props);
-        this.state = INTIAL_STATE;
 
         this.fetchOrderDetail = this.fetchOrderDetail.bind(this);
     }

@@ -4,7 +4,7 @@ import './Order.scss';
 // External dependencies
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 // Internal dependencies
 import WebService from '../../../services/WebService';
@@ -14,19 +14,16 @@ import { withCommas } from '../../../helpers/lib';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 
 
-const INTIAL_STATE = {
-}
-
 
 class Order extends React.Component {
     static propTypes = {
-
+        fetchOrders: PropTypes.func,
+        orders: PropTypes.array
     }
 
     constructor(props) {
         super(props);
 
-        this.state = INTIAL_STATE;
 
         this.fetchOrders = this.fetchOrders.bind(this);
         this.generateTableRows = this.generateTableRows.bind(this);
@@ -106,6 +103,5 @@ class Order extends React.Component {
         );
     }
 }
-
 
 export default Order;
