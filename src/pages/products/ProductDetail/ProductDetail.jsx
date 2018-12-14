@@ -116,6 +116,7 @@ export default class ProductDetail extends React.Component {
         }
         else {
             const product = this.state.product;
+            const discountedPercent = Math.round(product.discPercent * 100);
             const discountedPrice = Math.round(product.price - product.price * product.discPercent);
             return (
                 <div className="single_product_details_area d-flex align-items-center">
@@ -144,7 +145,12 @@ export default class ProductDetail extends React.Component {
                                 product.discPercent !== 0 &&
                                 <span className="old-price">{withCommas(product.price) + ' ₫'}</span>
                             }
-                            {withCommas(discountedPrice) + ' ₫'}
+                            {withCommas(discountedPrice) + ' ₫  '}
+                            {
+                                discountedPercent ?
+                                    '(-' + discountedPercent + '%)'
+                                    : null
+                            }
                         </p>
                         <p className="product-desc">{product.description}</p>
 

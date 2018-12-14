@@ -8,13 +8,6 @@ const INITIAL_STATE = {
 
 const checkoutReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        // case Types.TOGGLE_CART:
-        //     return {
-        //         ...state,
-        //         CheckoutDetail: {
-
-        //         }
-        //     };
 
         default:
             return state;

@@ -5,14 +5,16 @@ import './CheckoutDetail.scss';
 import React from 'react';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // Internal Dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import LIB, { withCommas } from '../../../helpers/lib';
 import { PAYMENT_METHOD, ACTIVE_TYPE } from '../../../config/constants';
-import FormInput from '../../common/FormInput';
 import { ROUTE_NAME } from '../../../routes/main.routing';
+import LIB, { withCommas } from '../../../helpers/lib';
+
+import FormInput from '../../common/FormInput';
 
 const INITIAL_STATE = {
     fullName: '',
@@ -31,7 +33,15 @@ const INITIAL_STATE = {
 }
 
 
-export default class CheckoutDetail extends React.Component {
+class CheckoutDetail extends React.Component {
+    static propTypes = {
+        isLoggedIn: PropTypes.bool,
+        isSelected: PropTypes.bool,
+        cartItems: PropTypes.array,
+        updateCartProducts: PropTypes.func,
+        handleOnSelect: PropTypes.func
+    }
+
     constructor(props) {
         super(props);
 
@@ -87,45 +97,39 @@ export default class CheckoutDetail extends React.Component {
         })
     }
 
-    generateCartItemList() {
-        let totalPrice = 0;
-        let itemElements = this.props.cartItems.map((cartItem, index) => {
-            let price = (cartItem.price - cartItem.price * cartItem.discPercent) * cartItem.amount;
+    placeOrder() {
+        return new Promise((resolve, reject) => {
+            // console.log(this.state);
+            // console.log(this.props.cartItems);
 
-            totalPrice += price;
-
-            return (
-                <li key={index} className="item-product-name">
-                    <span>{`[${cartItem.amount}] ${cartItem.productName}`}</span>
-                    <span>{`${withCommas(price)} ₫`}</span>
-                </li>
-            );
+            WebService.toCheckout(
+                AuthService.getTokenUnsafe(),
+                this.state.couponCode,
+                this.state.fullName,
+                this.state.phoneNumber,
+                this.state.email,
+                this.state.address,
+                this.state.shippingNote,
+                this.state.shippingMethod.NAME
+            ).then(res => {
+                let result = JSON.parse(res);
+                if (result.status === ACTIVE_TYPE.TRUE) {
+                    resolve({
+                        status: true
+                    });
+                } else {
+                    resolve({
+                        status: false,
+                        message: result.message
+                    });
+                }
+            }).catch(res => {
+                resolve({
+                    status: false,
+                    message: JSON.parse(res).message
+                });
+            });
         });
-
-        this.total = totalPrice;
-        return itemElements;
-    }
-
-    handleShippingMethodSelect(method) {
-        this.setState({
-            shippingMethod: method,
-            shippingFee: method.SHIPPING_FEE,
-            shippingMethodIsInvalid: false,
-            errorMessage: ''
-        });
-    }
-
-    generatePaymentMethods() {
-        return PAYMENT_METHOD.map((method, index) => (
-            <PaymentMethod
-                key={index}
-                methodName={method.NAME}
-                description={method.DESCRIPTION}
-                fee={method.SHIPPING_FEE}
-                handleOnSelect={() => this.handleShippingMethodSelect(method)}
-                isSelected={method.NAME === this.state.shippingMethod.NAME}
-            />
-        ));
     }
 
     handleOrder() {
@@ -181,39 +185,45 @@ export default class CheckoutDetail extends React.Component {
         }
     }
 
-    placeOrder() {
-        return new Promise((resolve, reject) => {
-            // console.log(this.state);
-            // console.log(this.props.cartItems);
-
-            WebService.toCheckout(
-                AuthService.getTokenUnsafe(),
-                this.state.couponCode,
-                this.state.fullName,
-                this.state.phoneNumber,
-                this.state.email,
-                this.state.address,
-                this.state.shippingNote,
-                this.state.shippingMethod.NAME
-            ).then(res => {
-                let result = JSON.parse(res);
-                if (result.status === ACTIVE_TYPE.TRUE) {
-                    resolve({
-                        status: true
-                    });
-                } else {
-                    resolve({
-                        status: false,
-                        message: result.message
-                    });
-                }
-            }).catch(res => {
-                resolve({
-                    status: false,
-                    message: JSON.parse(res).message
-                });
-            });
+    handleShippingMethodSelect(method) {
+        this.setState({
+            shippingMethod: method,
+            shippingFee: method.SHIPPING_FEE,
+            shippingMethodIsInvalid: false,
+            errorMessage: ''
         });
+    }
+
+    generatePaymentMethods() {
+        return PAYMENT_METHOD.map((method, index) => (
+            <PaymentMethod
+                key={index}
+                methodName={method.NAME}
+                description={method.DESCRIPTION}
+                fee={method.SHIPPING_FEE}
+                handleOnSelect={() => this.handleShippingMethodSelect(method)}
+                isSelected={method.NAME === this.state.shippingMethod.NAME}
+            />
+        ));
+    }
+
+    generateCartItemList() {
+        let totalPrice = 0;
+        let itemElements = this.props.cartItems.map((cartItem, index) => {
+            let price = (cartItem.price - cartItem.price * cartItem.discPercent) * cartItem.amount;
+
+            totalPrice += price;
+
+            return (
+                <li key={index} className="item-product-name">
+                    <span>{`[${cartItem.amount}] ${cartItem.productName}`}</span>
+                    <span>{`${withCommas(price)} ₫`}</span>
+                </li>
+            );
+        });
+
+        this.total = totalPrice;
+        return itemElements;
     }
 
     render() {
@@ -386,3 +396,5 @@ class PaymentMethod extends React.Component {
         );
     }
 }
+
+export default CheckoutDetail;
