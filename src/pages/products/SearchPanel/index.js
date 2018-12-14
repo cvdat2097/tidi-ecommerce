@@ -1,5 +1,7 @@
+// External Dependencies
 import { connect } from 'react-redux';
 
+// Intenal Dependencies
 import productsActions from '../duck/actions';
 
 import SearchPanel from './SearchPanel';

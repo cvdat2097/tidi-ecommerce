@@ -1,20 +1,31 @@
-import React from 'react';
+// StyleSheets
 import './ProductDetail.scss';
 
-// import MockAPI from '../../../helpers/MockAPI';
+// External Dependencies
+import React from 'react';
+import PropTypes from 'prop-types';
+
+// Internal Dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
 import { showAlert } from '../../../helpers/lib';
+import { withCommas } from '../../../helpers/lib';
 
 import Loader from '../../common/Loader/Loader';
-import { withCommas } from '../../../helpers/lib';
 
 const INTITIAL_STATE = {
     product: {},
     productFound: false
 }
 
-export default class ProductDetail extends React.Component {
+class ProductDetail extends React.Component {
+    static propTypes = {
+        isLoggedIn: PropTypes.bool,
+        updateCartProducts: PropTypes.func,
+        cart: PropTypes.shape({
+            products: PropTypes.array
+        })
+    }
 
     constructor(props) {
         super(props);
@@ -201,3 +212,5 @@ export default class ProductDetail extends React.Component {
         }
     }
 }
+
+export default ProductDetail;

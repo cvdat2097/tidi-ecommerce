@@ -1,23 +1,41 @@
-import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+// StyleSheets
 import './Products.scss';
 
-import { showAlert } from '../../../helpers/lib';
+// Expternal Dependencies
+import React from 'react';
+import { withRouter, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+// Internal Dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import { withCommas } from '../../../helpers/lib';
-
 import { ROUTE_NAME } from '../../../routes/main.routing';
+import { showAlert } from '../../../helpers/lib';
+import { withCommas } from '../../../helpers/lib';
 
 import SearchPanel from '../SearchPanel';
 import Paginator from '../../common/Paginator';
 import LoadingBar from '../../common/LoadingBar';
+
 
 const INTIAL_STATE = {
     showLoadingBar: false,
 }
 
 class Products extends React.Component {
+    static propTypes = {
+        currentPage: PropTypes.number,
+        pageSize: PropTypes.number,
+        totalItems: PropTypes.number,
+        isLoggedIn: PropTypes.bool,
+        updateCartProducts: PropTypes.func,
+        cart: PropTypes.shape({
+            cart: PropTypes.array,
+        }),
+        products: PropTypes.array,
+    }
+
+
     constructor(props) {
         super(props);
 
@@ -278,6 +296,13 @@ class Products extends React.Component {
 }
 
 class Product extends React.Component {
+    static propTypes = {
+        product: PropTypes.shape({
+            images: PropTypes.array
+        }),
+        buttonTitle: PropTypes.string,
+    }
+
     render() {
         const product = this.props.product;
         const discountedPrice = Math.round(product.price - product.price * product.discPercent);

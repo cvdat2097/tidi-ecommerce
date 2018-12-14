@@ -1,11 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+// StyleSheets
 import './SearchPanel.scss';
 
-import { ROUTE_NAME } from '../../../routes/main.routing';
+// External Dependencies
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+// Intenral Dependencies
+import { ROUTE_NAME } from '../../../routes/main.routing';
 import LIB from '../../../helpers/lib';
 import WebService from '../../../services/WebService';
+
 
 // INPUT: branchId
 
@@ -19,7 +24,13 @@ const INITIAL_STATE = {
     }
 }
 
-export default class SearchPanel extends React.Component {
+class SearchPanel extends React.Component {
+    static propTypes = {
+        updateBranches: PropTypes.func,
+        currentIndustryId: PropTypes.number,
+        industries: PropTypes.array
+    }
+
     constructor(props) {
         super(props);
 
@@ -46,6 +57,40 @@ export default class SearchPanel extends React.Component {
                 brands
             });
         });
+    }
+
+    handleFilterItemSelected(filter) {
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                ...filter
+            }
+        });
+    }
+
+    handleChangePrice(propName, value) {
+        const newState = {};
+
+        let x = Number(value);
+        if (value === '' || x) {
+            newState[propName] = value;
+            newState['priceIsInvalid'] = false;
+        } else {
+            newState['priceIsInvalid'] = true;
+
+        }
+
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                ...newState
+            }
+        });
+
+    }
+
+    handleApplyFilter() {
+        console.log(this.state.filter);
     }
 
 
@@ -79,41 +124,6 @@ export default class SearchPanel extends React.Component {
         }
 
         return '';
-    }
-
-    handleFilterItemSelected(filter) {
-        this.setState({
-            filter: {
-                ...this.state.filter,
-                ...filter
-            }
-        });
-    }
-
-    handleChangePrice(propName, value) {
-        const newState = {};
-
-        let x = Number(value);
-        if (value === '' || x) {
-            newState[propName] = value;
-            newState['priceIsInvalid'] = false;
-        } else {
-            newState['priceIsInvalid'] = true;
-
-        }
-
-        this.setState({
-            filter: {
-                ...this.state.filter,
-                ...newState
-            }
-        });
-
-    }
-
-
-    handleApplyFilter() {
-        console.log(this.state.filter);
     }
 
     render() {
@@ -174,3 +184,5 @@ export default class SearchPanel extends React.Component {
         );
     }
 }
+
+export default SearchPanel;
