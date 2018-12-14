@@ -1,9 +1,13 @@
-import React from 'react';
+// StyleSheets
 import './RouteWithSubRoutes.scss';
 
-import { Route } from 'react-router-dom';
+// External Dependencies
+import React from 'react';
+import PropTypes from 'prop-types';
 
+// Internal Dependencies
 import AuthService from '../services/AuthService';
+import { Route } from 'react-router-dom';
 import { USER_TYPE } from '../config/constants';
 
 import Loader from '../pages/common/Loader/Loader';
@@ -16,6 +20,12 @@ const INTIIAL_STATE = {
 }
 
 class HOC extends React.Component {
+    static propTypes = {
+        requiredPermission: PropTypes.oneOf([USER_TYPE.ADMIN, USER_TYPE.CUSTOMER, USER_TYPE.PUBLIC]),
+        permission: PropTypes.oneOf([USER_TYPE.ADMIN, USER_TYPE.CUSTOMER, USER_TYPE.PUBLIC]),
+        component: PropTypes.oneOfType([PropTypes.func, PropTypes.element])
+    }
+
     constructor(props) {
         super(props);
 

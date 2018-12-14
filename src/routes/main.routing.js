@@ -1,8 +1,11 @@
+// External Dependencies
 import React from 'react';
 import { Redirect, Switch } from 'react-router-dom';
 
-import RouteWithSubRoutes from './RouteWithSubRoutes';
+// Internal Dependencies
+import { USER_TYPE } from '../config/constants';
 
+import RouteWithSubRoutes from './RouteWithSubRoutes';
 import Header from '../pages/layout/Header';
 import Footer from '../pages/layout/Footer';
 import Auth from '../pages/common/Auth';
@@ -17,8 +20,6 @@ import Admin from '../pages/admin/Admin';
 import AdminUser from '../pages/admin/AdminUser';
 import AdminProduct from '../pages/admin/AdminProduct';
 import AdminBrand from '../pages/admin/AdminBrand';
-
-import { USER_TYPE } from '../config/constants';
 import AdminOrder from '../pages/admin/AdminOrder';
 
 export const ROUTE_NAME = {

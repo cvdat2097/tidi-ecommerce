@@ -1,5 +1,7 @@
+// External Dependencies
 import { combineReducers } from 'redux';
 
+// Internal Dependencies
 import commonReducer from './pages/common/duck/reducers';
 import layoutReducer from './pages/layout/duck/reducers';
 import productsReducer from './pages/products/duck/reducers';

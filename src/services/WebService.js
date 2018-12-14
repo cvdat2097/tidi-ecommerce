@@ -1,4 +1,7 @@
+// External Dependencies
 import Request from 'request';
+
+// Internal Dependencies
 import COSNTANT from '../config/constants';
 
 const apiPrefix = {
