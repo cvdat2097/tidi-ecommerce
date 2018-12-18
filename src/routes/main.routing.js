@@ -30,6 +30,7 @@ export const ROUTE_NAME = {
     PRODUCTS: '/products',
     PRODUCT_DETAIL: '/product',
     CHECKOUT: '/checkout',
+    CHECKOUT_CALLBACK: '/checkout/callback',
     ORDERS: '/orders',
     ORDER_DETAIL: '/order',
     ADMIN: {
