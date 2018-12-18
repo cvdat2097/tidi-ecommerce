@@ -6,6 +6,7 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import QRCode from 'qrcode';
 
 // Internal Dependencies
 import WebService from '../../../services/WebService';
@@ -61,7 +62,6 @@ class CheckoutDetail extends React.Component {
         this.fetchUserInfo();
     }
 
-
     fetchCartProducts() {
         if (this.props.isLoggedIn) {
             return WebService.getCart(AuthService.getTokenUnsafe()).then(res => {
@@ -97,8 +97,47 @@ class CheckoutDetail extends React.Component {
         })
     }
 
-    placeOrder() {
+    generateQRCode() {
         return new Promise((resolve, reject) => {
+            const qrData = JSON.stringify({ 'toekn': 'kdjfkdjf' });
+            QRCode.toDataURL(qrData, (err, url) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    Swal({
+                        title: 'Zalopay Payment',
+                        text: 'Use your Zalopay App to scan this QR-Code',
+                        imageUrl: url,
+                        // imageWidth: 400,
+                        // imageHeight: 200,
+                        imageAlt: 'QR Code',
+                        animation: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        showCancelButton: false,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Cancel',
+                        confirmButtonColor: 'gray',
+
+                        preConfirm: () => {
+                            if (window.confirm('Are you sure?')) {
+                                return true;
+                            }
+                            return false;
+                        },
+
+                        onClose: () => {
+                            resolve(false);
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    placeOrder() {
+        return new Promise((resolve, _reject) => {
             // console.log(this.state);
             // console.log(this.props.cartItems);
 
@@ -152,17 +191,29 @@ class CheckoutDetail extends React.Component {
                     Swal.showLoading();
                     this.placeOrder().then(res => {
                         if (res.status === true) {
-                            Swal({
-                                type: 'success',
-                                title: 'Yayy!!',
-                                text: `You ordered successfully.`,
-                                onClose: () => {
+                            // Order on AppServer successfully
+                            if (this.state.shippingMethod.NAME !== 'Zalo Pay') {
+                                Swal({
+                                    type: 'success',
+                                    title: 'Yayy!!',
+                                    text: `You ordered successfully.`,
+                                    onClose: () => {
+                                        this.fetchCartProducts();
+                                        this.setState({
+                                            redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
+                                        });
+                                    }
+                                });
+                            }
+                            else {
+                                this.generateQRCode().then(status => {
                                     this.fetchCartProducts();
                                     this.setState({
                                         redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
-                                    })
-                                }
-                            });
+                                    });
+                                });
+                            }
+
                         } else {
                             console.log(res);
                             Swal({

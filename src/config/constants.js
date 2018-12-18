@@ -28,6 +28,14 @@ export const ORDER_STATUS = {
     SUCCESSFUL: 'SUCCESSFUL'
 }
 
+// export const ORDER_STATUS = {
+//     PENDING: 'PENDING',
+//     PAID: 'PAID',
+//     SHIPPING: 'SHIPPING',
+//     CANCELED: 'CANCELED',
+//     SUCCESSFUL: 'SUCCESSFUL'
+// }
+
 export const VERIFICATION_TYPE = {
     EMAIL: 'EMAIL',
     PASSWORD: 'PASSWORD'
