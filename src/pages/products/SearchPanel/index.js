@@ -1,5 +1,6 @@
 // External Dependencies
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 // Intenal Dependencies
 import productsActions from '../duck/actions';
@@ -21,4 +22,4 @@ const mapDispatchToProps = (dispatch) => ({
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchPanel));

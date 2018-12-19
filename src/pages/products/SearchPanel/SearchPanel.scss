@@ -1,149 +1,157 @@
-@import 'src/assets/scss/theme_color';
-@import 'src/assets/scss/variables';
-@import 'src/assets/scss/mixin';
-@import 'src/assets/scss/responsive';
-
+@import "src/assets/scss/theme_color";
+@import "src/assets/scss/variables";
+@import "src/assets/scss/mixin";
+@import "src/assets/scss/responsive";
 
 /* :: 13.0 Product Sidebar Area CSS */
 
+.btn-link:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-link {
+  color: black !important;
+  font-size: 1.2em;
+}
+
 .filter-item-selected {
-    font-weight: 900 !important;
-    background-color: #00000015;
+  font-weight: 900 !important;
+  background-color: #00000015;
 }
 
 .widget {
-    .catagories-menu {
-        li > a {
-            text-transform: uppercase;
-            font-size: 12px;
-            margin-bottom: 15px;
-            display: block;
-        }
-        .sub-menu {
-            margin-left: 15px;
-            margin-bottom: 15px;
-            li > a {
-                text-transform: capitalize;
-                font-size: 14px;
-                margin-bottom: 5px;
-                display: block;
-                font-weight: 300;
-                color: $text-color;
-                &:hover {
-                    color: $bg-default;
-                }
-            }
-        }
+  .catagories-menu {
+    li > a {
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 15px;
+      display: block;
     }
-}
-
-
-.widget {
-    position: relative;
-    z-index: 1;
-    .widget-title {
-        font-size: 18px;
+    .sub-menu {
+      margin-left: 15px;
+      margin-bottom: 15px;
+      li > a {
         text-transform: capitalize;
-        font-weight: 600;
-    }
-    .widget-title2 {
-        text-transform: uppercase;
-        font-size: 12px;
-        margin-bottom: 15px;
+        font-size: 14px;
+        margin-bottom: 5px;
         display: block;
-        margin-bottom: 0;
-        color: $dark-color;
-        font-weight: 600;
+        font-weight: 300;
+        color: $text-color;
+        &:hover {
+          color: $bg-default;
+        }
+      }
     }
+  }
+}
 
-    &.price {
-        .ui-slider-handle {
-            background-color: $dark-color;
-            border: none;
-            border-radius: 0;
-            top: -6px;
-            width: 4px;
-            height: 15px;
-            margin: 0;
-        }
-        .ui-slider-range.ui-corner-all.ui-widget-header {
-            background-color: $bg-default;
-        }
-        .ui-slider-horizontal {
-            height: 5px;
-        }
-        .range-price {
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 15px;
-            text-transform: uppercase;
-        }
+.widget {
+  position: relative;
+  z-index: 1;
+  .widget-title {
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight: 600;
+  }
+  .widget-title2 {
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 15px;
+    display: block;
+    margin-bottom: 0;
+    color: $dark-color;
+    font-weight: 600;
+  }
+
+  &.price {
+    .ui-slider-handle {
+      background-color: $dark-color;
+      border: none;
+      border-radius: 0;
+      top: -6px;
+      width: 4px;
+      height: 15px;
+      margin: 0;
     }
-    &.color {
-        .widget-desc ul {
-            @include flex-wrap(wrap);
-            li {
-                @include flex(0 0 20%);
-                width: 20%;
-                margin-bottom: 15px;
-                a {
-                    width: 30px;
-                    height: 30px;
-                    display: block;
-                    background-color: $white-color;
-                    position: relative;
-                    z-index: 1;
-                    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
-                    &.color1 {
-                        background-color: $white-color;
-                    }
-                    &.color2 {
-                        background-color: #969696;
-                    }
-                    &.color3 {
-                        background-color: #030303;
-                    }
-                    &.color4 {
-                        background-color: #0315ff;
-                    }
-                    &.color5 {
-                        background-color: #dc0647;
-                    }
-                    &.color6 {
-                        background-color: #fff56a;
-                    }
-                    &.color7 {
-                        background-color: #f26e51;
-                    }
-                    &.color8 {
-                        background-color: #9a8777;
-                    }
-                    &.color9 {
-                        background-color: #5b862a;
-                    }
-                    &.color10 {
-                        background-color: #8662a9;
-                    }
-                }
-            }
-        }
+    .ui-slider-range.ui-corner-all.ui-widget-header {
+      background-color: $bg-default;
     }
-    &.brands {
-        ul {
-            li {
-                display: block;
-                a {
-                    display: block;
-                    margin-bottom: 5px;
-                    font-size: 14px;
-                    color: $text-color;
-                    font-weight: 300;
-                    text-transform: capitalize;
-                    &:hover {
-                        color: $bg-default;
-                    }
-                }
-            }
-        }
+    .ui-slider-horizontal {
+      height: 5px;
     }
+    .range-price {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 15px;
+      text-transform: uppercase;
+    }
+  }
+  &.color {
+    .widget-desc ul {
+      @include flex-wrap(wrap);
+      li {
+        @include flex(0 0 20%);
+        width: 20%;
+        margin-bottom: 15px;
+        a {
+          width: 30px;
+          height: 30px;
+          display: block;
+          background-color: $white-color;
+          position: relative;
+          z-index: 1;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+          &.color1 {
+            background-color: $white-color;
+          }
+          &.color2 {
+            background-color: #969696;
+          }
+          &.color3 {
+            background-color: #030303;
+          }
+          &.color4 {
+            background-color: #0315ff;
+          }
+          &.color5 {
+            background-color: #dc0647;
+          }
+          &.color6 {
+            background-color: #fff56a;
+          }
+          &.color7 {
+            background-color: #f26e51;
+          }
+          &.color8 {
+            background-color: #9a8777;
+          }
+          &.color9 {
+            background-color: #5b862a;
+          }
+          &.color10 {
+            background-color: #8662a9;
+          }
+        }
+      }
+    }
+  }
+  &.brands {
+    ul {
+      li {
+        display: block;
+        a {
+          display: block;
+          margin-bottom: 5px;
+          font-size: 14px;
+          color: $text-color;
+          font-weight: 300;
+          text-transform: capitalize;
+          &:hover {
+            color: $bg-default;
+          }
+        }
+      }
+    }
+  }
 }

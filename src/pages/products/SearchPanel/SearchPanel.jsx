@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import LIB from '../../../helpers/lib';
 import WebService from '../../../services/WebService';
+import { QUERY_PARAMS } from '../../../config/constants';
 
 
 // INPUT: branchId
@@ -91,17 +92,55 @@ class SearchPanel extends React.Component {
 
     handleApplyFilter() {
         console.log(this.state.filter);
+        let queryString = '?';
+
+        if (this.state.filter.brand.id) {
+            queryString += `${QUERY_PARAMS.brandId}=${this.state.filter.brand.id}`;
+        }
+
+        if (this.state.filter.priceFrom && this.state.filter.priceTo) {
+            queryString += `&${QUERY_PARAMS.minPrice}=${this.state.filter.priceFrom}`;
+            queryString += `&${QUERY_PARAMS.maxPrice}=${this.state.filter.priceTo}`;
+        }
+
+        this.props.history.push(queryString);
     }
 
 
     generateBrands() {
-        return this.state.brands.map((brand, index) => {
-            return <li key={index}
-            ><a href="#/"
-                onClick={() => this.handleFilterItemSelected({ brand })}
-                className={(brand.brandName === this.state.filter.brand.brandName ? "filter-item-selected" : undefined)}
-            >{brand.brandName}</a></li>
-        });
+        let visibleElements = [];
+        let collapsedElements = [];
+
+        const L = this.state.brands.length;
+        for (let i = 0; i < L; i++) {
+            let elementContainer = visibleElements;
+
+            if (i > 5) {
+                elementContainer = collapsedElements;
+            }
+
+            const brand = this.state.brands[i];
+            elementContainer.push(
+                <li key={i}
+                ><a href="#/"
+                    onClick={() => this.handleFilterItemSelected({ brand })}
+                    className={(brand.brandName === this.state.filter.brand.brandName ? "filter-item-selected" : undefined)}
+                >{brand.brandName}</a></li>
+            );
+        }
+
+
+        return (
+            <>
+                {visibleElements}
+                <div id="collapseBrands" className="collapse">
+                    {collapsedElements}
+                </div>
+                <span className="btn-link" data-toggle="collapse" data-target="#collapseBrands" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Toggle
+                </span>
+            </>
+        );
     }
 
     generateBranches() {

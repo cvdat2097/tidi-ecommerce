@@ -4,6 +4,18 @@ export default {
     DATE_FORMAT: 'YYYY-MM-DD'
 }
 
+
+export const QUERY_PARAMS = {
+    keyword: 'q',
+    industryId: 'ind',
+    branchId: 'brch',
+    categoryId: 'cat',
+    brandId: 'brd',
+    minPrice: 'pfrom',
+    maxPrice: 'pto'
+}
+
+
 export const ACTIVE_TYPE = {
     TRUE: 'TRUE',
     FALSE: 'FALSE'

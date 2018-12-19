@@ -12,6 +12,7 @@ import AuthService from '../../../services/AuthService';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import { showAlert } from '../../../helpers/lib';
 import { withCommas } from '../../../helpers/lib';
+import { QUERY_PARAMS } from '../../../config/constants';
 
 import SearchPanel from '../SearchPanel';
 import Paginator from '../../common/Paginator';
@@ -40,7 +41,14 @@ class Products extends React.Component {
         super(props);
 
         this.state = INTIAL_STATE;
+        this.industryIdFromURL = null;
+        this.branchIdFromURL = null;
         this.categoryIdFromURL = null;
+        this.brandIdFromURL = null;
+        this.keywordFromURL = null;
+        this.priceFromURL = null;
+        this.priceToURL = null;
+        this.previousParams = null;
 
         this.generateProducts = this.generateProducts.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
@@ -52,11 +60,7 @@ class Products extends React.Component {
         const params = new URLSearchParams(this.props.history.location.search);
         const pageIndex = Number(params.get('page'));
         const pageSize = Number(params.get('size'));
-        const categoryIdFromURL = Number(params.get('cat'));
-
-        if (categoryIdFromURL && categoryIdFromURL !== this.categoryIdFromURL) {
-            this.categoryIdFromURL = categoryIdFromURL;
-        }
+        this.retrieveURLParams(params, true);
 
         if (
             pageIndex
@@ -69,26 +73,87 @@ class Products extends React.Component {
             });
         } else {
             this.fetchProducts(this.props.currentPage, this.props.pageSize);
-            this.updateURLParams(this.props.currentPage, this.props.pageSize);
+            this.updateURLParams({
+                currentPage: this.props.currentPage,
+                pageSize: this.props.pageSize
+            });
         }
 
     }
 
     componentWillReceiveProps(newProps) {
         const params = new URLSearchParams(newProps.history.location.search);
-        const categoryIdFromURL = Number(params.get('cat'));
+        this.retrieveURLParams(params);
+    }
 
+    retrieveURLParams(params, isOnComponentLoad = false) {
+        const industryIdFromURL = Number(params.get(QUERY_PARAMS.industryId));
+        const branchIdFromURL = Number(params.get(QUERY_PARAMS.branchId));
+        const categoryIdFromURL = Number(params.get(QUERY_PARAMS.categoryId));
+        const brandIdFromURL = Number(params.get(QUERY_PARAMS.brandId));
+        const keywordFromURL = params.get(QUERY_PARAMS.keyword);
+        const priceFromURL = Number(params.get(QUERY_PARAMS.minPrice));
+        const priceToURL = Number(params.get(QUERY_PARAMS.maxPrice));
+
+        console.log('OK')
+
+        let isQueryStringUpdated = false;
+
+        if (industryIdFromURL && industryIdFromURL !== this.industryIdFromURL) {
+            isQueryStringUpdated = true;
+            this.industryIdFromURL = industryIdFromURL;
+        }
+        if (branchIdFromURL && branchIdFromURL !== this.branchIdFromURL) {
+            isQueryStringUpdated = true;
+            this.branchIdFromURL = branchIdFromURL;
+        }
         if (categoryIdFromURL && categoryIdFromURL !== this.categoryIdFromURL) {
+            isQueryStringUpdated = true;
             this.categoryIdFromURL = categoryIdFromURL;
+        }
+        if (brandIdFromURL && brandIdFromURL !== this.brandIdFromURL) {
+            isQueryStringUpdated = true;
+            this.brandIdFromURL = brandIdFromURL;
+        }
+        if (keywordFromURL && keywordFromURL !== this.keywordFromURL) {
+            isQueryStringUpdated = true;
+            this.keywordFromURL = keywordFromURL;
+        }
+
+        if (priceFromURL && priceToURL
+            && (priceFromURL !== this.priceFromURL
+                || priceToURL !== this.priceToURL)) {
+            isQueryStringUpdated = true;
+            this.priceFromURL = priceFromURL;
+            this.priceToURL = priceToURL;
+        }
+
+        if (isQueryStringUpdated && !isOnComponentLoad) {
+            console.log('UPDATE')
             this.fetchProducts(this.props.currentPage, this.props.pageSize);
         }
     }
 
-    updateURLParams(currentPage, pageSize) {
+    updateURLParams({ currentPage, pageSize }) {
         let searchQuery = `?size=${pageSize || this.props.pageSize}&page=${currentPage || this.props.currentPage}`;
 
+        if (this.brandIdFromURL) {
+            searchQuery += `&${QUERY_PARAMS.brandId}=${this.brandIdFromURL}`;
+        }
+        if (this.industryIdFromURL) {
+            searchQuery += `&${QUERY_PARAMS.industryId}=${this.industryIdFromURL}`;
+        }
+        if (this.branchIdFromURL) {
+            searchQuery += `&${QUERY_PARAMS.branchId}=${this.branchIdFromURL}`;
+        }
         if (this.categoryIdFromURL) {
-            searchQuery += `&cat=${this.categoryIdFromURL}`
+            searchQuery += `&${QUERY_PARAMS.categoryId}=${this.categoryIdFromURL}`;
+        }
+        if (this.keywordFromURL) {
+            searchQuery += `&${QUERY_PARAMS.keyword}=${this.keywordFromURL}`;
+        }
+        if (this.priceFromURL && this.priceToURL) {
+            searchQuery += `&${QUERY_PARAMS.minPrice}=${this.priceFromURL}&${QUERY_PARAMS.maxPrice}=${this.priceToURL}`;
         }
 
         this.props.history.push({
@@ -103,8 +168,25 @@ class Products extends React.Component {
 
         const queryObj = {};
 
+
+        if (this.brandIdFromURL) {
+            queryObj.brandId = this.brandIdFromURL;
+        }
+        if (this.industryIdFromURL) {
+            queryObj.industryId = this.industryIdFromURL;
+        }
+        if (this.branchIdFromURL) {
+            queryObj.branchId = this.branchIdFromURL;
+        }
         if (this.categoryIdFromURL) {
-            queryObj.categoryId = this.categoryIdFromURL
+            queryObj.categoryId = this.categoryIdFromURL;
+        }
+        if (this.keywordFromURL) {
+            queryObj.keyword = this.keywordFromURL;
+        }
+        if (this.priceFromURL && this.priceToURL) {
+            queryObj.minPrice = this.priceFromURL;
+            queryObj.maxPrice = this.priceToURL;
         }
 
         WebService.getAllProducts(pageSize, (currentPage - 1) * pageSize, queryObj).then((res) => {
@@ -174,7 +256,11 @@ class Products extends React.Component {
 
         this.props.changePageInfo(payloadObj);
         if (pageSize || currentPage) {
-            this.updateURLParams(payloadObj.currentPage, payloadObj.pageSize);
+            this.updateURLParams({
+                currentPage: payloadObj.currentPage,
+                pageSize: payloadObj.pageSize
+            });
+
             this.fetchProducts(
                 payloadObj.currentPage || this.props.currentPage,
                 payloadObj.pageSize || this.props.pageSize

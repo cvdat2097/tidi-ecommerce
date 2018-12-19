@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import AuthService from '../../../services/AuthService';
 import WebService from '../../../services/WebService';
+import { QUERY_PARAMS } from '../../../config/constants';
 
 const INITIAL_STATE = {
     openDropdownMenu: false,
@@ -23,8 +24,8 @@ const INITIAL_STATE = {
 class Header extends React.Component {
     static propTypes = {
         fetchIndustries: PropTypes.func,
-        changeIndustryHover:  PropTypes.func,
-        changeLoginStatus:  PropTypes.func,
+        changeIndustryHover: PropTypes.func,
+        changeLoginStatus: PropTypes.func,
         currentIndustry: PropTypes.shape({
             branches: PropTypes.array
         }),
@@ -105,7 +106,7 @@ class Header extends React.Component {
                 branches.forEach((branch, index) => {
                     R.push(
                         <div key={index} className="branch-container">
-                            <h6>{branch.branchName}</h6>
+                            <h6><Link className="btn-link" to={`${ROUTE_NAME.PRODUCTS}?${QUERY_PARAMS.branchId}=${branch.id}`}>{branch.branchName}</Link></h6>
                             <div>
                                 {generateCategories(branch.categories)}
                             </div>
@@ -126,8 +127,8 @@ class Header extends React.Component {
         if (this.props.industries) {
             this.props.industries.forEach((industry, index) => {
                 R.push(
-                    <a key={index}
-                        href="/"
+                    <Link key={index}
+                        to={ROUTE_NAME.PRODUCTS + `?${QUERY_PARAMS.industryId}=${industry.id}`}
                         className={"dropdown-item" + (this.state.activeMenuitemIndex === index ? " menuitem-active" : "")}
                         onMouseEnter={() => {
                             this.setState({
@@ -135,7 +136,7 @@ class Header extends React.Component {
                             });
                             this.handleHoverMenuItem(industry);
                         }}
-                    >{industry.industryName}</a>
+                    >{industry.industryName}</Link>
                 );
             });
         }
@@ -200,8 +201,8 @@ class Header extends React.Component {
                     <div className="header-meta d-flex clearfix justify-content-end">
                         {/* <!-- Search Area --> */}
                         <div className="search-area">
-                            <form action="#" method="post">
-                                <input type="search" name="search" id="headerSearch" placeholder="Type for search" autoComplete="off" />
+                            <form action={ROUTE_NAME.PRODUCTS} method="GET">
+                                <input type="search" name={QUERY_PARAMS.keyword} id="headerSearch" placeholder="Type for search" autoComplete="off" />
                                 <button type="submit"><i className="fa fa-search" aria-hidden="true"></i></button>
                             </form>
                         </div>
