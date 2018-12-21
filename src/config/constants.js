@@ -88,8 +88,7 @@ export const DEFAULT_FORMDATA = {
     }
 }
 
-export const PAYMENT_METHOD = [
-    {
+export const PAYMENT_METHOD = [{
         ID: 0,
         NAME: 'Zalo Pay',
         DESCRIPTION: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.',
@@ -102,3 +101,9 @@ export const PAYMENT_METHOD = [
         SHIPPING_FEE: 19000
     },
 ];
+
+export const ZP_ORDER_STATUS = {
+    PROCESSING: 'PROCESSING',
+    CANCLLED: 'CANCLLED',
+    SUCCESSFUL: 'SUCCESSFUL'
+}

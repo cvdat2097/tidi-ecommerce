@@ -11,7 +11,7 @@ import QRCode from 'qrcode';
 // Internal Dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import { PAYMENT_METHOD, ACTIVE_TYPE } from '../../../config/constants';
+import { PAYMENT_METHOD, ACTIVE_TYPE, ZP_ORDER_STATUS } from '../../../config/constants';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import LIB, { withCommas } from '../../../helpers/lib';
 
@@ -48,6 +48,8 @@ class CheckoutDetail extends React.Component {
 
         this.state = INITIAL_STATE;
         this.total = 0;
+        this.zalopayOrderId = null;
+        this.checkStatusInterval = null;
 
         this.generateCartItemList = this.generateCartItemList.bind(this);
         this.generatePaymentMethods = this.generatePaymentMethods.bind(this);
@@ -97,10 +99,9 @@ class CheckoutDetail extends React.Component {
         })
     }
 
-    generateQRCode() {
+    generateQRCode(orderInfo) {
         return new Promise((resolve, reject) => {
-            const qrData = JSON.stringify({ 'toekn': 'kdjfkdjf' });
-            QRCode.toDataURL(qrData, (err, url) => {
+            QRCode.toDataURL(orderInfo, (err, url) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -122,6 +123,11 @@ class CheckoutDetail extends React.Component {
 
                         preConfirm: () => {
                             if (window.confirm('Are you sure?')) {
+                                if (this.checkStatusInterval) {
+                                    clearInterval(this.checkStatusInterval);
+                                }
+
+
                                 return true;
                             }
                             return false;
@@ -131,6 +137,34 @@ class CheckoutDetail extends React.Component {
                             resolve(false);
                         }
                     });
+
+                    // Check order status
+                    if (this.zalopayOrderId) {
+                        this.checkStatusInterval = setInterval(() => {
+                            WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), this.zalopayOrderId).then(res => {
+                                const result = JSON.parse(res);
+
+                                if (result.status === ZP_ORDER_STATUS.SUCCESSFUL) {
+                                    clearInterval(this.checkStatusInterval);
+
+                                    Swal({
+                                        type: 'success',
+                                        title: 'Yayy!!',
+                                        text: `You ordered successfully.`,
+                                        onClose: () => {
+                                            this.fetchCartProducts();
+                                            this.setState({
+                                                redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
+                        }, 1000);
+                    } else {
+                        console.log('ZP orderId is null');
+                    }
                 }
             });
         });
@@ -153,6 +187,9 @@ class CheckoutDetail extends React.Component {
             ).then(res => {
                 let result = JSON.parse(res);
                 if (result.status === ACTIVE_TYPE.TRUE) {
+                    this.zalopayOrderId = result.orderId;
+                    // this.zalopayOrderId = 1;
+
                     resolve({
                         status: true
                     });
@@ -206,7 +243,8 @@ class CheckoutDetail extends React.Component {
                                 });
                             }
                             else {
-                                this.generateQRCode().then(status => {
+                                // Order using Zalopay
+                                this.generateQRCode(res.status.toString()).then(status => {
                                     this.fetchCartProducts();
                                     this.setState({
                                         redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />

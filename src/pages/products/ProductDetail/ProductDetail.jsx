@@ -82,23 +82,27 @@ class ProductDetail extends React.Component {
     }
 
     handleAddProductToCart(product) {
-        const currentCartItems = this.props.cart.products;
-        if (product.id) {
-            let cartItemAmount = 0;
-            for (let cartItem in currentCartItems) {
-                if (cartItem.id === product.id) {
-                    cartItemAmount = cartItem.amount;
-                }
-            }
-
-            WebService.addItemToCart(AuthService.getTokenUnsafe(), product.id, cartItemAmount + 1)
-                .then(r => {
-                    const res = JSON.parse(r);
-                    if (res.status) {
-                        showAlert(`Added ${product.productName} to Cart!`);
-                        this.fetchCartProducts();
+        if (this.props.isLoggedIn) {
+            const currentCartItems = this.props.cart.products;
+            if (product.id) {
+                let cartItemAmount = 0;
+                for (let cartItem in currentCartItems) {
+                    if (cartItem.id === product.id) {
+                        cartItemAmount = cartItem.amount;
                     }
-                })
+                }
+
+                WebService.addItemToCart(AuthService.getTokenUnsafe(), product.id, cartItemAmount + 1)
+                    .then(r => {
+                        const res = JSON.parse(r);
+                        if (res.status) {
+                            showAlert(`Added ${product.productName} to Cart!`);
+                            this.fetchCartProducts();
+                        }
+                    })
+            }
+        } else {
+            showAlert('You have not logged in yet', 'error');
         }
     }
 

@@ -10,10 +10,16 @@ const apiPrefix = {
     product: '/product',
     cart: '/cart',
     checkout: '/checkout',
-    admin: '/admin'
+    admin: '/admin',
+    zalopay: '/zp'
 }
 
-const fetch = ({ method, reqBody, route, jwtToken }) => {
+const fetch = ({
+    method,
+    reqBody,
+    route,
+    jwtToken
+}) => {
     return new Promise((resolve, reject) => {
         const HttpHeader = {
             'Content-Type': 'application/json',
@@ -43,8 +49,8 @@ export default {
     fetch,
 
     /*
-    *       SECTION 1: AUTHENTICATION
-    */
+     *       SECTION 1: AUTHENTICATION
+     */
 
     // 1.1 Login
     login: (username, password) => {
@@ -114,8 +120,7 @@ export default {
     verifyToken: (token) => {
         return fetch({
             method: 'POST',
-            reqBody: {
-            },
+            reqBody: {},
             jwtToken: token,
             route: apiPrefix.authentication + '/verifyToken'
         });
@@ -123,8 +128,8 @@ export default {
 
 
     /*
-    *       SECTION 2: ACCOUNT
-    */
+     *       SECTION 2: ACCOUNT
+     */
 
     // 2.1 READ Account information
     readAccountInfo: (token) => {
@@ -136,7 +141,11 @@ export default {
     },
 
     // 2.2 UPDATE Account information 
-    updateAccountInfo: (token, { dateOfBirth, address, avatar }) => {
+    updateAccountInfo: (token, {
+        dateOfBirth,
+        address,
+        avatar
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -166,8 +175,8 @@ export default {
 
 
     /*
-    *       SECTION 3: PRODUCT
-    */
+     *       SECTION 3: PRODUCT
+     */
 
     // 3.1 Get all industries
     getAllIndustries: () => {
@@ -186,14 +195,23 @@ export default {
     },
 
     // 3.3 Get all products
-    getAllProducts: (limit, offset, { industryId, branchId, categoryId, brandId, keyword, minPrice, maxPrice }) => {
+    getAllProducts: (limit, offset, {
+        industryId,
+        branchId,
+        categoryId,
+        brandId,
+        keyword,
+        minPrice,
+        maxPrice
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
                 limit,
                 offset,
                 query: {
-                    industryId, branchId,
+                    industryId,
+                    branchId,
                     categoryId,
                     brandId,
                     keyword,
@@ -218,8 +236,8 @@ export default {
 
 
     /*
-    *       SECTION 4: CART
-    */
+     *       SECTION 4: CART
+     */
 
     // 4.1 Get all items in cart 
     getCart: (token) => {
@@ -270,8 +288,8 @@ export default {
 
 
     /*
-    *       SECTION 5: CHECKOUT
-    */
+     *       SECTION 5: CHECKOUT
+     */
 
     // 5.1 Checkout (Cart to Order) 
     toCheckout: (token, couponCode, fullName, phone, email, address, note, shippingMethod) => {
@@ -319,12 +337,14 @@ export default {
 
 
     /*
-    *       SECTION 6: ADMIN
-    */
+     *       SECTION 6: ADMIN
+     */
 
 
     // 6.1 Get all accounts
-    adminGetAllAccounts: (token, offset, limit, { keyword }) => {
+    adminGetAllAccounts: (token, offset, limit, {
+        keyword
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -340,7 +360,18 @@ export default {
     },
 
     // 6.2 Create account 
-    adminCreateAccount: (token, { username, password, email, fullName, dateOfBirth, phone, gender, address, avatar, permission }) => {
+    adminCreateAccount: (token, {
+        username,
+        password,
+        email,
+        fullName,
+        dateOfBirth,
+        phone,
+        gender,
+        address,
+        avatar,
+        permission
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -361,7 +392,19 @@ export default {
     },
 
     // 6.3 Update account 
-    adminUpdateAccount: (token, id, { username, password, email, fullName, dateOfBirth, phone, gender, address, avatar, permission, active }) => {
+    adminUpdateAccount: (token, id, {
+        username,
+        password,
+        email,
+        fullName,
+        dateOfBirth,
+        phone,
+        gender,
+        address,
+        avatar,
+        permission,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -384,13 +427,17 @@ export default {
     },
 
     // 6.4 Get all products
-    adminGetAllProducts: (token, limit, offset, { keyword }) => {
+    adminGetAllProducts: (token, limit, offset, {
+        keyword
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
                 limit,
                 offset,
-                query: { keyword }
+                query: {
+                    keyword
+                }
             },
             jwtToken: token,
             route: apiPrefix.admin + '/product/all'
@@ -398,7 +445,17 @@ export default {
     },
 
     // 6.5 Insert product 
-    adminInsertProduct: (token, { productName, industryId, branchId, categoryId, brandId, price, images, description, amount }) => {
+    adminInsertProduct: (token, {
+        productName,
+        industryId,
+        branchId,
+        categoryId,
+        brandId,
+        price,
+        images,
+        description,
+        amount
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -418,7 +475,19 @@ export default {
     },
 
     // 6.6 Update product 
-    adminUpdateProduct: (token, id, { productName, industryId, branchId, categoryId, brandId, price, images, description, longDescription, amount, active }) => {
+    adminUpdateProduct: (token, id, {
+        productName,
+        industryId,
+        branchId,
+        categoryId,
+        brandId,
+        price,
+        images,
+        description,
+        longDescription,
+        amount,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -457,7 +526,9 @@ export default {
     },
 
     // 6.8 Insert brand
-    adminInsertBrand: (token, { brandName }) => {
+    adminInsertBrand: (token, {
+        brandName
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -469,7 +540,10 @@ export default {
     },
 
     // 6.9 Update brand
-    adminUpdateBrand: (token, id, { brandName, active }) => {
+    adminUpdateBrand: (token, id, {
+        brandName,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -483,7 +557,9 @@ export default {
     },
 
     // 6.10 Get all industries
-    adminGetAllIndustries: (token, limit, offset, { keyword }) => {
+    adminGetAllIndustries: (token, limit, offset, {
+        keyword
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -499,7 +575,9 @@ export default {
     },
 
     // 6.11 Insert  industry
-    adminInsertIndustry: (token, { industryName }) => {
+    adminInsertIndustry: (token, {
+        industryName
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -511,7 +589,10 @@ export default {
     },
 
     // 6.12 Update industry
-    adminUpdateIndustry: (token, id, { industryName, active }) => {
+    adminUpdateIndustry: (token, id, {
+        industryName,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -525,7 +606,9 @@ export default {
     },
 
     // 6.13 Get all Branches
-    adminGetAllBranches: (token, limit, offset, { keyword }) => {
+    adminGetAllBranches: (token, limit, offset, {
+        keyword
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -541,7 +624,10 @@ export default {
     },
 
     // 6.14 Insert branch
-    adminInsertBranch: (token, { branchName, industryId }) => {
+    adminInsertBranch: (token, {
+        branchName,
+        industryId
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -554,7 +640,11 @@ export default {
     },
 
     // 6.15 Update branch
-    adminUpdateBranch: (token, id, { branchName, industryId, active }) => {
+    adminUpdateBranch: (token, id, {
+        branchName,
+        industryId,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -569,7 +659,9 @@ export default {
     },
 
     // 6.16 Get all Categories
-    adminGetAllCategories: (token, limit, offset, { keyword }) => {
+    adminGetAllCategories: (token, limit, offset, {
+        keyword
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -585,7 +677,11 @@ export default {
     },
 
     // 6.17 Insert category
-    adminInsertCategory: (token, { categoryName, industryId, branchId }) => {
+    adminInsertCategory: (token, {
+        categoryName,
+        industryId,
+        branchId
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -599,7 +695,12 @@ export default {
     },
 
     // 6.18 Update category
-    adminUpdateCategory: (token, id, { categoryName, branchId, industryId, active }) => {
+    adminUpdateCategory: (token, id, {
+        categoryName,
+        branchId,
+        industryId,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -615,7 +716,11 @@ export default {
     },
 
     // 6.19 Get all Campaigns
-    adminGetAllCampaigns: (token, limit, offset, { keyword, startTime, expiredTime }) => {
+    adminGetAllCampaigns: (token, limit, offset, {
+        keyword,
+        startTime,
+        expiredTime
+    }) => {
         return fetch({
             method: 'GET',
             reqBody: {
@@ -633,7 +738,12 @@ export default {
     },
 
     // 6.20 Insert campaign
-    adminInsertCampaign: (token, { campaignName, description, startTime, expiredTime }) => {
+    adminInsertCampaign: (token, {
+        campaignName,
+        description,
+        startTime,
+        expiredTime
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -648,7 +758,13 @@ export default {
     },
 
     // 6.21 Update campaign
-    adminUpdateCampaign: (token, id, { campaignName, description, startTime, expiredTime, active }) => {
+    adminUpdateCampaign: (token, id, {
+        campaignName,
+        description,
+        startTime,
+        expiredTime,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -665,7 +781,10 @@ export default {
     },
 
     // 6.22 Get all Coupons
-    adminGetAllCoupons: (token, limit, offset, { startTime, expiredTime }) => {
+    adminGetAllCoupons: (token, limit, offset, {
+        startTime,
+        expiredTime
+    }) => {
         return fetch({
             method: 'GET',
             reqBody: {
@@ -682,7 +801,15 @@ export default {
     },
 
     // 6.23 Insert coupon
-    adminInsertCoupon: (token, productsId, { campaignId, couponCode, percent, money, threshold, allProduct, amount }) => {
+    adminInsertCoupon: (token, productsId, {
+        campaignId,
+        couponCode,
+        percent,
+        money,
+        threshold,
+        allProduct,
+        amount
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -701,7 +828,16 @@ export default {
     },
 
     // 6.24 Update coupon
-    adminUpdateCoupon: (token, productsId, { campaignId, couponCode, percent, money, threshold, allProduct, amount, active }) => {
+    adminUpdateCoupon: (token, productsId, {
+        campaignId,
+        couponCode,
+        percent,
+        money,
+        threshold,
+        allProduct,
+        amount,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -721,7 +857,10 @@ export default {
     },
 
     // 6.25 Get all discounts
-    adminGetAllDiscounts: (token, limit, offset, { startTime, expiredTime }) => {
+    adminGetAllDiscounts: (token, limit, offset, {
+        startTime,
+        expiredTime
+    }) => {
         return fetch({
             method: 'GET',
             reqBody: {
@@ -738,7 +877,11 @@ export default {
     },
 
     // 6.26 Insert discount
-    adminInsertdiscount: (token, productsId, { percent, startTime, expiredTime }) => {
+    adminInsertdiscount: (token, productsId, {
+        percent,
+        startTime,
+        expiredTime
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -753,7 +896,12 @@ export default {
     },
 
     // 6.27 Update discount
-    adminUpdatediscount: (token, productsId, { percent, startTime, expiredTime, active }) => {
+    adminUpdatediscount: (token, productsId, {
+        percent,
+        startTime,
+        expiredTime,
+        active
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -769,7 +917,10 @@ export default {
     },
 
     // 6.28 Get all Orders
-    adminGetAllOrders: (token, limit, offset, { startTime, expiredTime }) => {
+    adminGetAllOrders: (token, limit, offset, {
+        startTime,
+        expiredTime
+    }) => {
         return fetch({
             method: 'POST',
             reqBody: {
@@ -807,6 +958,22 @@ export default {
             },
             jwtToken: token,
             route: apiPrefix.admin + '/order/update'
+        });
+    },
+
+
+    /*
+     *       SECTION 6: ADMIN
+     */
+    // 7.1 Get zalopay order status
+    getZalopayOrderStatus: (token, orderId) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                orderId
+            },
+            jwtToken: token,
+            route: apiPrefix.zalopay + '/order'
         });
     },
 }
