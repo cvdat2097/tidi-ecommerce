@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 // Internal dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import HelperTool, { withCommas } from '../../../helpers/lib';
+import HelperTool, { withCommas, showAlert } from '../../../helpers/lib';
 import { ORDER_STATUS, ACTIVE_TYPE } from '../../../config/constants';
 
 
@@ -104,25 +104,31 @@ class AdminOrder extends React.Component {
             .then(res => {
                 const result = JSON.parse(res);
                 // this.props.fetchOrders(result.orders);
-                result.orders.forEach(order => {
-                    // backup original order status
-                    order.originalStatus = order.status;
-                });
 
-                this.setState({
-                    orders: result.orders
-                });
+                if (result.orders && result.status.status === ACTIVE_TYPE.TRUE) {
 
-
-                this.handleFilterChange({
-                    totalItems: result.totalItems
-                });
-
-
-                if (this._isMounted) {
-                    this.setState({
-                        showLoadingBar: false,
+                    result.orders.forEach(order => {
+                        // backup original order status
+                        order.originalStatus = order.status;
                     });
+
+                    this.setState({
+                        orders: result.orders
+                    });
+
+
+                    this.handleFilterChange({
+                        totalItems: result.totalItems
+                    });
+
+
+                    if (this._isMounted) {
+                        this.setState({
+                            showLoadingBar: false,
+                        });
+                    }
+                } else {
+                    showAlert(result.status.message, 'error');
                 }
             });
     }

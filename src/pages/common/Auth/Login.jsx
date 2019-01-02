@@ -66,7 +66,7 @@ class Login extends React.Component {
                             <span className="login100-form-title">Member Login</span>
 
                             <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                <input className="input100" type="text" name="email" placeholder="Email" autoComplete="off"
+                                <input className="input100" type="text" name="email" placeholder="Username" autoComplete="off"
                                     onChange={(e) => { this.handleUsernameChange(e) }}
                                     value={this.state.username}
                                     onKeyDown={(e) => e.keyCode === 13 && this.handleLogin()}

@@ -80,35 +80,41 @@ class Register extends React.Component {
             });
 
             // DOB format process
+            if (this.state.email.match(/^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([a-zA-Z0-9-]+.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) != null) {
 
-            if (this.state.password && this.state.username && this.state.email) {
+                if (this.state.password && this.state.username && this.state.email) {
 
-                WebService.register(this.state.username,
-                    this.state.password,
-                    this.state.email,
-                    this.state.name,
-                    Moment(this.state.dob).format(CONSTANT.DATE_FORMAT).toString(),
-                    this.state.phone,
-                    this.state.gender,
-                    this.state.address,
-                    this.state.avatar)
-                    .then(res => {
-                        let resObj = JSON.parse(res);
+                    WebService.register(this.state.username,
+                        this.state.password,
+                        this.state.email,
+                        this.state.name,
+                        Moment(this.state.dob).format(CONSTANT.DATE_FORMAT).toString(),
+                        this.state.phone,
+                        this.state.gender,
+                        this.state.address,
+                        this.state.avatar)
+                        .then(res => {
+                            let resObj = JSON.parse(res);
 
-                        if (resObj.status.status === 'TRUE') {
-                            AuthService.saveToken(resObj.token);
-                            this.setState({
-                                redirectTo: <Redirect to={ROUTE_NAME.HOME} />
-                            });
-                        } else {
-                            this.setState({
-                                message: resObj.status.message
-                            })
-                        }
+                            if (resObj.status.status === 'TRUE') {
+                                AuthService.saveToken(resObj.token);
+                                this.setState({
+                                    redirectTo: <Redirect to={ROUTE_NAME.HOME} />
+                                });
+                            } else {
+                                this.setState({
+                                    message: resObj.status.message
+                                })
+                            }
+                        });
+                } else {
+                    this.setState({
+                        message: 'Information is missing.'
                     });
+                }
             } else {
                 this.setState({
-                    message: 'Information is missing.'
+                    message: 'Valid email is required: ex@abc.xyz'
                 });
             }
         } else {
@@ -168,7 +174,7 @@ class Register extends React.Component {
                             </div>
 
                             {/* Email */}
-                            <div className="wrap-input100 validate-input" data-validate="Password is required">
+                            <div className="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                                 <input className={"input100" + (this.state.message ? " is-invalid" : "")} type="text" name="pass" placeholder="Email address" autoComplete="off"
                                     onChange={(e) => { this.handleEmailChange(e) }}
                                     value={this.state.email}

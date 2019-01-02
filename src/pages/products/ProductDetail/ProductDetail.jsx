@@ -133,6 +133,11 @@ class ProductDetail extends React.Component {
             const product = this.state.product;
             const discountedPercent = Math.round(product.discPercent * 100);
             const discountedPrice = Math.round(product.price - product.price * product.discPercent);
+            const listdescription = product.description.split("\n");
+            const listDescription = [];
+            for (var j = 0; j < listdescription.length; j++){
+                listDescription[j] = <p className="product-desc">{listdescription[j]}</p>
+            }
             return (
                 <div className="single_product_details_area d-flex align-items-center">
                     <div id="images-slider" className="single_product_thumb carousel slide" data-ride="carousel">
@@ -167,8 +172,7 @@ class ProductDetail extends React.Component {
                                     : null
                             }
                         </p>
-                        <p className="product-desc">{product.description}</p>
-
+                        {listDescription}
                         {/* <!-- Form --> */}
                         <form className="cart-form clearfix" method="post">
                             {/* <!-- Select Box --> */}

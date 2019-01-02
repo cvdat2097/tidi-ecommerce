@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 // Internal dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import HelperTool from '../../../helpers/lib';
+import HelperTool, {showAlert} from '../../../helpers/lib';
 import { DEFAULT_FORMDATA, ACTIVE_TYPE } from '../../../config/constants';
 
 import Modal from '../../common/Modal';
@@ -109,6 +109,8 @@ class AdminBrand extends React.Component {
                     brands: result.brands,
                     showLoadingBar: false
                 });
+            } else {
+                showAlert(result.status.message, 'error');
             }
         })
     }

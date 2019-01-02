@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 // Internal dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import HelperTool from '../../../helpers/lib';
+import HelperTool, { showAlert } from '../../../helpers/lib';
 import { DEFAULT_FORMDATA, ACTIVE_TYPE } from '../../../config/constants';
 
 import Modal from '../../common/Modal';
@@ -127,15 +127,21 @@ class AdminProduct extends React.Component {
         WebService.adminGetAllProducts(AuthService.getTokenUnsafe(), pageSize, ((currentPage - 1) * pageSize), query)
             .then(res => {
                 const result = JSON.parse(res);
-                this.props.fetchProducts(result.products);
-                this.handleFilterChange({
-                    totalItems: result.totalItems
-                });
 
-                if (this._isMounted) {
-                    this.setState({
-                        showLoadingBar: false,
+                if (result.status.status === ACTIVE_TYPE.TRUE && result.products) {
+
+                    this.props.fetchProducts(result.products);
+                    this.handleFilterChange({
+                        totalItems: result.totalItems
                     });
+
+                    if (this._isMounted) {
+                        this.setState({
+                            showLoadingBar: false,
+                        });
+                    }
+                } else {
+                    showAlert(result.status.message, 'error');
                 }
             });
     }

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 // Internal dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import HelperTool from '../../../helpers/lib';
+import HelperTool, { showAlert } from '../../../helpers/lib';
 import { DEFAULT_FORMDATA, USER_TYPE, USER_GENDER, ACTIVE_TYPE } from '../../../config/constants';
 
 import Modal from '../../common/Modal';
@@ -112,16 +112,21 @@ class AdminUser extends React.Component {
         WebService.adminGetAllAccounts(AuthService.getTokenUnsafe(), (currentPage - 1) * pageSize, pageSize, query)
             .then(res => {
                 const result = JSON.parse(res);
-                this.props.fetchUsers(result.accounts);
-                this.handleFilterChange({
-                    totalItems: result.totalItems
-                });
+                if (result.accounts && result.status.status === ACTIVE_TYPE.TRUE) {
 
-
-                if (this._isMounted) {
-                    this.setState({
-                        showLoadingBar: false,
+                    this.props.fetchUsers(result.accounts);
+                    this.handleFilterChange({
+                        totalItems: result.totalItems
                     });
+
+
+                    if (this._isMounted) {
+                        this.setState({
+                            showLoadingBar: false,
+                        });
+                    }
+                } else {
+                    showAlert(result.status.message, 'error');
                 }
             });
     }
@@ -197,6 +202,7 @@ class AdminUser extends React.Component {
     }
 
     handleUpdateUser() {
+
         return new Promise((resolve, reject) => {
             const newInfo = {};
             for (let attr in this.props.formData) {
