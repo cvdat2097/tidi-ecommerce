@@ -1,7 +1,8 @@
 export default {
     REST_SERVER: 'http://localhost:8080/api/v1',
     // REST_SERVER: 'http://tidi-binpossible49.c9users.io:8081/api/v1',
-    DATE_FORMAT: 'YYYY-MM-DD'
+    DATE_FORMAT: 'YYYY-MM-DD',
+    APPID: 376
 }
 
 
@@ -90,7 +91,7 @@ export const DEFAULT_FORMDATA = {
 
 export const PAYMENT_METHOD = [{
         ID: 0,
-        NAME: 'Zalo Pay',
+        NAME: 'ZaloPay',
         DESCRIPTION: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.',
         SHIPPING_FEE: 0
     },
@@ -104,6 +105,6 @@ export const PAYMENT_METHOD = [{
 
 export const ZP_ORDER_STATUS = {
     PROCESSING: 'PROCESSING',
-    CANCLLED: 'CANCLLED',
+    CANCLLED: 'CANCELED',
     SUCCESSFUL: 'SUCCESSFUL'
 }

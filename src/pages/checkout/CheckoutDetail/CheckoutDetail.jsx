@@ -11,7 +11,7 @@ import QRCode from 'qrcode';
 // Internal Dependencies
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
-import { PAYMENT_METHOD, ACTIVE_TYPE, ZP_ORDER_STATUS } from '../../../config/constants';
+import CONSTANT, { PAYMENT_METHOD, ACTIVE_TYPE, ZP_ORDER_STATUS } from '../../../config/constants';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import LIB, { withCommas } from '../../../helpers/lib';
 
@@ -49,6 +49,7 @@ class CheckoutDetail extends React.Component {
         this.state = INITIAL_STATE;
         this.total = 0;
         this.zalopayOrderId = null;
+        this.zptranstoken = null;
         this.checkStatusInterval = null;
 
         this.generateCartItemList = this.generateCartItemList.bind(this);
@@ -101,7 +102,10 @@ class CheckoutDetail extends React.Component {
 
     generateQRCode(orderInfo) {
         return new Promise((resolve, reject) => {
-            QRCode.toDataURL(orderInfo, (err, url) => {
+            QRCode.toDataURL(JSON.stringify({
+                appid: CONSTANT.APPID,
+                zptranstoken: this.zptranstoken
+            }), (err, url) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -141,23 +145,38 @@ class CheckoutDetail extends React.Component {
                     // Check order status
                     if (this.zalopayOrderId) {
                         this.checkStatusInterval = setInterval(() => {
-                            WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), this.zalopayOrderId).then(res => {
+                            WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), Number(this.zalopayOrderId)).then(res => {
                                 const result = JSON.parse(res);
+                                console.log(result.status)
+                                switch (result.status) {
+                                    case ZP_ORDER_STATUS.PROCESSING:
+                                        break;
 
-                                if (result.status === ZP_ORDER_STATUS.SUCCESSFUL) {
+                                    case ZP_ORDER_STATUS.CANCLLED:
+                                        Swal({
+                                            type: 'error',
+                                            title: 'No...',
+                                            text: 'Your payment has been canceled!'
+                                        })
+                                        break;
+
+                                    case ZP_ORDER_STATUS.SUCCESSFUL:
+                                        Swal({
+                                            type: 'success',
+                                            title: 'Yayy!!',
+                                            text: `You ordered successfully.`,
+                                            onClose: () => {
+                                                this.fetchCartProducts();
+                                                this.setState({
+                                                    redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
+                                                });
+                                            }
+                                        });
+                                        break;
+
+                                }
+                                if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
                                     clearInterval(this.checkStatusInterval);
-
-                                    Swal({
-                                        type: 'success',
-                                        title: 'Yayy!!',
-                                        text: `You ordered successfully.`,
-                                        onClose: () => {
-                                            this.fetchCartProducts();
-                                            this.setState({
-                                                redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
-                                            });
-                                        }
-                                    });
                                 }
                             });
 
@@ -186,23 +205,27 @@ class CheckoutDetail extends React.Component {
                 this.state.shippingMethod.NAME
             ).then(res => {
                 let result = JSON.parse(res);
-                if (result.status === ACTIVE_TYPE.TRUE) {
+                if (result.status.status === ACTIVE_TYPE.TRUE) {
                     this.zalopayOrderId = result.orderId;
-                    // this.zalopayOrderId = 1;
+                    this.zptranstoken = result.zptranstoken;
 
                     resolve({
-                        status: true
+                        status: true,
+                        payload: result
                     });
                 } else {
                     resolve({
                         status: false,
-                        message: result.message
+                        message: result.status.message,
+                        payload: result
                     });
                 }
             }).catch(res => {
+                //FIXME: Improve JSON.parse here
                 resolve({
                     status: false,
-                    message: JSON.parse(res).message
+                    message: JSON.parse(res).message,
+                    payload: JSON.parse(res)
                 });
             });
         });
@@ -229,7 +252,7 @@ class CheckoutDetail extends React.Component {
                     this.placeOrder().then(res => {
                         if (res.status === true) {
                             // Order on AppServer successfully
-                            if (this.state.shippingMethod.NAME !== 'Zalo Pay') {
+                            if (this.state.shippingMethod.NAME !== PAYMENT_METHOD[0].NAME) {
                                 Swal({
                                     type: 'success',
                                     title: 'Yayy!!',
@@ -244,6 +267,7 @@ class CheckoutDetail extends React.Component {
                             }
                             else {
                                 // Order using Zalopay
+                                console.log(res);
                                 this.generateQRCode(res.status.toString()).then(status => {
                                     this.fetchCartProducts();
                                     this.setState({

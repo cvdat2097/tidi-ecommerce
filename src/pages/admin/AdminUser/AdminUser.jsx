@@ -202,7 +202,6 @@ class AdminUser extends React.Component {
     }
 
     handleUpdateUser() {
-
         return new Promise((resolve, reject) => {
             const newInfo = {};
             for (let attr in this.props.formData) {
