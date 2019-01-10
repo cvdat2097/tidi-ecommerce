@@ -136,7 +136,7 @@ class ProductDetail extends React.Component {
             const listdescription = product.description.split("\n");
             const listDescription = [];
             for (var j = 0; j < listdescription.length; j++){
-                listDescription[j] = <p className="product-desc">{listdescription[j]}</p>
+                listDescription[j] = <p key={j} className="product-desc">{listdescription[j]}</p>
             }
             return (
                 <div className="single_product_details_area d-flex align-items-center">
@@ -176,7 +176,7 @@ class ProductDetail extends React.Component {
                         {/* <!-- Form --> */}
                         <form className="cart-form clearfix" method="post">
                             {/* <!-- Select Box --> */}
-                            <div className="form-group select-box d-flex mt-50 mb-30">
+                            {/* <div className="form-group select-box d-flex mt-50 mb-30">
                                 <select name="select" id="productSize" className="mr-3 form-control">
                                     <option value="value">Size: XL</option>
                                     <option value="value">Size: X</option>
@@ -189,7 +189,7 @@ class ProductDetail extends React.Component {
                                     <option value="value">Color: Red</option>
                                     <option value="value">Color: Purple</option>
                                 </select>
-                            </div>
+                            </div> */}
                             {/* <!-- Cart & Favourite Box --> */}
                             <div className="cart-fav-box d-flex align-items-center">
                                 {/* <!-- Cart --> */}

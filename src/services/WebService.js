@@ -262,7 +262,7 @@ export default {
     },
 
     // 4.3 Update item
-    updateItemToCart: (token, productId, amount) => {
+    updateItemInCart: (token, productId, amount) => {
         return fetch({
             method: 'POST',
             reqBody: {

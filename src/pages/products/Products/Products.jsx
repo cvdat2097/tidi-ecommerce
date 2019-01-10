@@ -95,7 +95,6 @@ class Products extends React.Component {
         const priceFromURL = Number(params.get(QUERY_PARAMS.minPrice));
         const priceToURL = Number(params.get(QUERY_PARAMS.maxPrice));
 
-        console.log('OK')
 
         let isQueryStringUpdated = false;
 

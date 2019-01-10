@@ -11,7 +11,11 @@ import { ROUTE_NAME } from '../../../routes/main.routing';
 import { withCommas, showAlert } from '../../../helpers/lib';
 import WebService from '../../../services/WebService';
 import AuthService from '../../../services/AuthService';
+import { ACTIVE_TYPE } from '../../../config/constants';
 
+const INTERNAL_CONFIG = {
+    AMOUNT_UPATE_DELAY_DURATION: 300,
+}
 
 class Cart extends React.Component {
     static propTypes = {
@@ -25,11 +29,13 @@ class Cart extends React.Component {
         super(props);
 
         this.total = 0;
+        this.amountDelayTimeout = null;
 
         this.generateProductBoxes = this.generateProductBoxes.bind(this);
         this.generateCartItemNames = this.generateCartItemNames.bind(this);
         this.handleProductRemove = this.handleProductRemove.bind(this);
         this.fetchCartProducts = this.fetchCartProducts.bind(this);
+        this.handleProductAmountChange = this.handleProductAmountChange.bind(this);
     }
 
     componentDidMount() {
@@ -56,11 +62,31 @@ class Cart extends React.Component {
             WebService.deleteItemFromCart(AuthService.getTokenUnsafe(), product.id).then(r => {
                 const res = JSON.parse(r);
 
-                if (res.status === 'TRUE') {
+                if (res.status === ACTIVE_TYPE.TRUE) {
                     showAlert(`Removed ${product.productName}`)
                     this.fetchCartProducts();
                 }
             })
+        }
+    }
+
+    handleProductAmountChange(cartItem, amount) {
+        console.log(cartItem);
+        if (cartItem.id && cartItem.amount + amount > 0) {
+            cartItem.amount+= amount;
+            
+            if (this.amountDelayTimeout) {
+                clearTimeout(this.amountDelayTimeout);
+            }
+            this.amountDelayTimeout = setTimeout(() => { 
+                WebService.updateItemInCart(AuthService.getTokenUnsafe(), cartItem.id, cartItem.amount).then(r => {
+                    const res = JSON.parse(r);
+
+                    if (res.status === ACTIVE_TYPE.TRUE) {
+                        console.log('Updated amount');
+                    }
+                })
+            }, INTERNAL_CONFIG.AMOUNT_UPATE_DELAY_DURATION);
         }
     }
 
@@ -87,7 +113,11 @@ class Cart extends React.Component {
 
                                 <span className="badge">{cartItem.category.categoryName}</span>
                                 <h6>{cartItem.productName}</h6>
-                                <span className="badge">{`X  ${cartItem.amount}`}</span>
+                                <div className="cart-item-quantity d-flex align-items-center justify-content-between">
+                                    <button className="btn btn-danger btn-sm" onClick={() => this.handleProductAmountChange(cartItem, -1)}>-</button>
+                                    <span className="badge item-quantity">{`${cartItem.amount}`}</span>
+                                    <button className="btn btn-success btn-sm" onClick={() => this.handleProductAmountChange(cartItem, 1)}>+</button>
+                                </div>
                                 <p className="price">{withCommas(cartItem.price) + ' ₫'}</p>
                             </div>
                         </Link>
