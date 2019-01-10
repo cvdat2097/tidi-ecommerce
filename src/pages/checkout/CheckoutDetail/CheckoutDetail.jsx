@@ -174,6 +174,10 @@ class CheckoutDetail extends React.Component {
                                         });
                                         break;
 
+
+                                    default:
+                                        break;
+
                                 }
                                 if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
                                     clearInterval(this.checkStatusInterval);
