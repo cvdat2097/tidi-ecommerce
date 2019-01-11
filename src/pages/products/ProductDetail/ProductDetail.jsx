@@ -135,7 +135,7 @@ class ProductDetail extends React.Component {
             const discountedPrice = Math.round(product.price - product.price * product.discPercent);
             const listdescription = product.description.split("\n");
             const listDescription = [];
-            for (var j = 0; j < listdescription.length; j++){
+            for (var j = 0; j < listdescription.length; j++) {
                 listDescription[j] = <p key={j} className="product-desc">{listdescription[j]}</p>
             }
             return (
@@ -214,6 +214,8 @@ class ProductDetail extends React.Component {
                             {product.description}
                         </div>
                     </div>
+
+                    <div className="fb-comments" data-href={'http://tidi-binpossible49.c9users.io' + this.props.location.pathname} data-width="auto" data-numposts="5"></div>
 
                 </div>
             );
