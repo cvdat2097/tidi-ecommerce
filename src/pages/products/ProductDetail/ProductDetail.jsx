@@ -4,6 +4,7 @@ import './ProductDetail.scss';
 // External Dependencies
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FacebookProvider, Comments } from 'react-facebook';
 
 // Internal Dependencies
 import WebService from '../../../services/WebService';
@@ -215,7 +216,12 @@ class ProductDetail extends React.Component {
                         </div>
                     </div>
 
-                    <div className="fb-comments" data-href={'http://tidi-binpossible49.c9users.io' + this.props.location.pathname} data-width="auto" data-numposts="5"></div>
+                    <div className="fb-comment-plugin-container">
+                        <FacebookProvider appId="486326855227569">
+                            <Comments
+                                href={'https://tidi-binpossible49.c9users.io' + this.props.location.pathname} className="kdjf" />
+                        </FacebookProvider>
+                    </div>
 
                 </div>
             );
