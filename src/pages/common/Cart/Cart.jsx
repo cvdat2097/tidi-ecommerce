@@ -71,7 +71,6 @@ class Cart extends React.Component {
     }
 
     handleProductAmountChange(cartItem, amount) {
-        console.log(cartItem);
         if (cartItem.id && cartItem.amount + amount > 0) {
             cartItem.amount+= amount;
             

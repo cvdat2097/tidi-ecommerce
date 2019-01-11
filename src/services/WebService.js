@@ -106,13 +106,14 @@ export default {
     },
 
     // 1.5 Reset password email verification 
-    verifyEmailResetPassword: (verificationCode) => {
+    verifyEmailResetPassword: (verificationCode, newPassword) => {
         return fetch({
             method: 'POST',
             reqBody: {
-                verificationCode
+                verificationCode,
+                newPassword
             },
-            route: apiPrefix.authentication + '/resetPasswordVerification'
+            route: apiPrefix.authentication + '/resetEmailVerification'
         });
     },
 
