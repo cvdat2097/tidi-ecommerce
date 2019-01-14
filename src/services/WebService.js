@@ -86,11 +86,8 @@ export default {
     // 1.3 Registration email verification
     verifyEmail: (verificationCode) => {
         return fetch({
-            method: 'POST',
-            reqBody: {
-                verificationCode
-            },
-            route: apiPrefix.authentication + '/verifyEmail'
+            method: 'GET',
+            route: apiPrefix.authentication + '/emailVerification?verificationCode=' + verificationCode
         });
     },
 

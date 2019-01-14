@@ -22,7 +22,9 @@ const INITIAL_STATE = {
 }
 
 const INTERNAL_CONFIG = {
-    emailNotification: 'Please verify your email for better experience at TIDI'
+    emailNotification: 'Please verify your email for better experience at TIDI',
+    emailNotificationSuccess: 'Your email is verified!',
+    emailNotificationFailure: 'Verification code is invalid, please try again later'
 }
 
 class Header extends React.Component {
@@ -49,6 +51,9 @@ class Header extends React.Component {
     }
 
     componentDidMount() {
+        const params = new URLSearchParams(this.props.history.location.search);
+        const emailVerificationCode = params.get('email');
+        
         this.fetchIndustries();
         // FIXME: retrieve isLoggedIn from RouteWithSubRoutes and delete this block
         // Authentication verifying procedure
@@ -57,12 +62,25 @@ class Header extends React.Component {
             if (status.tokenIsValid) {
                 this.props.changeLoginStatus(status.tokenIsValid);
 
-                if (status.emailIsVerified === ACTIVE_TYPE.FALSE) {
+                if (status.emailIsVerified === ACTIVE_TYPE.FALSE && !emailVerificationCode) {
                     this.props.toggleNotification(INTERNAL_CONFIG.emailNotification, 'alert-warning');
                 }
             }
         });
         // ============ END
+
+        // Get email verification code from URL
+        if (emailVerificationCode) {
+            WebService.verifyEmail(emailVerificationCode).then(res => {
+                const result = JSON.parse(res);
+
+                if (result.status === ACTIVE_TYPE.TRUE) {
+                    this.props.toggleNotification(INTERNAL_CONFIG.emailNotificationSuccess, 'alert-success');
+                } else {
+                    this.props.toggleNotification(INTERNAL_CONFIG.emailNotificationFailure, 'alert-danger');
+                }
+            })
+        }
     }
 
     componentWillReceiveProps(newProps, oldProps) {
@@ -268,7 +286,7 @@ class Header extends React.Component {
                 </div>
                 {
                     this.props.notificationMessage &&
-                    <div className={"alert alert-dismissible fade show" + (this.props.notificationMessage ? " alert-warning" : "")} role="alert">
+                    <div className={"alert alert-dismissible fade show " + this.props.notificationType} role="alert">
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
