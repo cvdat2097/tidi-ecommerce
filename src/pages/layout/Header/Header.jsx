@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { ROUTE_NAME } from '../../../routes/main.routing';
 import AuthService from '../../../services/AuthService';
 import WebService from '../../../services/WebService';
-import { QUERY_PARAMS } from '../../../config/constants';
+import { QUERY_PARAMS, ACTIVE_TYPE } from '../../../config/constants';
 
 const INITIAL_STATE = {
     openDropdownMenu: false,
@@ -18,7 +18,11 @@ const INITIAL_STATE = {
     openMenuMobile: false,
     openCatalogDetail: false,
     activeMenuitemIndex: 0,
-    redirectTo: null
+    redirectTo: null,
+}
+
+const INTERNAL_CONFIG = {
+    emailNotification: 'Please verify your email for better experience at TIDI'
 }
 
 class Header extends React.Component {
@@ -47,13 +51,24 @@ class Header extends React.Component {
     componentDidMount() {
         this.fetchIndustries();
         // FIXME: retrieve isLoggedIn from RouteWithSubRoutes and delete this block
+        // Authentication verifying procedure
         // ============ START
         AuthService.isLoggedIn().then(status => {
             if (status.tokenIsValid) {
                 this.props.changeLoginStatus(status.tokenIsValid);
+
+                if (status.emailIsVerified === ACTIVE_TYPE.FALSE) {
+                    this.props.toggleNotification(INTERNAL_CONFIG.emailNotification, 'alert-warning');
+                }
             }
         });
         // ============ END
+    }
+
+    componentWillReceiveProps(newProps, oldProps) {
+        if (newProps.emailIsVerified !== oldProps.emailIsVerified && newProps.emailIsVerified === ACTIVE_TYPE.TRUE) {
+            this.props.toggleNotification('', '');
+        }
     }
 
     fetchIndustries() {
@@ -251,6 +266,15 @@ class Header extends React.Component {
                         </div>
                     </div>
                 </div>
+                {
+                    this.props.notificationMessage &&
+                    <div className={"alert alert-dismissible fade show" + (this.props.notificationMessage ? " alert-warning" : "")} role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {this.props.notificationMessage}
+                    </div>
+                }
             </header >
         );
     }

@@ -10,7 +10,19 @@ const switchIndustryHover = (payload) => ({
     payload
 });
 
+const showNotification = ({
+    message,
+    type
+}) => ({
+    type: Types.SHOW_NOTIFICATION,
+    payload: {
+        message,
+        type
+    }
+})
+
 export default {
     fetchIndustries,
-    switchIndustryHover
+    switchIndustryHover,
+    showNotification
 };

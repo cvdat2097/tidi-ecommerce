@@ -46,6 +46,7 @@ export default {
                             tokenIsValid: true,
                             username: resObj.username,
                             permission: resObj.permission,
+                            emailIsVerified: resObj.emailIsVerified
                         });
                     }
                 });

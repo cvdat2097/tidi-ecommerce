@@ -1,5 +1,7 @@
 // External Dependencies
-import { connect } from 'react-redux';
+import {
+    connect
+} from 'react-redux';
 
 // Internal Dependencies
 import commonActions from '../../common/duck/actions';
@@ -40,6 +42,13 @@ const mapDispatchToProps = (dispatch) => ({
     changeLoginStatus: (status) => {
         dispatch(commonActions.updateAuthStatus({
             isLoggedIn: status
+        }));
+    },
+
+    toggleNotification: (message, type) => {
+        dispatch(layoutActions.showNotification({
+            message,
+            type
         }));
     }
 });

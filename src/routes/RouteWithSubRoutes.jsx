@@ -43,6 +43,7 @@ class HOC extends React.Component {
                 newState.username = res.username;
                 newState.permission = res.permission;
             }
+            newState.isVerified = res.emailIsVerified;
 
             this.setState(newState);
         });
