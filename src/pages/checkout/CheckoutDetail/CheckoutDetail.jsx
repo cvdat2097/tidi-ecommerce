@@ -30,6 +30,8 @@ const INITIAL_STATE = {
     fullNameIsInvalid: false,
     shippingMethodIsInvalid: false,
     errorMessage: '',
+    couponMessage: '',
+    couponStatusCode: null,
     redirectTo: null
 }
 
@@ -58,6 +60,7 @@ class CheckoutDetail extends React.Component {
         this.fetchUserInfo = this.fetchUserInfo.bind(this);
         this.placeOrder = this.placeOrder.bind(this);
         this.handleOrder = this.handleOrder.bind(this);
+        this.handleApplyCoupon = this.handleApplyCoupon.bind(this);
     }
 
     componentWillMount() {
@@ -233,6 +236,41 @@ class CheckoutDetail extends React.Component {
                 });
             });
         });
+    }
+
+    handleApplyCoupon() {
+        if (this.state.couponCode && this.state.couponStatusCode !== 1) {
+            WebService.getCouponStatus(this.state.couponCode).then(res => {
+                const result = JSON.parse(res);
+
+                let couponMessage = '';
+                switch (result.status) {
+                    case -1:
+                        couponMessage = 'Coupon is invalid'
+                        break;
+                    case 0:
+                        couponMessage = 'Coupon is expired'
+                        break;
+                    case 1:
+                        couponMessage = 'Coupon is applied'
+                        break;
+
+                    default:
+                        break;
+                }
+
+                this.setState({
+                    couponMessage,
+                    couponStatusCode: result.status
+                });
+            });
+        } else if (this.state.couponStatusCode === 1) {
+            this.setState({
+                couponCode: '',
+                couponStatusCode: null,
+                couponMessage: ''
+            });
+        }
     }
 
     handleOrder() {
@@ -456,10 +494,22 @@ class CheckoutDetail extends React.Component {
                                                             </div>
                                                             <FormInput
                                                                 type="text"
-                                                                additionalClass="col-md-7 mb-0"
+                                                                additionalClass="col-md-5 mb-0"
                                                                 value={this.state.couponCode.toUpperCase()}
                                                                 onChangeHandler={(e) => { this.setState({ couponCode: e.target.value }) }}
+                                                                disabled={this.state.couponStatusCode === 1 ? true : false}
                                                             />
+                                                            <button className={"col-md-2 btn btn-sm" + (this.state.couponStatusCode === 1 ? " btn-danger" : " btn-info")}
+                                                                onClick={this.handleApplyCoupon}
+                                                                disabled={!this.state.couponCode}
+                                                            >
+                                                                {this.state.couponStatusCode === 1 ? 'Cancel' : 'Apply'}
+                                                            </button>
+                                                            <div className="col-md-12 coupon-status-message text-right"
+                                                                style={{ 'color': (this.state.couponStatusCode === 1 ? 'green' : 'red') }}
+                                                            >
+                                                                {this.state.couponMessage}
+                                                            </div>
                                                         </div>
                                                     </li>
                                                     <li className="total-header"><span>Total</span> <span>{`${withCommas(this.total + this.state.shippingFee)} ₫`}</span></li>

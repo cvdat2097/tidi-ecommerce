@@ -10,7 +10,8 @@ class FormInput extends React.Component {
         value: PropTypes.any.isRequired,
         onChangeHandler: PropTypes.func.isRequired,
         options: PropTypes.array,
-        additionalClass: PropTypes.string
+        additionalClass: PropTypes.string,
+        disabled: PropTypes.bool
     }
 
     render() {
@@ -21,6 +22,7 @@ class FormInput extends React.Component {
                         <select type="text" className="form-control"
                             value={this.props.value}
                             onChange={this.props.onChangeHandler}
+                            disabled={this.props.disabled}
                         >
                             {this.props.options.map((opt, idx) => <option key={idx} value={opt.value || opt}>{opt.name || opt}</option>)}
                         </select>
@@ -33,6 +35,7 @@ class FormInput extends React.Component {
                             value={this.props.value}
                             onChange={this.props.onChangeHandler}
                             rows={this.props.rows}
+                            disabled={this.props.disabled}
                         />
                     )
 
@@ -43,6 +46,7 @@ class FormInput extends React.Component {
                             type={this.props.type}
                             value={this.props.value}
                             onChange={this.props.onChangeHandler}
+                            disabled={this.props.disabled}
                         />
                     );
             }

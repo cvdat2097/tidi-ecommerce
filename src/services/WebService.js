@@ -336,6 +336,16 @@ export default {
         });
     },
 
+    // 5.4 Check Coupon status
+    getCouponStatus: (coupon) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                coupon
+            },
+            route: apiPrefix.checkout + '/couponStatus'
+        });
+    },
 
     /*
      *       SECTION 6: ADMIN
