@@ -46,7 +46,7 @@ class Header extends React.Component {
 
     componentDidMount() {
         this.fetchIndustries();
-        // FIXME: retrieve isLoggedIn from RouteWithSubRoutes and delte this block
+        // FIXME: retrieve isLoggedIn from RouteWithSubRoutes and delete this block
         // ============ START
         AuthService.isLoggedIn().then(status => {
             if (status.tokenIsValid) {

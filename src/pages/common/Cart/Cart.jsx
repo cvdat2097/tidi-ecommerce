@@ -94,6 +94,8 @@ class Cart extends React.Component {
 
         if (this.props.products) {
             this.props.products.forEach((cartItem, index) => {
+                const discountedPrice = cartItem.price - cartItem.price * cartItem.discPercent;
+
                 R.push(
                     <div key={index} className="single-cart-item" >
                         <span className="product-remove"
@@ -117,7 +119,7 @@ class Cart extends React.Component {
                                     <span className="badge item-quantity">{`${cartItem.amount}`}</span>
                                     <button className="btn btn-success btn-sm" onClick={() => this.handleProductAmountChange(cartItem, 1)}>+</button>
                                 </div>
-                                <p className="price">{withCommas(cartItem.price) + ' ₫'}</p>
+                                <p className="price">{withCommas(discountedPrice * cartItem.amount) + ' ₫'}</p>
                             </div>
                         </Link>
                     </div >

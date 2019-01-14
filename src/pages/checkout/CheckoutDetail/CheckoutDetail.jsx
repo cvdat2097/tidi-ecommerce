@@ -225,11 +225,11 @@ class CheckoutDetail extends React.Component {
                     });
                 }
             }).catch(res => {
-                //FIXME: Improve JSON.parse here
+                const result = JSON.parse(res);
                 resolve({
                     status: false,
-                    message: JSON.parse(res).message,
-                    payload: JSON.parse(res)
+                    message: result.message,
+                    payload: result
                 });
             });
         });
