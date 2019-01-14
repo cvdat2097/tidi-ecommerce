@@ -9,7 +9,7 @@ import Header from './Header';
 const mapStateToProps = (state) => ({
     ...state.layout.Header,
     ...state.common.AuthenticationStatus,
-    nCartItems: state.common.Cart.products.length
+    nCartItems: state.common.Cart.products.length > 0 ? state.common.Cart.products.reduce((nitem, item) => nitem + item.amount, 0) : 0
 });
 
 const mapDispatchToProps = (dispatch) => ({

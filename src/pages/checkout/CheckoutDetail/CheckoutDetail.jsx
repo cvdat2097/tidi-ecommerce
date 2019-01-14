@@ -32,6 +32,8 @@ const INITIAL_STATE = {
     errorMessage: '',
     couponMessage: '',
     couponStatusCode: null,
+    couponDiscPercent: 0,
+    couponMoney: 0,
     redirectTo: null
 }
 
@@ -50,6 +52,7 @@ class CheckoutDetail extends React.Component {
 
         this.state = INITIAL_STATE;
         this.total = 0;
+        this.discountTotal = 0;
         this.zalopayOrderId = null;
         this.zptranstoken = null;
         this.checkStatusInterval = null;
@@ -261,14 +264,18 @@ class CheckoutDetail extends React.Component {
 
                 this.setState({
                     couponMessage,
-                    couponStatusCode: result.status
+                    couponStatusCode: result.status,
+                    couponDiscPercent: result.discPercent,
+                    couponMoney: result.money
                 });
             });
         } else if (this.state.couponStatusCode === 1) {
             this.setState({
-                couponCode: '',
-                couponStatusCode: null,
-                couponMessage: ''
+                couponCode: INITIAL_STATE.couponCode,
+                couponStatusCode: INITIAL_STATE.couponStatusCode,
+                couponMessage: INITIAL_STATE.couponMessage,
+                couponDiscPercent: INITIAL_STATE.couponDiscPercent,
+                couponMoney: INITIAL_STATE.couponMoney
             });
         }
     }
@@ -364,10 +371,15 @@ class CheckoutDetail extends React.Component {
 
     generateCartItemList() {
         let totalPrice = 0;
+        let discountTotal = 0;
         let itemElements = this.props.cartItems.map((cartItem, index) => {
-            let price = (cartItem.price - cartItem.price * cartItem.discPercent) * cartItem.amount;
+            let price = cartItem.price - cartItem.price * cartItem.discPercent;
+            let discountPrice;
 
-            totalPrice += price;
+            discountPrice = price - price * this.state.couponDiscPercent - this.state.couponMoney;
+
+            totalPrice += price * cartItem.amount;
+            discountTotal += discountPrice * cartItem.amount;
 
             return (
                 <li key={index} className="item-product-name">
@@ -378,6 +390,7 @@ class CheckoutDetail extends React.Component {
         });
 
         this.total = totalPrice;
+        this.discountTotal = discountTotal;
         return itemElements;
     }
 
@@ -512,7 +525,13 @@ class CheckoutDetail extends React.Component {
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    <li className="total-header"><span>Total</span> <span>{`${withCommas(this.total + this.state.shippingFee)} ₫`}</span></li>
+                                                    <li className="total-header"><span>Total</span>
+                                                        <span>
+                                                            <span className={this.discountTotal !== this.total ? "old-price" : ""}>{`${withCommas(this.total + this.state.shippingFee)} ₫`}</span>
+                                                            <br />
+                                                            {this.discountTotal !== this.total ? `${withCommas(this.discountTotal + this.state.shippingFee)} ₫` : ''}
+                                                        </span>
+                                                    </li>
                                                 </ul>
 
                                                 <div id="accordion" role="tablist" className={"mb-4 form-control shipping-method-container" + (this.state.shippingMethodIsInvalid ? ' is-invalid' : '')}>

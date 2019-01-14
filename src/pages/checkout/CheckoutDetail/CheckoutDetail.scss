@@ -108,6 +108,12 @@
     .total-header {
         font-size: 17px !important;
         font-weight: 600 !important;
+
+        .old-price {
+            text-decoration: line-through;
+            font-weight: 500;
+            color: #9f9f9f;
+        }
     }
 
     .card-header h6 a {
