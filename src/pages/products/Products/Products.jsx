@@ -192,8 +192,12 @@ class Products extends React.Component {
             // MockAPI.Product.getSome((currentPage - 1) * pageSize, pageSize).then((res) => {
             const result = JSON.parse(res);
             // console.log('GOT: ' + result.products.length);
-            this.props.updateProductList(result.products.map(prd => ({ ...prd, images: JSON.parse(prd.images) })));
-            this.props.changePageInfo({ totalItems: result.totalItems });
+            if (result.products) {
+                this.props.updateProductList(result.products.map(prd => ({ ...prd, images: JSON.parse(prd.images) })));
+                this.props.changePageInfo({ totalItems: result.totalItems });
+            } else {
+                console.log(result);
+            }
 
             this.setState({
                 showLoadingBar: false
@@ -251,7 +255,7 @@ class Products extends React.Component {
         }
 
         if (pageSize) {
-            payloadObj.pageSize = pageSize;
+            payloadObj.pageSize = Number(pageSize);
         }
 
         if (totalItems) {
