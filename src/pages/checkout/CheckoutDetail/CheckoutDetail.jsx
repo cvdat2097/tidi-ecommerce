@@ -29,12 +29,20 @@ const INITIAL_STATE = {
 
     fullNameIsInvalid: false,
     shippingMethodIsInvalid: false,
+    emailIsInvalid: false,
+    addressIsInvalid: false,
+    phoneNumberIsInvalid: false,
     errorMessage: '',
     couponMessage: '',
     couponStatusCode: null,
     couponDiscPercent: 0,
     couponMoney: 0,
     redirectTo: null
+}
+
+const INTERNAL_CONFIG = {
+    INTERVAL_DURATION: 1000,
+    SWAL_TIMEOUT: 10000
 }
 
 
@@ -168,7 +176,7 @@ class CheckoutDetail extends React.Component {
                 this.state.shippingMethod.NAME
             ).then(res => {
                 const result = JSON.parse(res);
-                const orderID =result.orderId;
+                const orderID = result.orderId;
                 if (result.status.status === ACTIVE_TYPE.TRUE) {
 
                     // Get zptranstoken if payment method is Zalopay
@@ -188,15 +196,15 @@ class CheckoutDetail extends React.Component {
                                     });
 
                                     // Check order status
-                                    this.checkStatusInterval = setInterval(() => {
+
+                                    let checkStatusInterval = setInterval(() => {
                                         WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), Number(orderID)).then(res => {
                                             const result = JSON.parse(res);
-                                            console.log(result.status)
                                             switch (result.status) {
                                                 case ZP_ORDER_STATUS.PROCESSING:
                                                     break;
 
-                                                case ZP_ORDER_STATUS.CANCLLED:
+                                                case ZP_ORDER_STATUS.CANCELED:
                                                     Swal({
                                                         type: 'error',
                                                         title: 'No...',
@@ -224,15 +232,16 @@ class CheckoutDetail extends React.Component {
 
                                             }
                                             if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
-                                                clearInterval(this.checkStatusInterval);
+                                                clearInterval(checkStatusInterval);
+                                                clearInterval(checkOrderZPInterval);
                                             }
                                         });
 
-                                    }, 1000);
+                                    }, INTERNAL_CONFIG.INTERVAL_DURATION);
 
                                 }
                             });
-                        }, 800);
+                        }, INTERNAL_CONFIG.INTERVAL_DURATION);
                     } else {
                         resolve({
                             status: true,
@@ -307,10 +316,25 @@ class CheckoutDetail extends React.Component {
                 fullNameIsInvalid: true,
                 errorMessage: 'Please enter your name'
             });
+        } else if (!this.state.email) {
+            this.setState({
+                emailIsInvalid: true,
+                errorMessage: 'Please enter your email'
+            });
+        } else if (!this.state.address) {
+            this.setState({
+                addressIsInvalid: true,
+                errorMessage: 'Please enter your address'
+            });
+        } else if (!this.state.phoneNumber) {
+            this.setState({
+                phoneNumberIsInvalid: true,
+                errorMessage: 'Please enter your phone number'
+            });
         } else {
             Swal({
                 title: 'Ordering...',
-                timer: 2000,
+                timer: INTERNAL_CONFIG.SWAL_TIMEOUT,
                 allowOutsideClick: false,
                 onOpen: () => {
                     Swal.showLoading();
@@ -332,7 +356,6 @@ class CheckoutDetail extends React.Component {
                             }
                             else {
                                 // Order using Zalopay
-                                console.log(res);
                                 this.generateQRCode(res.status.toString()).then(status => {
                                     this.fetchCartProducts();
                                     this.setState({
@@ -400,7 +423,7 @@ class CheckoutDetail extends React.Component {
             return (
                 <li key={index} className="item-product-name">
                     <span>{`[${cartItem.amount}] ${cartItem.productName}`}</span>
-                    <span>{`${withCommas(price)} ₫`}</span>
+                    <span>{`${withCommas(Math.round(price))} ₫`}</span>
                 </li>
             );
         });
@@ -451,9 +474,9 @@ class CheckoutDetail extends React.Component {
                                             </div>
                                             <div className="col-12 mb-4">
                                                 <label htmlFor="email_address">Email Address <span>*</span></label>
-                                                <input type="email" className="form-control" id="email_address"
+                                                <input type="email" className={"form-control" + (this.state.emailIsInvalid ? " is-invalid" : "")} id="email_address"
                                                     value={this.state.email}
-                                                    onChange={(e) => this.setState({ email: e.target.value })}
+                                                    onChange={(e) => this.setState({ email: e.target.value, emailIsInvalid: false })}
                                                 />
                                             </div>
                                             {/* <div className="col-12 mb-3">
@@ -471,16 +494,16 @@ class CheckoutDetail extends React.Component {
                                             </div> */}
                                             <div className="col-12 mb-3">
                                                 <label htmlFor="street_address">Address <span>*</span></label>
-                                                <input type="text" className="form-control mb-3" id="street_address"
+                                                <input type="text" className={"form-control mb-3" + (this.state.addressIsInvalid ? " is-invalid" : "")} id="street_address"
                                                     value={this.state.address}
-                                                    onChange={(e) => this.setState({ address: e.target.value })}
+                                                    onChange={(e) => this.setState({ address: e.target.value, addressIsInvalid: false })}
                                                 />
                                             </div>
                                             <div className="col-12 mb-3">
                                                 <label htmlFor="phone_number">Phone No <span>*</span></label>
-                                                <input type="number" className="form-control" id="phone_number" min="0"
+                                                <input type="number" className={"form-control" + (this.state.phoneNumberIsInvalid ? " is-invalid" : "")} id="phone_number" min="0"
                                                     value={this.state.phoneNumber}
-                                                    onChange={(e) => this.setState({ phoneNumber: e.target.value })}
+                                                    onChange={(e) => this.setState({ phoneNumber: e.target.value, phoneNumberIsInvalid: false })}
                                                 />
                                             </div>
                                             <div className="col-12 mb-4">
@@ -543,9 +566,9 @@ class CheckoutDetail extends React.Component {
                                                     </li>
                                                     <li className="total-header"><span>Total</span>
                                                         <span>
-                                                            <span className={this.discountTotal !== this.total ? "old-price" : ""}>{`${withCommas(this.total + this.state.shippingFee)} ₫`}</span>
+                                                            <span className={this.discountTotal !== this.total ? "old-price" : ""}>{`${withCommas(Math.round(this.total + this.state.shippingFee))} ₫`}</span>
                                                             <br />
-                                                            {this.discountTotal !== this.total ? `${withCommas(this.discountTotal + this.state.shippingFee)} ₫` : ''}
+                                                            {this.discountTotal !== this.total ? `${withCommas(Math.round(this.discountTotal + this.state.shippingFee))} ₫` : ''}
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -591,7 +614,7 @@ class PaymentMethod extends React.Component {
                 <div id={collapseId} className="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                     <div className="card-body">
                         <p>{this.props.description}</p>
-                        <p><b>FEE: </b>{withCommas(this.props.fee)} ₫</p>
+                        <p><b>FEE: </b>{withCommas(Math.round(this.props.fee))} ₫</p>
                     </div>
                 </div>
             </div>

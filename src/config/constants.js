@@ -34,11 +34,13 @@ export const USER_GENDER = {
 }
 
 export const ORDER_STATUS = {
+    PENDING: 'PENDING',
     CHECKED: 'CHECKED',
     PACKING: 'PACKING',
     SHIPPING: 'SHIPPING',
     CANCELED: 'CANCELED',
-    SUCCESSFUL: 'SUCCESSFUL'
+    SUCCESSFUL: 'SUCCESSFUL',
+    PAID: 'PAID'
 }
 
 // export const ORDER_STATUS = {
@@ -105,6 +107,6 @@ export const PAYMENT_METHOD = [{
 
 export const ZP_ORDER_STATUS = {
     PROCESSING: 'PROCESSING',
-    CANCLLED: 'CANCELED',
+    CANCELED: 'CANCELED',
     SUCCESSFUL: 'SUCCESSFUL'
 }

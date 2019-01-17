@@ -119,7 +119,7 @@ class Cart extends React.Component {
                                     <span className="badge item-quantity">{`${cartItem.amount}`}</span>
                                     <button className="btn btn-success btn-sm" onClick={() => this.handleProductAmountChange(cartItem, 1)}>+</button>
                                 </div>
-                                <p className="price">{withCommas(discountedPrice * cartItem.amount) + ' ₫'}</p>
+                                <p className="price">{withCommas(Math.round(discountedPrice * cartItem.amount)) + ' ₫'}</p>
                             </div>
                         </Link>
                     </div >
@@ -139,7 +139,7 @@ class Cart extends React.Component {
                 let itemPrice = (cartItem.price - cartItem.price * cartItem.discPercent) * cartItem.amount;
 
                 R.push(
-                    <li key={index} className="cart-item-name">{cartItem.productName} x {cartItem.amount}<span></span><span>{withCommas(itemPrice)} ₫</span></li>
+                    <li key={index} className="cart-item-name">{cartItem.productName} x {cartItem.amount}<span></span><span>{withCommas(Math.round(itemPrice))} ₫</span></li>
                 );
 
                 total += itemPrice;
@@ -198,7 +198,7 @@ class Cart extends React.Component {
                                 <h2>Summary</h2>
                                 <ul className="summary-table">
                                     {this.generateCartItemNames()}
-                                    <li className="summary-header"><span>total:</span> <span>{withCommas(this.total)} ₫</span></li>
+                                    <li className="summary-header"><span>total:</span> <span>{withCommas(Math.round(this.total))} ₫</span></li>
                                 </ul>
                                 <div className="checkout-btn mt-100"
                                     onClick={() => { this.props.toggleCart(false) }}

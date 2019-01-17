@@ -201,7 +201,7 @@ class AdminOrder extends React.Component {
                             <FormInput
                                 type="select"
                                 value={order.status}
-                                options={[ORDER_STATUS.CHECKED, ORDER_STATUS.PACKING, ORDER_STATUS.SHIPPING, ORDER_STATUS.SUCCESSFUL, ORDER_STATUS.CANCELED]}
+                                options={[ORDER_STATUS.CHECKED, ORDER_STATUS.PACKING, ORDER_STATUS.SHIPPING, ORDER_STATUS.SUCCESSFUL, ORDER_STATUS.CANCELED, ORDER_STATUS.PAID, ORDER_STATUS.PENDING]}
                                 onChangeHandler={(e) => {
                                     order.status = e.target.value;
                                     this.forceUpdate();

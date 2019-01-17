@@ -46,7 +46,7 @@ class AdminUser extends React.Component {
             fullName: PropTypes.string,
             dateOfBirth: PropTypes.string,
             phone: PropTypes.string,
-            gender: PropTypes.oneOf([USER_GENDER.MALE, USER_GENDER.FEMALE]),
+            gender: PropTypes.oneOf([USER_GENDER.MALE, USER_GENDER.FEMALE, '']),
             address: PropTypes.string,
             active: PropTypes.oneOf([ACTIVE_TYPE.TRUE, ACTIVE_TYPE.FALSE]),
             password: PropTypes.string,
