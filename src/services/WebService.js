@@ -344,6 +344,18 @@ export default {
         });
     },
 
+     // 5.5 Get zptranstoken from orderid
+     getZPTokenFromOrder: (token, orderId) => {
+        return fetch({
+            method: 'POST',
+            reqBody: {
+                orderId
+            },
+            jwtToken: token,
+            route: apiPrefix.checkout + '/checkorder'
+        });
+    },
+
     /*
      *       SECTION 6: ADMIN
      */

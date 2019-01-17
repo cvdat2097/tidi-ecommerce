@@ -147,53 +147,6 @@ class CheckoutDetail extends React.Component {
                             resolve(false);
                         }
                     });
-
-                    // Check order status
-                    if (this.zalopayOrderId) {
-                        this.checkStatusInterval = setInterval(() => {
-                            WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), Number(this.zalopayOrderId)).then(res => {
-                                const result = JSON.parse(res);
-                                console.log(result.status)
-                                switch (result.status) {
-                                    case ZP_ORDER_STATUS.PROCESSING:
-                                        break;
-
-                                    case ZP_ORDER_STATUS.CANCLLED:
-                                        Swal({
-                                            type: 'error',
-                                            title: 'No...',
-                                            text: 'Your payment has been canceled!'
-                                        })
-                                        break;
-
-                                    case ZP_ORDER_STATUS.SUCCESSFUL:
-                                        Swal({
-                                            type: 'success',
-                                            title: 'Yayy!!',
-                                            text: `You ordered successfully.`,
-                                            onClose: () => {
-                                                this.fetchCartProducts();
-                                                this.setState({
-                                                    redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
-                                                });
-                                            }
-                                        });
-                                        break;
-
-
-                                    default:
-                                        break;
-
-                                }
-                                if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
-                                    clearInterval(this.checkStatusInterval);
-                                }
-                            });
-
-                        }, 1000);
-                    } else {
-                        console.log('ZP orderId is null');
-                    }
                 }
             });
         });
@@ -214,15 +167,78 @@ class CheckoutDetail extends React.Component {
                 this.state.shippingNote,
                 this.state.shippingMethod.NAME
             ).then(res => {
-                let result = JSON.parse(res);
+                const result = JSON.parse(res);
+                const orderID =result.orderId;
                 if (result.status.status === ACTIVE_TYPE.TRUE) {
-                    this.zalopayOrderId = result.orderId;
-                    this.zptranstoken = result.zptranstoken;
 
-                    resolve({
-                        status: true,
-                        payload: result
-                    });
+                    // Get zptranstoken if payment method is Zalopay
+                    if (this.state.shippingMethod.NAME === PAYMENT_METHOD[0].NAME) {
+                        const checkOrderZPInterval = setInterval(() => {
+                            WebService.getZPTokenFromOrder(AuthService.getTokenUnsafe(), result.orderId).then(res => {
+                                const result = JSON.parse(res);
+
+                                if (result.status.status !== 'PROCESSING') {
+                                    clearInterval(checkOrderZPInterval);
+
+                                    this.zalopayOrderId = result.orderId;
+                                    this.zptranstoken = result.zptranstoken;
+                                    resolve({
+                                        status: true,
+                                        payload: result
+                                    });
+
+                                    // Check order status
+                                    this.checkStatusInterval = setInterval(() => {
+                                        WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), Number(orderID)).then(res => {
+                                            const result = JSON.parse(res);
+                                            console.log(result.status)
+                                            switch (result.status) {
+                                                case ZP_ORDER_STATUS.PROCESSING:
+                                                    break;
+
+                                                case ZP_ORDER_STATUS.CANCLLED:
+                                                    Swal({
+                                                        type: 'error',
+                                                        title: 'No...',
+                                                        text: 'Your payment has been canceled!'
+                                                    })
+                                                    break;
+
+                                                case ZP_ORDER_STATUS.SUCCESSFUL:
+                                                    Swal({
+                                                        type: 'success',
+                                                        title: 'Yayy!!',
+                                                        text: `You ordered successfully.`,
+                                                        onClose: () => {
+                                                            this.fetchCartProducts();
+                                                            this.setState({
+                                                                redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
+                                                            });
+                                                        }
+                                                    });
+                                                    break;
+
+
+                                                default:
+                                                    break;
+
+                                            }
+                                            if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
+                                                clearInterval(this.checkStatusInterval);
+                                            }
+                                        });
+
+                                    }, 1000);
+
+                                }
+                            });
+                        }, 800);
+                    } else {
+                        resolve({
+                            status: true,
+                            payload: result
+                        });
+                    }
                 } else {
                     resolve({
                         status: false,
