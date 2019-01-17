@@ -87,7 +87,7 @@ class OrderInfo extends React.Component {
             return (
                 <li key={index} className="item-product-name">
                     <span>{`[${product.amount}] ${product.productName}`}</span>
-                    <span>{`${withCommas(price)} ₫`}</span>
+                    <span>{`${withCommas(Math.round(price))} ₫`}</span>
                 </li>
             );
         });
@@ -121,9 +121,9 @@ class OrderInfo extends React.Component {
                                     <li className="item-header"><span>Product</span> <span>Price</span></li>
                                     {this.generateProductList(order.products)}
                                     {/* <li className="item-header"><span>Shipping</span> <span>{`FREE`}</span></li> */}
-                                    <li className="item-header"><span>Coupon used</span> <span>{order.couponId !== 1 ? order.couponId : 'NONE'}</span></li>
+                                    <li className="item-header"><span>Coupon used</span> <span>{order.couponId ? order.couponId : 'NONE'}</span></li>
 
-                                    <li className="total-header"><span>Total</span> <span>{`${withCommas(order.total)} ₫`}</span></li>
+                                    <li className="total-header"><span>Total</span> <span>{`${withCommas(Math.round(order.total))} ₫`}</span></li>
                                 </ul>
 
                                 <div id="accordion" role="tablist" className={"mb-4 form-control shipping-method-container"}>

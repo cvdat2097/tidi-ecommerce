@@ -3,6 +3,10 @@ import './HomePage.scss';
 
 // External Dependencies
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+// Internal Dependencies
+import { ROUTE_NAME } from '../../../routes/main.routing';
 
 class HomePage extends React.Component {
     render() {
@@ -15,7 +19,7 @@ class HomePage extends React.Component {
                                 <div className="hero-content">
                                     <h6>asoss</h6>
                                     <h2>New Collection</h2>
-                                    <a href="#//" className="btn essence-btn">view collection</a>
+                                    <Link to={ROUTE_NAME.PRODUCTS} className="btn essence-btn">view collection</Link>
                                 </div>
                             </div>
                         </div>

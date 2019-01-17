@@ -94,7 +94,7 @@ export const DEFAULT_FORMDATA = {
 export const PAYMENT_METHOD = [{
         ID: 0,
         NAME: 'ZaloPay',
-        DESCRIPTION: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.',
+        DESCRIPTION: 'FREE and PROFESSIONL payment method',
         SHIPPING_FEE: 0
     },
     {
