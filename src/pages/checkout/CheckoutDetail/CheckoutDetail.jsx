@@ -185,60 +185,68 @@ class CheckoutDetail extends React.Component {
                             WebService.getZPTokenFromOrder(AuthService.getTokenUnsafe(), result.orderId).then(res => {
                                 const result = JSON.parse(res);
 
-                                if (result.status.status !== 'PROCESSING') {
-                                    clearInterval(checkOrderZPInterval);
+                                if (result.status.status !== ACTIVE_TYPE.FALSE) {
+                                    if (result.status.status !== 'PROCESSING') {
+                                        clearInterval(checkOrderZPInterval);
 
-                                    this.zalopayOrderId = result.orderId;
-                                    this.zptranstoken = result.zptranstoken;
-                                    resolve({
-                                        status: true,
-                                        payload: result
-                                    });
-
-                                    // Check order status
-
-                                    let checkStatusInterval = setInterval(() => {
-                                        WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), Number(orderID)).then(res => {
-                                            const result = JSON.parse(res);
-                                            switch (result.status) {
-                                                case ZP_ORDER_STATUS.PROCESSING:
-                                                    break;
-
-                                                case ZP_ORDER_STATUS.CANCELED:
-                                                    Swal({
-                                                        type: 'error',
-                                                        title: 'No...',
-                                                        text: 'Your payment has been canceled!'
-                                                    })
-                                                    break;
-
-                                                case ZP_ORDER_STATUS.SUCCESSFUL:
-                                                    Swal({
-                                                        type: 'success',
-                                                        title: 'Yayy!!',
-                                                        text: `You ordered successfully.`,
-                                                        onClose: () => {
-                                                            this.fetchCartProducts();
-                                                            this.setState({
-                                                                redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
-                                                            });
-                                                        }
-                                                    });
-                                                    break;
-
-
-                                                default:
-                                                    break;
-
-                                            }
-                                            if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
-                                                clearInterval(checkStatusInterval);
-                                                clearInterval(checkOrderZPInterval);
-                                            }
+                                        this.zalopayOrderId = result.orderId;
+                                        this.zptranstoken = result.zptranstoken;
+                                        resolve({
+                                            status: true,
+                                            payload: result
                                         });
 
-                                    }, INTERNAL_CONFIG.INTERVAL_DURATION);
+                                        // Check order status
 
+                                        let checkStatusInterval = setInterval(() => {
+                                            WebService.getZalopayOrderStatus(AuthService.getTokenUnsafe(), Number(orderID)).then(res => {
+                                                const result = JSON.parse(res);
+                                                switch (result.status) {
+                                                    case ZP_ORDER_STATUS.PROCESSING:
+                                                        break;
+
+                                                    case ZP_ORDER_STATUS.CANCELED:
+                                                        Swal({
+                                                            type: 'error',
+                                                            title: 'No...',
+                                                            text: 'Your payment has been canceled!'
+                                                        })
+                                                        break;
+
+                                                    case ZP_ORDER_STATUS.SUCCESSFUL:
+                                                        Swal({
+                                                            type: 'success',
+                                                            title: 'Yayy!!',
+                                                            text: `You ordered successfully.`,
+                                                            onClose: () => {
+                                                                this.fetchCartProducts();
+                                                                this.setState({
+                                                                    redirectTo: <Redirect to={ROUTE_NAME.PRODUCTS} />
+                                                                });
+                                                            }
+                                                        });
+                                                        break;
+
+
+                                                    default:
+                                                        break;
+
+                                                }
+                                                if (result.status !== ZP_ORDER_STATUS.PROCESSING) {
+                                                    clearInterval(checkStatusInterval);
+                                                    clearInterval(checkOrderZPInterval);
+                                                }
+                                            });
+
+                                        }, INTERNAL_CONFIG.INTERVAL_DURATION);
+
+                                    }
+                                } else {
+                                    clearInterval(checkOrderZPInterval);
+                                    resolve({
+                                        status: false,
+                                        message: result.status.message
+                                    })
                                 }
                             });
                         }, INTERNAL_CONFIG.INTERVAL_DURATION);
