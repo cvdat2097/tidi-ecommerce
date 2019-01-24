@@ -38,7 +38,7 @@ class Order extends React.Component {
             const result = JSON.parse(res);
 
             if (result.status && result.status.status === ACTIVE_TYPE.TRUE) {
-                this.props.fetchOrders(result.orders);
+                this.props.fetchOrders(result.orders.reverse());
             }
         })
     }

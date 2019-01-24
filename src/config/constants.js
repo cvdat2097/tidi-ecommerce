@@ -1,6 +1,6 @@
 export default {
-    // REST_SERVER: 'http://localhost:8080/api/v1',
-    REST_SERVER: 'http://tidi-binpossible49.c9users.io:8080/api/v1',
+    REST_SERVER: 'http://localhost:8080/api/v1',
+    // REST_SERVER: 'http://tidi-binpossible49.c9users.io:8080/api/v1',
     DATE_FORMAT: 'YYYY-MM-DD',
     APPID: 12606
 }

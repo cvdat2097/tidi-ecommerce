@@ -115,6 +115,10 @@ class CheckoutDetail extends React.Component {
     }
 
     generateQRCode(orderInfo) {
+        if (!this.zptranstoken) {
+            console.log('zptranstoken is null');
+        }
+
         return new Promise((resolve, reject) => {
             QRCode.toDataURL(JSON.stringify({
                 appid: CONSTANT.APPID,
@@ -481,7 +485,7 @@ class CheckoutDetail extends React.Component {
                                                 />
                                             </div>
                                             <div className="col-12 mb-4">
-                                                <label htmlFor="email_address">Email Address <span>*</span></label>
+                                                <label htmlFor="email_address">Email <span>*</span></label>
                                                 <input type="email" className={"form-control" + (this.state.emailIsInvalid ? " is-invalid" : "")} id="email_address"
                                                     value={this.state.email}
                                                     onChange={(e) => this.setState({ email: e.target.value, emailIsInvalid: false })}
@@ -501,7 +505,7 @@ class CheckoutDetail extends React.Component {
                                                 </select>
                                             </div> */}
                                             <div className="col-12 mb-3">
-                                                <label htmlFor="street_address">Address <span>*</span></label>
+                                                <label htmlFor="street_address">Billing Address <span>*</span></label>
                                                 <input type="text" className={"form-control mb-3" + (this.state.addressIsInvalid ? " is-invalid" : "")} id="street_address"
                                                     value={this.state.address}
                                                     onChange={(e) => this.setState({ address: e.target.value, addressIsInvalid: false })}
